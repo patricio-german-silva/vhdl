@@ -1,0 +1,7 @@
+v 4
+file / "C:\Users\patri\OneDrive\Documentos\Creditos\VHDL\Practicas_GHDL\MyFullADD\MyFullADD_tb.vhd" "626e8fe54eadcdd0b5820ac86eb879bd9b3b82c3" "20240921180620.485":
+  entity myfulladd_tb at 7( 65) + 0 on 17;
+  architecture behavioral of myfulladd_tb at 20( 472) + 0 on 18;
+file / "C:\Users\patri\OneDrive\Documentos\Creditos\VHDL\Practicas_GHDL\MyFullADD\MyFullADD.vhd" "27fac76eb6e1f6c13a349ffe5643f775989d0ffa" "20240921180611.689":
+  entity myfulladd at 7( 65) + 0 on 15;
+  architecture a_myfulladd of myfulladd at 32( 787) + 0 on 16;

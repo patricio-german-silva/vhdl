@@ -1,0 +1,7 @@
+v 4
+file / "C:\Users\patri\OneDrive\Documentos\Creditos\VHDL\Practicas_GHDL\MyDiv3\MyDiv3.vhd" "843a11a403ab9330aa2248a6cfe15153eafd7620" "20240913203210.383":
+  entity mydiv3 at 7( 65) + 0 on 11;
+  architecture a_mydiv3 of mydiv3 at 28( 682) + 0 on 12;
+file / "C:\Users\patri\OneDrive\Documentos\Creditos\VHDL\Practicas_GHDL\MyDiv3\MyDiv3_tb.vhd" "a3da1edfecc7bb30b50fbb0fb3cdd193ca0b1b0b" "20240913203223.797":
+  entity mydiv3_tb at 7( 65) + 0 on 15;
+  architecture behavioral of mydiv3_tb at 20( 466) + 0 on 16;

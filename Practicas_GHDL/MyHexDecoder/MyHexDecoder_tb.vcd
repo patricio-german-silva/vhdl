@@ -1,0 +1,105 @@
+$date
+  Sat Sep 21 16:42:30 2024
+$end
+$version
+  GHDL v0
+$end
+$timescale
+  1 fs
+$end
+$scope module standard $end
+$upscope $end
+$scope module std_logic_1164 $end
+$upscope $end
+$scope module numeric_std $end
+$upscope $end
+$scope module myhexdecoder_tb $end
+$var reg 4 ! d[3:0] $end
+$var reg 7 " h[6:0] $end
+$scope module instmyhexdecoder $end
+$var reg 4 # pidata[3:0] $end
+$var reg 7 $ pohexvalue[6:0] $end
+$upscope $end
+$upscope $end
+$enddefinitions $end
+#0
+b0000 !
+b1111110 "
+b0000 #
+b1111110 $
+#10000000
+b0001 !
+b0110000 "
+b0001 #
+b0110000 $
+#20000000
+b0010 !
+b1101101 "
+b0010 #
+b1101101 $
+#30000000
+b0011 !
+b1111001 "
+b0011 #
+b1111001 $
+#40000000
+b0100 !
+b0110011 "
+b0100 #
+b0110011 $
+#50000000
+b0101 !
+b1011011 "
+b0101 #
+b1011011 $
+#60000000
+b0110 !
+b1011111 "
+b0110 #
+b1011111 $
+#70000000
+b0111 !
+b1110000 "
+b0111 #
+b1110000 $
+#80000000
+b1000 !
+b1111111 "
+b1000 #
+b1111111 $
+#90000000
+b1001 !
+b1111011 "
+b1001 #
+b1111011 $
+#100000000
+b1010 !
+b1110111 "
+b1010 #
+b1110111 $
+#110000000
+b1011 !
+b0011111 "
+b1011 #
+b0011111 $
+#120000000
+b1100 !
+b1001110 "
+b1100 #
+b1001110 $
+#130000000
+b1101 !
+b0111101 "
+b1101 #
+b0111101 $
+#140000000
+b1110 !
+b1001111 "
+b1110 #
+b1001111 $
+#150000000
+b1111 !
+b1000111 "
+b1111 #
+b1000111 $
+#160000000

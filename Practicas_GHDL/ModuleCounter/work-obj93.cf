@@ -1,0 +1,7 @@
+v 4
+file . "ModuleCounter_TB.vhd" "465f4f67246c1ab67ade3a462ac6fc98cf713b97" "20241110133409.040":
+  entity modulecounter_tb at 20( 472) + 0 on 35;
+  architecture a_modulecounter_tb of modulecounter_tb at 29( 594) + 0 on 36;
+file . "ModuleCounter.vhd" "1e790f4d737052f4dee312ee552413396eff3ef3" "20241110125649.081":
+  entity modulecounter at 22( 471) + 0 on 25;
+  architecture a_modulecounter of modulecounter at 38( 842) + 0 on 26;

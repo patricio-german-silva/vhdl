@@ -1,0 +1,7 @@
+v 4
+file / "C:\Users\patri\OneDrive\Documentos\Creditos\VHDL\Practicas_GHDL\MyBooleanALU\MyBooleanALU_tb.vhd" "42dd2e2e47fa9e7bb34c47570054d5e3d803a36a" "20240915021537.574":
+  entity mybooleanalu_tb at 7( 65) + 0 on 27;
+  architecture behavioral of mybooleanalu_tb at 20( 478) + 0 on 28;
+file / "C:\Users\patri\OneDrive\Documentos\Creditos\VHDL\Practicas_GHDL\MyBooleanALU\MyBooleanALU.vhd" "007d17971062d0d500aed73416ad43777b9b7cbd" "20240915021409.904":
+  entity mybooleanalu at 7( 65) + 0 on 25;
+  architecture a_mybooleanalu of mybooleanalu at 30( 786) + 0 on 26;

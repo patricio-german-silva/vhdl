@@ -1,0 +1,7 @@
+v 4
+file / "C:\Users\patri\OneDrive\Documentos\Creditos\VHDL\Practicas_GHDL\MyHexDecoder\MyMyHexDecoder.vhd" "60e641d8f5fe10223d3e77de209506bbfc7bdf41" "20240921194220.385":
+  entity myhexdecoder at 1( 0) + 0 on 29;
+  architecture a_myhexdecoder of myhexdecoder at 29( 727) + 0 on 30;
+file / "C:\Users\patri\OneDrive\Documentos\Creditos\VHDL\Practicas_GHDL\MyHexDecoder\MyHexDecoder_tb.vhd" "04316d05e607a7cc509ec9dc5c15423714582d05" "20240921194227.829":
+  entity myhexdecoder_tb at 1( 0) + 0 on 31;
+  architecture behavioral of myhexdecoder_tb at 13( 257) + 0 on 32;

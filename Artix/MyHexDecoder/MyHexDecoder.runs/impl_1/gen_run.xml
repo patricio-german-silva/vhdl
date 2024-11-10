@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenRun Id="impl_1" LaunchPart="xc7a100tcsg324-1" LaunchTime="1728068326">
+  <File Type="ROUTE-PWR" Name="MyHexDecoder_power_routed.rpt"/>
+  <File Type="PA-TCL" Name="MyHexDecoder.tcl"/>
+  <File Type="ROUTE-PWR-SUM" Name="MyHexDecoder_power_summary_routed.pb"/>
+  <File Type="REPORTS-TCL" Name="MyHexDecoder_reports.tcl"/>
+  <File Type="OPT-RQA-PB" Name="MyHexDecoder_rqa_opted.pb"/>
+  <File Type="BITSTR-MMI" Name="MyHexDecoder.mmi"/>
+  <File Type="OPT-METHODOLOGY-DRC" Name="MyHexDecoder_methodology_drc_opted.rpt"/>
+  <File Type="INIT-TIMING" Name="MyHexDecoder_timing_summary_init.rpt"/>
+  <File Type="OPT-TIMING" Name="MyHexDecoder_timing_summary_opted.rpt"/>
+  <File Type="OPT-DCP" Name="MyHexDecoder_opt.dcp"/>
+  <File Type="OPT-DRC" Name="MyHexDecoder_drc_opted.rpt"/>
+  <File Type="OPT-HWDEF" Name="MyHexDecoder.hwdef"/>
+  <File Type="PWROPT-DCP" Name="MyHexDecoder_pwropt.dcp"/>
+  <File Type="PWROPT-DRC" Name="MyHexDecoder_drc_pwropted.rpt"/>
+  <File Type="PWROPT-TIMING" Name="MyHexDecoder_timing_summary_pwropted.rpt"/>
+  <File Type="PLACE-DCP" Name="MyHexDecoder_placed.dcp"/>
+  <File Type="PLACE-IO" Name="MyHexDecoder_io_placed.rpt"/>
+  <File Type="PLACE-CLK" Name="MyHexDecoder_clock_utilization_placed.rpt"/>
+  <File Type="PLACE-UTIL" Name="MyHexDecoder_utilization_placed.rpt"/>
+  <File Type="PLACE-UTIL-PB" Name="MyHexDecoder_utilization_placed.pb"/>
+  <File Type="PLACE-CTRL" Name="MyHexDecoder_control_sets_placed.rpt"/>
+  <File Type="PLACE-SIMILARITY" Name="MyHexDecoder_incremental_reuse_placed.rpt"/>
+  <File Type="PLACE-PRE-SIMILARITY" Name="MyHexDecoder_incremental_reuse_pre_placed.rpt"/>
+  <File Type="BG-BIN" Name="MyHexDecoder.bin"/>
+  <File Type="PLACE-TIMING" Name="MyHexDecoder_timing_summary_placed.rpt"/>
+  <File Type="ROUTE-PWR-RPX" Name="MyHexDecoder_power_routed.rpx"/>
+  <File Type="PLACE-RQA-PB" Name="MyHexDecoder_rqa_placed.pb"/>
+  <File Type="POSTPLACE-PWROPT-DCP" Name="MyHexDecoder_postplace_pwropt.dcp"/>
+  <File Type="BITSTR-MSK" Name="MyHexDecoder.msk"/>
+  <File Type="POSTPLACE-PWROPT-TIMING" Name="MyHexDecoder_timing_summary_postplace_pwropted.rpt"/>
+  <File Type="PHYSOPT-DCP" Name="MyHexDecoder_physopt.dcp"/>
+  <File Type="PHYSOPT-DRC" Name="MyHexDecoder_drc_physopted.rpt"/>
+  <File Type="BITSTR-RBT" Name="MyHexDecoder.rbt"/>
+  <File Type="PHYSOPT-TIMING" Name="MyHexDecoder_timing_summary_physopted.rpt"/>
+  <File Type="ROUTE-ERROR-DCP" Name="MyHexDecoder_routed_error.dcp"/>
+  <File Type="ROUTE-DCP" Name="MyHexDecoder_routed.dcp"/>
+  <File Type="ROUTE-BLACKBOX-DCP" Name="MyHexDecoder_routed_bb.dcp"/>
+  <File Type="ROUTE-DRC" Name="MyHexDecoder_drc_routed.rpt"/>
+  <File Type="ROUTE-DRC-PB" Name="MyHexDecoder_drc_routed.pb"/>
+  <File Type="ROUTE-DRC-RPX" Name="MyHexDecoder_drc_routed.rpx"/>
+  <File Type="ROUTE-METHODOLOGY-DRC" Name="MyHexDecoder_methodology_drc_routed.rpt"/>
+  <File Type="ROUTE-METHODOLOGY-DRC-RPX" Name="MyHexDecoder_methodology_drc_routed.rpx"/>
+  <File Type="ROUTE-METHODOLOGY-DRC-PB" Name="MyHexDecoder_methodology_drc_routed.pb"/>
+  <File Type="ROUTE-RQS-PB" Name="MyHexDecoder_rqs_routed.pb"/>
+  <File Type="ROUTE-STATUS" Name="MyHexDecoder_route_status.rpt"/>
+  <File Type="ROUTE-STATUS-PB" Name="MyHexDecoder_route_status.pb"/>
+  <File Type="ROUTE-TIMINGSUMMARY" Name="MyHexDecoder_timing_summary_routed.rpt"/>
+  <File Type="ROUTE-TIMING-PB" Name="MyHexDecoder_timing_summary_routed.pb"/>
+  <File Type="ROUTE-TIMING-RPX" Name="MyHexDecoder_timing_summary_routed.rpx"/>
+  <File Type="ROUTE-SIMILARITY" Name="MyHexDecoder_incremental_reuse_routed.rpt"/>
+  <File Type="ROUTE-CLK" Name="MyHexDecoder_clock_utilization_routed.rpt"/>
+  <File Type="ROUTE-BUS-SKEW" Name="MyHexDecoder_bus_skew_routed.rpt"/>
+  <File Type="ROUTE-BUS-SKEW-PB" Name="MyHexDecoder_bus_skew_routed.pb"/>
+  <File Type="ROUTE-BUS-SKEW-RPX" Name="MyHexDecoder_bus_skew_routed.rpx"/>
+  <File Type="POSTROUTE-PHYSOPT-DCP" Name="MyHexDecoder_postroute_physopt.dcp"/>
+  <File Type="POSTROUTE-PHYSOPT-BLACKBOX-DCP" Name="MyHexDecoder_postroute_physopt_bb.dcp"/>
+  <File Type="POSTROUTE-PHYSOPT-TIMING" Name="MyHexDecoder_timing_summary_postroute_physopted.rpt"/>
+  <File Type="POSTROUTE-PHYSOPT-TIMING-PB" Name="MyHexDecoder_timing_summary_postroute_physopted.pb"/>
+  <File Type="POSTROUTE-PHYSOPT-TIMING-RPX" Name="MyHexDecoder_timing_summary_postroute_physopted.rpx"/>
+  <File Type="POSTROUTE-PHYSOPT-BUS-SKEW" Name="MyHexDecoder_bus_skew_postroute_physopted.rpt"/>
+  <File Type="BG-BIT" Name="MyHexDecoder.bit"/>
+  <File Type="POSTROUTE-PHYSOPT-BUS-SKEW-PB" Name="MyHexDecoder_bus_skew_postroute_physopted.pb"/>
+  <File Type="POSTROUTE-PHYSOPT-BUS-SKEW-RPX" Name="MyHexDecoder_bus_skew_postroute_physopted.rpx"/>
+  <File Type="BITSTR-NKY" Name="MyHexDecoder.nky"/>
+  <File Type="BITSTR-BMM" Name="MyHexDecoder_bd.bmm"/>
+  <File Type="PDI-FILE" Name="MyHexDecoder.pdi"/>
+  <File Type="BOOT-PDI-FILE" Name="MyHexDecoder_boot.pdi"/>
+  <File Type="PL-PDI-FILE" Name="MyHexDecoder_pld.pdi"/>
+  <File Type="RCFI_FILE" Name="MyHexDecoder.rcfi"/>
+  <File Type="CFI_FILE" Name="MyHexDecoder.cfi"/>
+  <File Type="RNPI_FILE" Name="MyHexDecoder.rnpi"/>
+  <File Type="NPI_FILE" Name="MyHexDecoder.npi"/>
+  <File Type="RBD_FILE" Name="MyHexDecoder.rbd"/>
+  <File Type="BITSTR-LTX" Name="debug_nets.ltx"/>
+  <File Type="BITSTR-LTX" Name="MyHexDecoder.ltx"/>
+  <File Type="BITSTR-SYSDEF" Name="MyHexDecoder.sysdef"/>
+  <File Type="BG-BGN" Name="MyHexDecoder.bgn"/>
+  <File Type="BG-DRC" Name="MyHexDecoder.drc"/>
+  <File Type="RDI-RDI" Name="MyHexDecoder.vdi"/>
+  <File Type="WBT-USG" Name="usage_statistics_webtalk.html"/>
+  <File Type="ROUTE-RQS" Name="MyHexDecoder_routed.rqs"/>
+  <File Type="POSTROUTE-PHYSOPT-RQS" Name="MyHexDecoder_postroute_physopted.rqs"/>
+  <File Type="ROUTE-RQS-RPT" Name="route_report_qor_suggestions_0.rpt"/>
+  <File Type="POSTROUTE-PHYSOPT-RQS-RPT" Name="postroute_physopt_report_qor_suggestions_0.rpt"/>
+  <FileSet Name="sources" Type="DesignSrcs" RelSrcDir="$PSRCDIR/sources_1" RelGenDir="$PGENDIR/sources_1">
+    <Filter Type="Srcs"/>
+    <File Path="$PSRCDIR/sources_1/new/MyHexDecoder.vhd">
+      <FileInfo>
+        <Attr Name="UsedIn" Val="synthesis"/>
+        <Attr Name="UsedIn" Val="simulation"/>
+      </FileInfo>
+    </File>
+    <Config>
+      <Option Name="DesignMode" Val="RTL"/>
+      <Option Name="TopModule" Val="MyHexDecoder"/>
+      <Option Name="TopAutoSet" Val="TRUE"/>
+    </Config>
+  </FileSet>
+  <FileSet Name="constrs_in" Type="Constrs" RelSrcDir="$PSRCDIR/constrs_1" RelGenDir="$PGENDIR/constrs_1">
+    <Filter Type="Constrs"/>
+    <File Path="$PSRCDIR/constrs_1/new/MyHexDecoder.xdc">
+      <FileInfo>
+        <Attr Name="UsedIn" Val="synthesis"/>
+        <Attr Name="UsedIn" Val="implementation"/>
+      </FileInfo>
+    </File>
+    <Config>
+      <Option Name="TargetConstrsFile" Val="$PSRCDIR/constrs_1/new/MyHexDecoder.xdc"/>
+      <Option Name="ConstrsType" Val="XDC"/>
+    </Config>
+  </FileSet>
+  <FileSet Name="utils" Type="Utils" RelSrcDir="$PSRCDIR/utils_1" RelGenDir="$PGENDIR/utils_1">
+    <Filter Type="Utils"/>
+    <File Path="$PSRCDIR/utils_1/imports/synth_1/MyHexDecoder.dcp">
+      <FileInfo>
+        <Attr Name="UsedIn" Val="synthesis"/>
+        <Attr Name="UsedIn" Val="implementation"/>
+        <Attr Name="UsedInSteps" Val="synth_1"/>
+        <Attr Name="AutoDcp" Val="1"/>
+      </FileInfo>
+    </File>
+    <Config>
+      <Option Name="TopAutoSet" Val="TRUE"/>
+    </Config>
+  </FileSet>
+  <Strategy Version="1" Minor="2">
+    <StratHandle Name="Vivado Implementation Defaults" Flow="Vivado Implementation 2024"/>
+    <Step Id="init_design"/>
+    <Step Id="opt_design"/>
+    <Step Id="power_opt_design"/>
+    <Step Id="place_design"/>
+    <Step Id="post_place_power_opt_design"/>
+    <Step Id="phys_opt_design"/>
+    <Step Id="route_design"/>
+    <Step Id="post_route_phys_opt_design"/>
+    <Step Id="write_bitstream"/>
+  </Strategy>
+</GenRun>
