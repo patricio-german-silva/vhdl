@@ -30,7 +30,8 @@ architecture A_BaudRateGen_TB of BaudRateGen_TB is
 
 component BaudRateGen is
     Generic (NBits: natural;
-            Max: natural);
+            Max: natural;
+            First: natural);
     Port (  piBRGClk : in STD_LOGIC;
             piBRGEna : in STD_LOGIC;
             piBRGRst : in STD_LOGIC;
@@ -43,7 +44,7 @@ signal clk, ena, rst, x: std_logic;
 begin
    
    instBRG: BaudRateGen
-      generic map( NBits => 8, Max => 7)
+      generic map( NBits => 8, Max => 4, First => 2)
       port map(piBRGClk => clk, piBRGEna => ena, piBRGRst => rst, poBRGO => x);
 
    pClk: process

@@ -27,7 +27,8 @@ use ieee.numeric_std.all;
 
 entity BaudRateGen is
     Generic (NBits: natural := 25;
-            Max: natural := 25000000);
+            Max: natural := 25000000;
+            First: natural := 13500000);
     Port (  piBRGClk : in STD_LOGIC;
             piBRGEna : in STD_LOGIC;
             piBRGRst : in STD_LOGIC;
@@ -37,7 +38,7 @@ end BaudRateGen;
 
 architecture A_BaudRateGen of BaudRateGen is
 
-signal auxCount: unsigned(NBits-1 downto 0);
+signal auxCount: unsigned(NBits-1 downto 0) := to_unsigned(0, NBits);
 
 begin
 
@@ -45,7 +46,7 @@ begin
     begin
         if rising_edge(piBRGClk) then
            if piBRGRst = '1' then
-               auxCount <= to_unsigned(Max/2, NBits);
+               auxCount <= to_unsigned(First, NBits);
            elsif piBRGEna = '1' then
                if auxCount = to_unsigned(0, NBits) then
                   auxCount <= to_unsigned(Max-1, NBits);
