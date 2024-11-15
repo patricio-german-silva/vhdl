@@ -60,15 +60,28 @@ begin
     SYNC_PROC : process (piUaRxClk, piUaRxRst)
     begin
         if rising_edge(piUaRxClk) then
-            poUaRxC <= '0'; -- Solo 1 clock, por lo tanto aqui esto es siempre low
-            brgrst <= '0';
             if piUaRxRst = '1' then
                 state <= S0;
             else
                 state <= next_state;
             end if;
         end if; 
-    end process;
+    end process SYNC_PROC;
+    
+    OUTPUT_DECODE : process (state)
+    begin
+    case (state) is
+        when S0 =>
+            brgrst <= '1';
+            poUaRxC <= '0';
+        when S11 =>
+            poUaRxData <= shiftReg;
+            poUaRxC <= '1';
+        when others =>
+            brgrst <= '0';
+            poUaRxC <= '0';
+    end case;
+    end process OUTPUT_DECODE;
     
     NEXT_STATE_DECODE : process (state, brgclk, piUaRxRx, piUaRxEna)
     begin
@@ -76,17 +89,19 @@ begin
             when S0 =>  -- Espera bit start
                if (piUaRxRx = '0') and (piUaRxEna = '1') then
                     next_state <= S1;
-                    brgrst <= '1';
                 else
                     next_state <= S0;
-                    brgrst <= '0';
                 end if;
             when S1 =>  -- Chequeo que es bit start tras medio periodo
-                if (brgclk = '1') and (piUaRxRx = '0') then
+               if brgclk = '1' then
+                  if piUaRxRx = '0' then
                      next_state <= S2;
-                 else
+                  else
                      next_state <= S0;
-                end if;
+                  end if;
+               else
+                  next_state <= S1;
+               end if;
             when S2 => -- recepcion de datos - bit 0
                 if brgclk = '1' then
                     shiftReg(0) <= piUaRxRx;
@@ -146,8 +161,6 @@ begin
             when S10 => -- recepcion del bit de stop
                if (brgclk = '1') then
                     if (piUaRxRx = '1') then
-                       poUaRxData <= shiftReg;
-                       poUaRxC <= '1';
                        next_state <= S11;
                     else
                        next_state <= S0;
@@ -164,7 +177,7 @@ begin
             when others =>
                 next_state <= S0;
         end case;
-    end process; 
+    end process NEXT_STATE_DECODE; 
 
 
 end A_UaRx;
