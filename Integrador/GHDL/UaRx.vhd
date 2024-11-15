@@ -45,9 +45,10 @@ end UaRx;
 
 architecture A_UaRx of UaRx is
 
-Type TStates is (S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10);
+Type TStates is (S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10, S11);
 signal state, next_state: TStates;
-signal rx_ok, brgrst, brgclk: STD_LOGIC;
+signal brgrst: STD_LOGIC;
+signal brgclk: STD_LOGIC;
 signal shiftReg: STD_LOGIC_VECTOR(8-1 downto 0);
 
 begin
@@ -56,20 +57,15 @@ begin
       generic map( NBits => 14, Max => RxDIV, First => RxDIV/2)
       port map(piBRGClk => piUaRxClk, piBRGEna => '1', piBRGRst => brgrst, poBRGO => brgclk);
 
-    SYNC_PROC : process (piUaRxClk, piUaRxRst, rx_ok)
+    SYNC_PROC : process (piUaRxClk, piUaRxRst)
     begin
         if rising_edge(piUaRxClk) then
-            poUaRxC <= '0'; -- Aqui esto es siempre low
-            brgrst <= '1';
-            if (piUaRxRst = '1') then
+            poUaRxC <= '0'; -- Solo 1 clock, por lo tanto aqui esto es siempre low
+            brgrst <= '0';
+            if piUaRxRst = '1' then
                 state <= S0;
             else
                 state <= next_state;
-                brgrst <= '0';
-                if rx_ok = '1' then -- Datos listos para ser leidos desde en el buffer RX
-                   poUaRxData <= shiftReg;
-                   rx_ok <= '0';
-                end if;
             end if;
         end if; 
     end process;
@@ -78,13 +74,12 @@ begin
     begin
         case (state) is
             when S0 =>  -- Espera bit start
-               if piUaRxRx = '0' then
-                    if piUaRxEna = '1' then
-                        next_state <= S1;
-                        brgrst <= '1';
-                    else
-                        next_state <= S0;
-                    end if;
+               if (piUaRxRx = '0') and (piUaRxEna = '1') then
+                    next_state <= S1;
+                    brgrst <= '1';
+                else
+                    next_state <= S0;
+                    brgrst <= '0';
                 end if;
             when S1 =>  -- Chequeo que es bit start tras medio periodo
                 if (brgclk = '1') and (piUaRxRx = '0') then
@@ -151,11 +146,21 @@ begin
             when S10 => -- recepcion del bit de stop
                if (brgclk = '1') then
                     if (piUaRxRx = '1') then
-                       rx_ok <= '1';
+                       poUaRxData <= shiftReg;
                        poUaRxC <= '1';
+                       next_state <= S11;
+                    else
+                       next_state <= S0;
                     end if;
-                    next_state <= S0;
-                end if;
+               else
+                  next_state <= S10;
+               end if;
+            when S11 => -- al menos un brgclk de espera antes de procesar el siguiente
+               if (brgclk = '1') then
+                  next_state <= S0;
+               else
+                  next_state <= S11;
+               end if;
             when others =>
                 next_state <= S0;
         end case;

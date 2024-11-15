@@ -40,7 +40,6 @@ architecture Behavioral of UaRx_TB is
     Generic ( RxDIV: NATURAL:= 10417); -- 100Mhz/DIV -> 9600 baud
     Port (  piUaRxClk : in STD_LOGIC; -- Clock de entrada
             piUaRxRst : in STD_LOGIC; -- Reset
-
             piUaRxEna : in STD_LOGIC; -- RX Enable
             piUaRxRx : in STD_LOGIC;    -- Puerto RX
             poUaRxC: out STD_LOGIC; -- Receive complete - Hay datos para leer en el buffer poUaRxData 
@@ -48,19 +47,19 @@ architecture Behavioral of UaRx_TB is
     );
    end component UaRx;
 
-   signal clk, rst, rxena, rx, rxc: STD_LOGIC;
-   signal rxdata: STD_LOGIC_VECTOR(8-1 downto 0);
-   constant data: STD_LOGIC_VECTOR(8-1 downto 0) := "10101010";
+   signal clk, rst, ena, rx, rxc: STD_LOGIC;
+   signal data: STD_LOGIC_VECTOR(8-1 downto 0);
+   constant frame: STD_LOGIC_VECTOR(8-1 downto 0) := "10101010";
 begin
 
        instUaRx: UaRx
        generic map(RxDIV => 4)
        Port map ( piUaRxClk => clk,
-            piUaRxRst => rst ,
-            piUaRxEna => rxena,
+            piUaRxRst => rst,
+            piUaRxEna => ena,
             piUaRxRx => rx,
             poUaRxC => rxc,
-            poUaRxData => rxdata);
+            poUaRxData => data);
 
    pClk: process
 	begin
@@ -74,18 +73,18 @@ begin
     process
     begin
        rst <= '1';
-       rxena <= '0';
+       ena <= '0';
        rx <= '1';
        wait for 63 ns;
        rst <= '0';
-       rxena <= '1';
+       ena <= '1';
 
        wait for 63 ns;
        rx <= '0';
        wait for 20 ns;
 
        for i in 0 to 7 loop
-         rx <= data(i);
+         rx <= frame(i);
          wait for 40 ns;
        end loop;
 
