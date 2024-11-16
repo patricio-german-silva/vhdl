@@ -27,8 +27,8 @@ use ieee.numeric_std.all;
 
 entity BaudRateGen is
     Generic (NBits: natural := 25;
-            Max: natural := 25000000;
-            First: natural := 13500000);
+            Max: natural := 25000000;        -- Periodo
+            First: natural := 13500000);     -- subperiodo para el primer pulso
     Port (  piBRGClk : in STD_LOGIC;
             piBRGEna : in STD_LOGIC;
             piBRGRst : in STD_LOGIC;
@@ -57,7 +57,9 @@ begin
         end if;        
    end process;
    
-   poBRGO <= '1' when auxCount = to_unsigned(0, NBits) else '0';
+   poBRGO <= '0' when piBRGRst = '1' else 
+             '1' when auxCount = to_unsigned(0, NBits) else 
+             '0';
    
     
 end A_BaudRateGen;

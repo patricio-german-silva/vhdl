@@ -168,12 +168,8 @@ begin
                else
                   next_state <= S10;
                end if;
-            when S11 => -- al menos un brgclk de espera antes de procesar el siguiente
-               if (brgclk = '1') then
-                  next_state <= S0;
-               else
-                  next_state <= S11;
-               end if;
+            when S11 => -- recepción exitosa, poUaRxC por 1 clock de sistema
+                next_state <= S0;
             when others =>
                 next_state <= S0;
         end case;

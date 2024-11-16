@@ -49,8 +49,7 @@ architecture Behavioral of UaRx_TB is
 
    signal clk, rst, ena, rx, rxc: STD_LOGIC;
    signal data: STD_LOGIC_VECTOR(8-1 downto 0);
-   constant frame_ok: STD_LOGIC_VECTOR(9 downto 0) := "1101010100";
-   constant frame_bad: STD_LOGIC_VECTOR(9 downto 0) := "0101010100";
+   signal test: STD_LOGIC_VECTOR(9 downto 0);
 begin
 
        instUaRx: UaRx
@@ -79,17 +78,18 @@ begin
        wait for 33 ns;
        rst <= '0';
        ena <= '1';
-
+       
+       test <= "0101010100";  -- bad frame, no stop bit
        wait for 33 ns;
        for i in 0 to 9 loop
-         rx <= frame_ok(i);
-         wait for 40 ns;
+           rx <= test(i);
+           wait for 40 ns;
        end loop;
-       rx <= '1';
-       wait for 63 ns;
+
+       test <= "1101010100";
        for i in 0 to 9 loop
-         rx <= frame_bad(i);
-         wait for 40 ns;
+           rx <= test(i);
+           wait for 40 ns;
        end loop;
 
        wait;
