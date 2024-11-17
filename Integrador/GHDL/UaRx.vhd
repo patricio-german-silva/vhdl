@@ -49,7 +49,7 @@ Type TStates is (S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10, S11);
 signal state, next_state: TStates;
 signal brgrst: STD_LOGIC;
 signal brgclk: STD_LOGIC;
-signal shiftReg: STD_LOGIC_VECTOR(8-1 downto 0);
+signal latch: STD_LOGIC_VECTOR(8-1 downto 0);
 
 begin
 
@@ -75,7 +75,7 @@ begin
             brgrst <= '1';
             poUaRxC <= '0';
         when S11 =>
-            poUaRxData <= shiftReg;
+            poUaRxData <= latch;
             poUaRxC <= '1';
         when others =>
             brgrst <= '0';
@@ -104,56 +104,56 @@ begin
                end if;
             when S2 => -- recepcion de datos - bit 0
                 if brgclk = '1' then
-                    shiftReg(0) <= piUaRxRx;
+                    latch(0) <= piUaRxRx;
                     next_state <= S3;
                 else
                     next_state <= S2;
                 end if;
             when S3 => -- recepcion de datos - bit 1
                 if brgclk = '1' then
-                    shiftReg(1) <= piUaRxRx;
+                    latch(1) <= piUaRxRx;
                     next_state <= S4;
                 else
                     next_state <= S3;
                 end if;
             when S4 => -- recepcion de datos - bit 2
                 if brgclk = '1' then
-                    shiftReg(2) <= piUaRxRx;
+                    latch(2) <= piUaRxRx;
                     next_state <= S5;
                 else
                     next_state <= S4;
                 end if;
             when S5 => -- recepcion de datos - bit 3
                 if brgclk = '1' then
-                    shiftReg(3) <= piUaRxRx;
+                    latch(3) <= piUaRxRx;
                     next_state <= S6;
                 else
                     next_state <= S5;
                 end if;
             when S6 => -- recepcion de datos - bit 4
                 if brgclk = '1' then
-                    shiftReg(4) <= piUaRxRx;
+                    latch(4) <= piUaRxRx;
                     next_state <= S7;
                 else
                     next_state <= S6;
                 end if;
             when S7 => -- recepcion de datos - bit 5
                 if brgclk = '1' then
-                    shiftReg(5) <= piUaRxRx;
+                    latch(5) <= piUaRxRx;
                     next_state <= S8;
                 else
                     next_state <= S7;
                 end if;
             when S8 => -- recepcion de datos - bit 6
                 if brgclk = '1' then
-                    shiftReg(6) <= piUaRxRx;
+                    latch(6) <= piUaRxRx;
                     next_state <= S9;
                 else
                     next_state <= S8;
                 end if;
             when S9 => -- recepcion de datos - bit 7
                 if brgclk = '1' then
-                    shiftReg(7) <= piUaRxRx;
+                    latch(7) <= piUaRxRx;
                     next_state <= S10;
                 else
                     next_state <= S9;
