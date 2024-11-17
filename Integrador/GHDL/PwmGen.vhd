@@ -40,7 +40,7 @@ entity PwmGen is
          piPwmEna : in STD_LOGIC;
          piPwmRst : in STD_LOGIC;
          piPwmPower: in STD_LOGIC_VECTOR(PWM_WIDTH-1 downto 0);
-         poPower : out STD_LOGIC
+         poPwmPower : out STD_LOGIC
          );
 end PwmGen;
 
@@ -62,7 +62,7 @@ begin
         end if;      
     end process pwmProcess;
 
-    poPower <= '0' when (piPwmRst = '1' or piPwmEna = '0') else
+    poPwmPower <= '0' when (piPwmRst = '1' or piPwmEna = '0') else
                '1' when powerCount < unsigned(piPwmPower) else '0';
 
 

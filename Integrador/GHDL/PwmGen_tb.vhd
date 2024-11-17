@@ -45,21 +45,21 @@ architecture Behavioral of PwmGen_tb is
          piPwmEna : in STD_LOGIC;
          piPwmRst : in STD_LOGIC;
          piPwmPower: in STD_LOGIC_VECTOR(PWM_WIDTH-1 downto 0);
-         poPower : out STD_LOGIC
+         poPwmPower : out STD_LOGIC
          );
     end component;
     signal Clk, Ena, Rst, Power : std_logic;
-    signal PowerSel: std_logic_vector(3 downto 0);
+    signal PowerSel: std_logic_vector(7-1 downto 0);
 
   
     begin
         instPwmGen: PwmGen
-        generic map( PWM_WIDTH => 4, ARR => 16)
+        generic map( PWM_WIDTH => 7, ARR => 10)
         port map(piPwmClk => Clk,
                 piPwmEna => Ena,
                 piPwmRst => Rst,
                 piPwmPower => PowerSel,
-                poPower => Power
+                poPwmPower => Power
          );
 
         pClk: process
@@ -81,21 +81,22 @@ architecture Behavioral of PwmGen_tb is
         wait for 4 ns;
      
 
-        PowerSel <= "0111";
+        PowerSel <= "0000001";
         wait for 200 ns;
       
 
-        PowerSel <= "0001";
+        PowerSel <= "0000010";
         wait for 200 ns;
       
 
-        PowerSel <= "1100";
+        PowerSel <= "0000100";
         wait for 200 ns;
       
 
-        PowerSel <= "1110";
+        PowerSel <= "0001000";
         wait for 200 ns;
       
+
         Rst <= '1';
         wait for 3 ns;
         Rst <= '0';

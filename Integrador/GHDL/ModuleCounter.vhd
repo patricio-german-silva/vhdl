@@ -30,15 +30,13 @@ entity ModuleCounter is
     Port (  piMCClk : in STD_LOGIC;
             piMCEna : in STD_LOGIC;
             piMCRst : in STD_LOGIC;
-            poMCO : out std_logic;
-            poMCH : out std_logic
+            poMCO : out std_logic
 		 );	
 end ModuleCounter;
 
 architecture A_ModuleCounter of ModuleCounter is
 
 signal auxCount: unsigned(NBits-1 downto 0);
-constant half: NATURAL := Max/2;
 
 begin
 
@@ -57,7 +55,6 @@ begin
 	end process;
 	
 	poMCO <= '1' when auxCount = to_unsigned(0, NBits) else '0';
-    poMCH <= '1' when auxCount = to_unsigned(half, NBits) else '0';
 	
     
 end A_ModuleCounter;
