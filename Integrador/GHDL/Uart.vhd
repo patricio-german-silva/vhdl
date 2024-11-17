@@ -45,7 +45,7 @@ entity Uart is
             poUartRxData : out STD_LOGIC_VECTOR (8-1 downto 0);
 
             poUartTx : out STD_LOGIC;    -- Puerto TX
-            piUartTxRdy : in STD_LOGIC;   -- Transmit ready - Hay datos en piUartTxData listos para ser enviados
+            piUartTxDataRdy : in STD_LOGIC;   -- Transmit ready - Hay datos en piUartTxData listos para ser enviados
             poUartTxC : out STD_LOGIC;   -- Transmit Complete - UN pulso que notifica que los datos fueron enviados
             piUartTxData : in STD_LOGIC_VECTOR (8-1 downto 0)
     );
@@ -61,6 +61,6 @@ begin
 
    instUaTx: entity work.UaTx(A_UaTx)
       generic map(TxDIV => DIV)
-      port map(piUaTxClk => piUartClk, piUaTxRst => piUartRst, piUaTxEna => piUartTxEna, poUaTxTx => poUartTx, piUaTxRdy => piUartTxRdy, poUaTxC => poUartTxC, piUaTxData => piUartTxData);
+      port map(piUaTxClk => piUartClk, piUaTxRst => piUartRst, piUaTxEna => piUartTxEna, poUaTxTx => poUartTx, piUaTxDataRdy => piUartTxDataRdy, poUaTxC => poUartTxC, piUaTxData => piUartTxData);
 
 end A_Uart;

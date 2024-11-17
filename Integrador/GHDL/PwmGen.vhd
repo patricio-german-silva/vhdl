@@ -4,7 +4,7 @@
 -- 
 -- Create Date: 10/22/2024 01:21:18 PM
 -- Design Name: 
--- Module Name: MyPWM - Behavioral
+-- Module Name: PwmGen - Behavioral
 -- Project Name: 
 -- Target Devices: 
 -- Tool Versions: 
@@ -32,9 +32,9 @@ use IEEE.NUMERIC_STD.ALL;
 --use UNISIM.VComponents.all;
 
 
-entity MyPWM is
-    Generic(PWM_WIDTH: NATURAL:=2;
-            ARR: NATURAL := 4
+entity PwmGen is
+    Generic(PWM_WIDTH: NATURAL:=12;
+            ARR: NATURAL := 4096
             );
     Port(piPwmClk : in STD_LOGIC;
          piPwmEna : in STD_LOGIC;
@@ -42,9 +42,9 @@ entity MyPWM is
          piPwmPower: in STD_LOGIC_VECTOR(PWM_WIDTH-1 downto 0);
          poPower : out STD_LOGIC
          );
-end MyPWM;
+end PwmGen;
 
-architecture A_MyPWM of MyPWM is
+architecture A_PwmGen of PwmGen is
 
 signal powerCount: unsigned(PWM_WIDTH-1 downto 0);
 
@@ -66,4 +66,4 @@ begin
                '1' when powerCount < unsigned(piPwmPower) else '0';
 
 
-end A_MyPWM;
+end A_PwmGen;
