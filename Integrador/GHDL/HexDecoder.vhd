@@ -1,3 +1,6 @@
+-- Recibe un binario de 4 bits y genera la salida
+-- para un display de 7 segmentos
+
 library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
