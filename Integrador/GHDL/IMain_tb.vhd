@@ -4,7 +4,7 @@
 -- 
 -- Create Date: 11/08/2024 04:04:23 PM
 -- Design Name: 
--- Module Name: CommProtRx_TB - Behavioral
+-- Module Name: CmdParser_TB - Behavioral
 -- Project Name: 
 -- Target Devices: 
 -- Tool Versions: 
@@ -31,39 +31,37 @@ use IEEE.NUMERIC_STD.ALL;
 --library UNISIM;
 --use UNISIM.VComponents.all;
 
-entity CommProtRx_TB is
+entity CmdParser_TB is
 --  Port ( );
-end CommProtRx_TB;
+end CmdParser_TB;
 
-architecture Behavioral of CommProtRx_TB is
-   component CommProtRx is
+architecture Behavioral of CmdParser_TB is
+   component CmdParser is
     Generic(HEADER_CHAR : NATURAL := 67;                             -- D
             TRAILER_CHAR : NATURAL := 90);                           -- Z
-    Port (  piCPRxClk : in STD_LOGIC;                                  -- "clock", caracter de entrada listo
-            piCPRxRst : in STD_LOGIC;                                  -- Reset
-            piCPRxEna : in STD_LOGIC;                                  -- Enable
-            piCPRxRx : in STD_LOGIC_VECTOR(7 downto 0);                -- Byte de entrada
-            poCPRxCmd : out STD_LOGIC_VECTOR(7 downto 0);              -- Comnado de entrada, 1 byte
-            poCPRxData : out STD_LOGIC_VECTOR(15 downto 0);   -- Valor de entrada
-            poCPRxC : out STD_LOGIC                                    -- Nuevo paquete de comando listo
+    Port (  piCPClk : in STD_LOGIC;                                  -- "clock", caracter de entrada listo
+            piCPRst : in STD_LOGIC;                                  -- Reset
+            piCPRx : in STD_LOGIC_VECTOR(7 downto 0);                -- Byte de entrada
+            poCPCmd : out STD_LOGIC_VECTOR(7 downto 0);              -- Comnado de entrada, 1 byte
+            poCPData : out STD_LOGIC_VECTOR(15 downto 0);   -- Valor de entrada
+            poCPC : out STD_LOGIC                                    -- Nuevo paquete de comando listo
     );
-   end component CommProtRx;
+   end component CmdParser;
 
-   signal clk, rst, ena, c: STD_LOGIC;
+   signal clk, rst, c: STD_LOGIC;
    signal data: STD_LOGIC_VECTOR(15 downto 0);
    signal cmd, rx: STD_LOGIC_VECTOR(7 downto 0);
 begin
 
-       instCommProtRx: CommProtRx
+       instCmdParser: CmdParser
        generic map(HEADER_CHAR => 67,
                    TRAILER_CHAR => 90)
-       Port map ( piCPRxClk => clk,
-            piCPRxRst => rst,
-            piCPRxEna => ena,
-            piCPRxRx => rx,
-            poCPRxCmd => cmd,
-            poCPRxC => c,
-            poCPRxData => data);
+       Port map ( piCPClk => clk,
+            piCPRst => rst,
+            piCPRx => rx,
+            poCPCmd => cmd,
+            poCPC => c,
+            poCPData => data);
 
    pClk: process
 	begin
@@ -77,10 +75,8 @@ begin
     process
     begin
        rst <= '1';
-       ena <= '0';
        wait for 33 ns;
        rst <= '0';
-       ena <= '1';
        
        wait until falling_edge(clk);
        rx <= STD_LOGIC_VECTOR(to_unsigned(67, 8)); -- Header

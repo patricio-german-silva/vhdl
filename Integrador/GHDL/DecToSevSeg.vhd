@@ -1,6 +1,8 @@
 -- Controla un unico de display de 7 segmentos
--- Recibe 7 bits interpretandolo como un UNSIGNED, entre 0 y 99
--- el Display mostrará el digito correspondiente a la decena.
+-- Recibe 2 vectores de 7 bits interpretando cada uno como un UNSIGNED, entre 0 y 99
+-- el Display mostrará intercalados el digito correspondiente a la decena precedido
+-- por el numero correspondiente al indice del valor, empezando en 1.
+-- El tiempo de espera que se muestra cada valor es D, en ciclos de reloj
 -- Si el mnumero es multiplo de 10 se muestra la decena, sino se muestra 
 -- el valor de la decena y el punto decimal. ej: 30 -> 3
 --                                               43 -> 4.
@@ -11,8 +13,10 @@ use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
 entity DecToSevSeg is
+    Generic( D: NATURAL := 100000000);
     port ( 
-        piDTSSSData: in std_logic_vector(6 downto 0);
+        piDTSSSClk: in std_logic;
+        piDTSSSData: in std_logic_vector(13 downto 0);
         poDTSSSOutput: out std_logic_vector(7 downto 0)
     );
 end entity DecToSevSeg;
@@ -37,11 +41,33 @@ end entity DecToSevSeg;
 architecture A_DecToSevSeg of DecToSevSeg is
 
 signal floorvalue, modvalue: UNSIGNED(6 downto 0);
+signal index: STD_LOGIC_VECTOR(1 downto 0);
 
 begin
 
-    floorvalue <= UNSIGNED(piDTSSSData) / 10;
-    modvalue <= UNSIGNED(piDTSSSData) mod 10;
+    instCounter: entity work.Counter(A_Counter)
+    generic map(NBitsMax => 28, NBitsVal => 2, Max => D, NVal => 4)
+    port map(piCTRClk => piDTSSSClk, piCTREna => '1', piCTRRst => '0', poCTRX => index);
+
+    process(index)
+    begin
+        case (index) is
+            when "00" =>
+                floorvalue <= TO_UNSIGNED(1, 7);
+                modvalue <= TO_UNSIGNED(0, 7);
+            when "01" =>
+                floorvalue <= UNSIGNED(piDTSSSData(6 downto 0)) / 10;
+                modvalue <= UNSIGNED(piDTSSSData(6 downto 0)) mod 10;
+            when "10" =>
+                floorvalue <= TO_UNSIGNED(2, 7);
+                modvalue <= TO_UNSIGNED(0, 7);
+            when "11" =>
+                floorvalue <= UNSIGNED(piDTSSSData(13 downto 7)) / 10;
+                modvalue <= UNSIGNED(piDTSSSData(13 downto 7)) mod 10;
+            when others =>
+        end case;
+    end process;
+
     with floorvalue(3 downto 0) select
         poDTSSSOutput(7 downto 1) <= "1111110" when "0000",
                       "0110000" when "0001",

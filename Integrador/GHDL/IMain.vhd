@@ -35,13 +35,12 @@ use IEEE.NUMERIC_STD.ALL;
 entity CommProtRx is
     Generic(HEADER_CHAR : NATURAL := 67;                             -- D
             TRAILER_CHAR : NATURAL := 90);                           -- Z
-    Port (  piCPRxClk : in STD_LOGIC;                                  -- "clock", poUaRxC en 1 indica caracter de entrada listo
-            piCPRxRst : in STD_LOGIC;                                  -- Reset
-            piCPRxEna : in STD_LOGIC;                                  -- Enable
-            piCPRxRx : in STD_LOGIC_VECTOR(7 downto 0);                -- Byte de entrada
-            poCPRxCmd : out STD_LOGIC_VECTOR(7 downto 0);              -- Comnado de entrada, 1 byte
-            poCPRxData : out STD_LOGIC_VECTOR(15 downto 0);            -- Datos de entrada
-            poCPRxC : out STD_LOGIC                                    -- Nuevo paquete de comando listo
+    Port (  piCPClk : in STD_LOGIC;                                  -- "clock", poUaRxC en 1 indica caracter de entrada listo
+            piCPRst : in STD_LOGIC;                                  -- Reset
+            piCPRx : in STD_LOGIC_VECTOR(7 downto 0);                -- Byte de entrada
+            poCPCmd : out STD_LOGIC_VECTOR(7 downto 0);              -- Comnado de entrada, 1 byte
+            poCPData : out STD_LOGIC_VECTOR(15 downto 0);   -- Valor de entrada
+            poCPC : out STD_LOGIC                                    -- Nuevo paquete de comando listo
     );
 end CommProtRx;
 
@@ -53,10 +52,10 @@ signal data: STD_LOGIC_VECTOR(15 downto 0);
 
 begin
 
-    SYNC_PROC : process (piCPRxClk)
+    SYNC_PROC : process (piCPClk)
     begin
-        if rising_edge(piCPRxClk) then
-            if (piCPRxRst = '1') then
+        if rising_edge(piCPClk) then
+            if (piCPRst = '1') then
                 state <= S0;
             else
                 state <= next_state;
@@ -65,30 +64,30 @@ begin
     end process;
     
 
-    NEXT_STATE_DECODE : process (state, piCPRxRx)
+    NEXT_STATE_DECODE : process (state, piCPRx)
     begin
-        poCPRxC <= '0';
+        poCPC <= '0';
         case (state) is
             when S0 =>  -- Header
-                if piCPRxRx = STD_LOGIC_VECTOR(to_unsigned(HEADER_CHAR, 8)) then
+                if piCPRx = STD_LOGIC_VECTOR(to_unsigned(HEADER_CHAR, 8)) then
                     next_state <= S1;
                 else
                     next_state <= S0;
                 end if;
             when S1 =>
-                cmd <= piCPRxRx;
+                cmd <= piCPRx;
                 next_state <= S2;
             when S2 =>
-                data(15 downto 8) <= piCPRxRx;
+                data(15 downto 8) <= piCPRx;
                 next_state <= S3;
             when S3 =>
-                data(7 downto 0) <= piCPRxRx;
+                data(7 downto 0) <= piCPRx;
                 next_state <= S4;
             when S4 =>  --Trailer
-                if piCPRxRx = STD_LOGIC_VECTOR(to_unsigned(TRAILER_CHAR, 8)) then
-                    poCPRxC <= '1';
-                    poCPRxCmd <= cmd;
-                    poCPRxData <= data;
+                if piCPRx = STD_LOGIC_VECTOR(to_unsigned(TRAILER_CHAR, 8)) then
+                    poCPC <= '1';
+                    poCPCmd <= cmd;
+                    poCPData <= data;
                 end if;
                 next_state <= S0;
             when others =>
