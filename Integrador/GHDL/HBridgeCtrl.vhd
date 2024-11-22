@@ -42,42 +42,42 @@ entity HBridgeCtrl is
          piHBCDirSel : in STD_LOGIC;
          piHBCPowerSel: in STD_LOGIC_VECTOR (POWER_SEL_WIDTH-1 downto 0);
          poHBCDir : out STD_LOGIC_VECTOR(1 downto 0);
-         poHBCPower : out STD_LOGIC
+         poHBCPower : out STD_LOGIC;
+         poHBCDirSel : out STD_LOGIC;                                            -- Señal de salida conectada al valor del latch
+         poHBCPowerSel: out STD_LOGIC_VECTOR (POWER_SEL_WIDTH-1 downto 0)        -- Señal de salida conectada al valor del latch
          );
 end HBridgeCtrl;
 
 architecture A_HBridgeCtrl of HBridgeCtrl is
-signal clkPwm: STD_LOGIC;
 signal powerSel: STD_LOGIC_VECTOR (POWER_SEL_WIDTH-1 downto 0);
-signal dirSel: STD_LOGIC_VECTOR (1 downto 0);
+signal pwmClk, dirSel: STD_LOGIC;
 begin
 
 instModuleCounter: entity work.ModuleCounter(A_ModuleCounter)
     generic map(NBits => 20, Max => PWM_PERIOD) 
-    port map(piMCClk => piHBCClk, piMCEna => piHBCEna, piMCRst => piHBCRst, poMCO => clkPwm);
+    port map(piMCClk => piHBCClk, piMCEna => piHBCEna, piMCRst => piHBCRst, poMCO => pwmClk);
     
 instPwmGen: entity work.PwmGen(A_PwmGen)
     generic map(PWM_WIDTH => 7, ARR => PWM_DIV)
-    port map(piPwmClk => clkPwm, piPwmEna => piHBCEna, piPwmRst => piHBCRst, piPwmPower => powerSel, poPwmPower => poHBCPower);
+    port map(piPwmClk => pwmClk, piPwmEna => piHBCEna, piPwmRst => piHBCRst, piPwmPower => powerSel, poPwmPower => poHBCPower);
 
 
     P_SetPowerDir: process(piHBCClk, piHBCRst)
     begin
         if piHBCRst = '1' then
             powerSel <= std_logic_vector(to_unsigned(0, POWER_SEL_WIDTH));
-            dirSel <= "00";
         elsif rising_edge(piHBCClk) then
             if piHBCSet = '1' then
                powerSel <= piHBCPowerSel;
-               if piHBCDirSel = '1' then
-                   dirSel <= "01";
-               else
-                   dirSel <= "10";
-               end if;
+               dirSel <= piHBCDirSel;
             end if;
         end if;
     end process P_SetPowerDir;
 
-    poHBCDir <= dirSel;
+    poHBCDirSel <= dirSel; 
+    poHBCPowerSel <= powerSel;
+    poHBCDir <= "00" when piHBCRst = '1' else
+                "01" when dirSel = '1' else
+                "10";
     
 end A_HBridgeCtrl;

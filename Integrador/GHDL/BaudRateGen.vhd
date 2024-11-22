@@ -58,8 +58,8 @@ begin
    end process;
    
    poBRGO <= '0' when piBRGRst = '1' else 
-             '1' when auxCount = to_unsigned(0, NBits) else 
-             '0';
+             '0' when piBRGEna = '0' else 
+             '1' when auxCount = to_unsigned(0, NBits) else '0';
    
     
 end A_BaudRateGen;

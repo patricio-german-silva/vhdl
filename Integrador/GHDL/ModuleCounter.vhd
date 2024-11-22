@@ -54,7 +54,9 @@ begin
         end if;        
 	end process;
 	
-	poMCO <= '1' when auxCount = to_unsigned(0, NBits) else '0';
+    poMCO <= '0' when piMCRst = '1' else
+             '0' when piMCEna = '0' else
+             '1' when auxCount = to_unsigned(Max-1, NBits) else '0';
 	
     
 end A_ModuleCounter;

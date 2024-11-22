@@ -48,13 +48,15 @@ component HBridgeCtrl is
          piHBCDirSel : in STD_LOGIC;
          piHBCPowerSel: in STD_LOGIC_VECTOR (POWER_SEL_WIDTH-1 downto 0);
          poHBCDir : out STD_LOGIC_VECTOR(1 downto 0);
-         poHBCPower : out STD_LOGIC
+         poHBCPower : out STD_LOGIC;
+         poHBCDirSel : out STD_LOGIC;                                            -- Señal de salida conectada al valor del latch
+         poHBCPowerSel: out STD_LOGIC_VECTOR (POWER_SEL_WIDTH-1 downto 0)        -- Señal de salida conectada al valor del latch
          );
 end component HBridgeCtrl;
      
-signal clk, rst, ena,set, dirsel, power : std_logic;
-signal powersel: std_logic_vector(7-1 downto 0);
-signal dir: std_logic_vector(1 downto 0);
+signal clk, rst, ena,set, dirsel, power, diro : std_logic;
+signal powersel, powerselo: std_logic_vector(7-1 downto 0);
+signal dir : std_logic_vector(1 downto 0);
 
 begin
     instHBridgeCtrl: HBridgeCtrl
@@ -68,7 +70,9 @@ begin
                  piHBCDirSel => dirsel,
                  piHBCPowerSel => powersel,
                  poHBCDir => dir,
-                 poHBCPower => power
+                 poHBCPower => power,
+                 poHBCDirSel => diro,
+                 poHBCPowerSel => powerselo
                  );
 
 	pClk: process
@@ -92,6 +96,8 @@ begin
         wait until falling_edge(clk);
         set <= '1';
         wait until falling_edge(clk);
+        dirsel <= '0';
+        powersel <= "0000000";
         set <= '0';
         wait for 400 ns;
 
@@ -100,6 +106,8 @@ begin
         wait until falling_edge(clk);
         set <= '1';
         wait until falling_edge(clk);
+        dirsel <= '0';
+        powersel <= "0000000";
         set <= '0';
         wait for 400 ns;
 
