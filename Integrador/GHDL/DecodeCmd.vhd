@@ -68,6 +68,7 @@ architecture A_DecodeCmd of DecodeCmd is
 
 begin
 
+    -- Tiempo de actualizacion de las velocidades segun los sensores
     instModuleCounter: entity work.ModuleCounter(A_ModuleCounter)
         generic map(NBits => 20, Max => 1000000) 
         port map( piMCClk => piDCMDClk, piMCEna => auto, piMCRst => piDCMDRst, poMCO => clk10ms);	

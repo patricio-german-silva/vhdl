@@ -33,7 +33,7 @@ use IEEE.NUMERIC_STD.ALL;
 
 entity ToDisplay is
     Generic( POWER_SEL_WIDTH: NATURAL:=7;
-             Max: NATURAL := 100000000);    -- Ancho en bits del selector de PWM
+             Max: NATURAL := 100000000);    -- Tiemp de ciclo del display
     Port(piTDClk: in STD_LOGIC;
          piTDRst: in STD_LOGIC;
          piTDEna: in STD_LOGIC;
