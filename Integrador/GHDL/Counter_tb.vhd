@@ -45,11 +45,12 @@ component Counter is
     Port ( piCTRClk : in STD_LOGIC;
            piCTREna : in STD_LOGIC;
            piCTRRst : in STD_LOGIC;
-           poCTRX : out std_logic_vector(NBitsVal-1 downto 0));
+           poCTRO : out std_logic;
+           poCTRV : out std_logic_vector(NBitsVal-1 downto 0));
 end component;
 
-signal Clk, Ena, Rst : std_logic;
-signal x: std_logic_vector(2-1 downto 0);
+signal Clk, Ena, Rst, o : std_logic;
+signal v: std_logic_vector(2-1 downto 0);
 
   
 begin
@@ -57,11 +58,12 @@ begin
     generic map( NBitsMax => 3,
                  NBitsVal => 2,
                  Max => 5,
-                 NVal => 4)
+                 NVal => 3)
     port map(piCTRClk => Clk,
             piCTREna => Ena,
             piCTRRst => Rst,
-            poCTRX => X
+            poCTRO => o,
+            poCTRV => v
      );
 
     pClk: process

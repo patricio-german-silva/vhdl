@@ -8,8 +8,8 @@
 -- Project Name: 
 -- Target Devices: 
 -- Tool Versions: 
--- Description: Contador de modulo doble
--- Cada Max numero de clocks va ciclando poCTRX entre 0 y NVal
+-- Description: Contador con divisor
+-- Cada Max numero de clocks va ciclando poCTRV entre 0 y NVal
 -- 
 -- Dependencies: 
 -- 
@@ -40,7 +40,8 @@ Generic (NBitsMax: natural := 28;
     Port ( piCTRClk : in STD_LOGIC;
            piCTREna : in STD_LOGIC;
            piCTRRst : in STD_LOGIC;
-           poCTRX : out std_logic_vector(NBitsVal-1 downto 0));
+           poCTRO : out std_logic;
+           poCTRV : out std_logic_vector(NBitsVal-1 downto 0));
 end Counter;
 
 architecture A_Counter of Counter is
@@ -65,5 +66,6 @@ begin
         end if;
     end process;
 
-    poCTRX <= std_logic_vector(val);
+    poCTRO <= '1' when count = TO_UNSIGNED(Max-1, NBitsMax) else '0';
+    poCTRV <= std_logic_vector(val);
 end A_Counter;

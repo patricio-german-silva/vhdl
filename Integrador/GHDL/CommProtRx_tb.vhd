@@ -39,15 +39,15 @@ architecture Behavioral of CommProtRx_TB is
    component CommProtRx is
     Generic(HEADER_CHAR : NATURAL := 67;                               -- D
             TRAILER_CHAR : NATURAL := 90;                              -- Z
-            TIMEOUT: NATURAL := 1000000);                                 -- Timepot en ciclos de reloj, si no se completó un paquete se resetea la comunicación 
+            TIMEOUT: NATURAL := 1000000);                              -- Timeout en ciclos de reloj, si no se completó un paquete se resetea la comunicación 
     Port (  piCPRxClk : in STD_LOGIC;                                  -- clock
-            piCPRxRdy : in STD_LOGIC;                                  -- Caracter de entrada listo
             piCPRxRst : in STD_LOGIC;                                  -- Reset
             piCPRxEna : in STD_LOGIC;                                  -- Enable
+            piCPRxRdy : in STD_LOGIC;                                  -- Caracter de entrada listo
             piCPRxRx : in STD_LOGIC_VECTOR(7 downto 0);                -- Byte de entrada
-            poCPRxCmd : out STD_LOGIC_VECTOR(7 downto 0);              -- Comnado de entrada, 1 byte
-            poCPRxData : out STD_LOGIC_VECTOR(15 downto 0);            -- Datos de entrada
-            poCPRxC : out STD_LOGIC                                    -- Nuevo paquete de comando listo
+            poCPRxCmd : out STD_LOGIC_VECTOR(7 downto 0);              -- Comnado, 1 byte
+            poCPRxData : out STD_LOGIC_VECTOR(15 downto 0);            -- Dato, 2 byte
+            poCPRxC : out STD_LOGIC                                    -- Se recibió un nuevo paquete de comando
     );
    end component CommProtRx;
 

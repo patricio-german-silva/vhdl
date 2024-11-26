@@ -35,15 +35,15 @@ use IEEE.NUMERIC_STD.ALL;
 entity CommProtRx is
     Generic(HEADER_CHAR : NATURAL := 67;                               -- D
             TRAILER_CHAR : NATURAL := 90;                              -- Z
-            TIMEOUT: NATURAL := 1000000);                                 -- Timepot en ciclos de reloj, si no se completó un paquete se resetea la comunicación 
+            TIMEOUT: NATURAL := 1000000);                              -- Timeout en ciclos de reloj, si no se completó un paquete se resetea la comunicación 
     Port (  piCPRxClk : in STD_LOGIC;                                  -- clock
-            piCPRxRdy : in STD_LOGIC;                                  -- Caracter de entrada listo
             piCPRxRst : in STD_LOGIC;                                  -- Reset
             piCPRxEna : in STD_LOGIC;                                  -- Enable
+            piCPRxRdy : in STD_LOGIC;                                  -- Caracter de entrada listo
             piCPRxRx : in STD_LOGIC_VECTOR(7 downto 0);                -- Byte de entrada
-            poCPRxCmd : out STD_LOGIC_VECTOR(7 downto 0);              -- Comnado de entrada, 1 byte
-            poCPRxData : out STD_LOGIC_VECTOR(15 downto 0);            -- Datos de entrada
-            poCPRxC : out STD_LOGIC                                    -- Nuevo paquete de comando listo
+            poCPRxCmd : out STD_LOGIC_VECTOR(7 downto 0);              -- Comnado, 1 byte
+            poCPRxData : out STD_LOGIC_VECTOR(15 downto 0);            -- Dato, 2 byte
+            poCPRxC : out STD_LOGIC                                    -- Se recibió un nuevo paquete de comando
     );
 end CommProtRx;
 
@@ -54,7 +54,6 @@ signal cmd: STD_LOGIC_VECTOR(7 downto 0);
 signal data: STD_LOGIC_VECTOR(15 downto 0);
 signal tout: STD_LOGIC;
 signal toutrst : STD_LOGIC;
-signal estate: STD_LOGIC_VECTOR(2 downto 0);
 
 begin
 
@@ -93,26 +92,21 @@ begin
                 else
                     next_state <= S0;
                 end if;
-                estate <= "000";
             when S1 =>
                 cmd <= piCPRxRx;
                 next_state <= S2;
-                estate <= "001";
             when S2 =>
                 data(15 downto 8) <= piCPRxRx;
                 next_state <= S3;
-                estate <= "010";
             when S3 =>
                 data(7 downto 0) <= piCPRxRx;
                 next_state <= S4;
-                estate <= "011";
             when S4 =>  --Trailer
                 if piCPRxRx = STD_LOGIC_VECTOR(to_unsigned(TRAILER_CHAR, 8)) then
                     poCPRxC <= '1';
                     poCPRxCmd <= cmd;
                     poCPRxData <= data;
                 end if;
-                estate <= "100";
                 next_state <= S0;
             when others =>
                 next_state <= S0;
