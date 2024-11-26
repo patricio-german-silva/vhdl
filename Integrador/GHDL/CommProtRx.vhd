@@ -49,7 +49,7 @@ end CommProtRx;
 
 architecture A_CommProtRx of CommProtRx is
 Type TStates is (S0, S1, S2, S3, S4);
-signal state, final_state, next_state: TStates;
+signal state, next_state: TStates;
 signal cmd: STD_LOGIC_VECTOR(7 downto 0);
 signal data: STD_LOGIC_VECTOR(15 downto 0);
 signal tout: STD_LOGIC;
@@ -59,18 +59,18 @@ signal estate: STD_LOGIC_VECTOR(2 downto 0);
 begin
 
 
-    instModuleCounter: entity work.ModuleCounter(A_ModuleCounter)
+    instTTrigger: entity work.TTrigger(A_TTrigger)
         generic map(NBits => 20, Max => TIMEOUT) 
-        port map(piMCClk => piCPRxClk, piMCEna => piCPRxEna, piMCRst => toutrst, poMCO => tout);
+        port map(piTTClk => piCPRxClk, piTTEna => piCPRxEna, piTTRst => toutrst, poTTO => tout);
 
     
     RX_PROC : process (piCPRxRdy)
     begin
         if rising_edge(piCPRxRdy) then
-            if piCPRxRst = '1' then
+            if (piCPRxRst = '1') or (tout = '1') then
                 state <= S0;
             else
-                state <= final_state;
+                state <= next_state;
             end if;
         end if;
     end process;
@@ -79,11 +79,6 @@ begin
     begin
         if rising_edge(piCPRxClk) then
             toutrst <= piCPRxRdy;
-            if tout = '1' then
-                final_state <= S0;
-            else
-                final_state <= next_state;
-            end if;
         end if;
     end process;
 

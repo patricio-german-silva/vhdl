@@ -119,7 +119,7 @@ begin
        wait until falling_edge(rdy);
        rx <= STD_LOGIC_VECTOR(to_unsigned(90, 8)); -- Trailer
        
-       -- Timeoit
+       -- Timeout
        wait until falling_edge(rdy);
        rx <= STD_LOGIC_VECTOR(to_unsigned(67, 8)); -- Header
        wait until falling_edge(rdy);
@@ -127,7 +127,7 @@ begin
        wait until falling_edge(rdy);
        rx <= "00000011";  -- Data
        rdyena <= '0';
-       wait for 80 ns;
+       wait for 180 ns;
        rdyena <= '1';
        wait until falling_edge(rdy);
        rx <= "00000000";  -- Data
