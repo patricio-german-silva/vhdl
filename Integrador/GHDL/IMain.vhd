@@ -32,18 +32,18 @@ use IEEE.NUMERIC_STD.ALL;
 --use UNISIM.VComponents.all;
 
 entity IMain is
-    Port (  piIMClk : in STD_LOGIC;
-            piIMRst : in STD_LOGIC;
-            piIMEna : in STD_LOGIC;
-            piIMRx : in STD_LOGIC;
-            piIMTx : in STD_LOGIC;
-            piIMSensors : in STD_LOGIC_VECTOR(3 downto 0);  -- Sensores fisicos
-            poIMSevSeg : out STD_LOGIC_VECTOR(6 downto 0);  -- Al display de 7 segmentos
-            poIMDot : out STD_LOGIC;                        -- Al punto del display de 7 segmentos
-            poIMPowerMD : out STD_LOGIC;                    -- Al pin Enable del L293D motor derecho
-            poIMDirMD : out STD_LOGIC_VECTOR(1 downto 0);   -- A los pin dir del L293D
-            poIMPowerMI : out STD_LOGIC;                    -- Al pin Enable del L293D motor izquierdo
-            poIMDirMI : out STD_LOGIC_VECTOR(1 downto 0)   -- A los pin dir del L293D
+    Port (  piIMClk : in STD_LOGIC;              --                                                    Port E3
+            piIMRst : in STD_LOGIC;              --                                                         SW1
+            piIMEna : in STD_LOGIC;              --                                                         SW0
+            piIMRx : in STD_LOGIC;               --                                                    Port D10
+            poIMTx : out STD_LOGIC;              --                                                    Port A9
+            piIMSensors : in STD_LOGIC_VECTOR(3 downto 0);  -- Sensores fisicos                             BTN0 - BTN3
+            poIMSevSeg : out STD_LOGIC_VECTOR(6 downto 0);  -- Al display de 7 segmentos                    IO32 - IO27
+            poIMDot : out STD_LOGIC;                        -- Al punto del display de 7 segmentos -        IO26
+            poIMPowerMD : out STD_LOGIC;                    -- Al pin Enable del L293D motor derecho -      IO41
+            poIMDirMD : out STD_LOGIC_VECTOR(1 downto 0);   -- A los pin dir del L293D -                    LED4 y LED5
+            poIMPowerMI : out STD_LOGIC;                    -- Al pin Enable del L293D motor izquierdo -    IO40
+            poIMDirMI : out STD_LOGIC_VECTOR(1 downto 0)   -- A los pin dir del L293D -                     LED6 y LED7
     );
 end IMain;
 
@@ -111,6 +111,11 @@ begin
     instHexToSevSeg: entity work.HexToSevSeg(A_HexToSevSeg)
         port map( piHTSSSEna => ena, piHTSSSData => dispData, poHTSSSOutput => poIMSevSeg );	
 
-
+    clk <= piIMClk;
+    rst <= piIMRst;
+    ena <= piIMEna;
+    rx <= piIMRx;
+    poIMTx <= tx;
+    
 end A_IMain;
 
