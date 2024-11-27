@@ -36,7 +36,7 @@ end ModuleCounter;
 
 architecture A_ModuleCounter of ModuleCounter is
 
-signal auxCount: unsigned(NBits-1 downto 0);
+signal auxCount: unsigned(NBits-1 downto 0) := to_unsigned(0, NBits);
 
 begin
 

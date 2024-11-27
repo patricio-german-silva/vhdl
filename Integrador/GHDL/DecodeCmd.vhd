@@ -121,25 +121,24 @@ begin
                 if mode = CMD_MODE_CONTROL_SENSORS then
                     sensors <= piDCMDSensors;
                 end if;
-                if rising_edge(clk10ms) then
-                    if sensors = "1100" then
-                        poDCMDSetMI <= '1';
-                        poDCMDDirSelMI <= '1';
-                        poDCMDPowerSelMI <= STD_LOGIC_VECTOR(TO_UNSIGNED(0, 7));
-                    elsif sensors = "0011" then
-                        poDCMDSetMD <= '1';
-                        poDCMDDirSelMD <= '1';
-                        poDCMDPowerSelMD <= STD_LOGIC_VECTOR(TO_UNSIGNED(0, 7));
-                    else
-                        poDCMDSetMD <= '1';
-                        poDCMDDirSelMD <= '1';
-                        poDCMDPowerSelMD <= STD_LOGIC_VECTOR(avg_power(6 downto 0));
-                        poDCMDSetMI <= '1';
-                        poDCMDDirSelMI <= '1';
-                        poDCMDPowerSelMI <= STD_LOGIC_VECTOR(avg_power(6 downto 0));
-                    end if;
-                end if;
-
+            end if;
+        end if;
+        if rising_edge(clk10ms) then
+            if sensors = "1100" then
+                poDCMDSetMI <= '1';
+                poDCMDDirSelMI <= '1';
+                poDCMDPowerSelMI <= STD_LOGIC_VECTOR(TO_UNSIGNED(0, 7));
+            elsif sensors = "0011" then
+                poDCMDSetMD <= '1';
+                poDCMDDirSelMD <= '1';
+                poDCMDPowerSelMD <= STD_LOGIC_VECTOR(TO_UNSIGNED(0, 7));
+            else
+                poDCMDSetMD <= '1';
+                poDCMDDirSelMD <= '1';
+                poDCMDPowerSelMD <= STD_LOGIC_VECTOR(avg_power(6 downto 0));
+                poDCMDSetMI <= '1';
+                poDCMDDirSelMI <= '1';
+                poDCMDPowerSelMI <= STD_LOGIC_VECTOR(avg_power(6 downto 0));
             end if;
         end if;
     end process;
