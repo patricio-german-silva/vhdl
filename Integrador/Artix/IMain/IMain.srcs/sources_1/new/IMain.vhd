@@ -36,7 +36,7 @@ entity IMain is
             piIMRst : in STD_LOGIC;
             piIMEna : in STD_LOGIC;
             piIMRx : in STD_LOGIC;
-            poIMTx : out STD_LOGIC;
+            piIMTx : in STD_LOGIC;
             piIMSensors : in STD_LOGIC_VECTOR(3 downto 0);  -- Sensores fisicos
             poIMSevSeg : out STD_LOGIC_VECTOR(6 downto 0);  -- Al display de 7 segmentos
             poIMDot : out STD_LOGIC;                        -- Al punto del display de 7 segmentos
@@ -90,7 +90,7 @@ begin
         port map(piUaTxClk => clk, piUaTxRst => rst, piUaTxEna => ena, poUaTxTx => tx, piUaTxDataRdy => cmdc, poUaTxC => txc, piUaTxData => cmd );  -- loopback de cmd
 
     instDecodeCmd: entity work.DecodeCmd(A_DecodeCmd)
-        generic map(POWER_SEL_WIDTH => 7) 
+        generic map(POWER_SEL_WIDTH => 7, CTRL_PERIOD => 1000000) 
         port map(piDCMDClk => clk, piDCMDRst => rst, piDCMDEna => ena, piDCMDCmdRdy => cmdc, piDCMDCmd => cmd, piDCMDData => data, piDCMDSensors => piIMSensors,
                  poDCMDSetMD => setMD, poDCMDDirSelMD => dirMD, poDCMDPowerSelMD => powerMD, poDCMDSetMI => setMI, poDCMDDirSelMI => dirMI, poDCMDPowerSelMI => powerMI, poDCMDMode => mode );	
 
@@ -111,10 +111,6 @@ begin
     instHexToSevSeg: entity work.HexToSevSeg(A_HexToSevSeg)
         port map( piHTSSSEna => ena, piHTSSSData => dispData, poHTSSSOutput => poIMSevSeg );	
 
-    clk <= piIMClk;
-    rst <= piIMRst;
-    ena <= piIMEna;
-    rx <= piIMRx;
-    poIMTx <= tx;
-    
+
 end A_IMain;
+
