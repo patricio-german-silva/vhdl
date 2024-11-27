@@ -90,7 +90,7 @@ begin
         port map(piUaTxClk => clk, piUaTxRst => rst, piUaTxEna => ena, poUaTxTx => tx, piUaTxDataRdy => cmdc, poUaTxC => txc, piUaTxData => cmd );  -- loopback de cmd
 
     instDecodeCmd: entity work.DecodeCmd(A_DecodeCmd)
-        generic map(POWER_SEL_WIDTH => 7) 
+        generic map(POWER_SEL_WIDTH => 7, CTRL_PERIOD => 1000000) 
         port map(piDCMDClk => clk, piDCMDRst => rst, piDCMDEna => ena, piDCMDCmdRdy => cmdc, piDCMDCmd => cmd, piDCMDData => data, piDCMDSensors => piIMSensors,
                  poDCMDSetMD => setMD, poDCMDDirSelMD => dirMD, poDCMDPowerSelMD => powerMD, poDCMDSetMI => setMI, poDCMDDirSelMI => dirMI, poDCMDPowerSelMI => powerMI, poDCMDMode => mode );	
 

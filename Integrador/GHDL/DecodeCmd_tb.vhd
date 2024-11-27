@@ -37,7 +37,8 @@ end DecodeCmd_TB;
 
 architecture Behavioral of DecodeCmd_TB is
    component DecodeCmd is
-    Generic( POWER_SEL_WIDTH: NATURAL:=7);    -- Ancho en bits del selector de PWM
+    Generic( POWER_SEL_WIDTH: NATURAL:=7;    -- Ancho en bits del selector de PWM
+             CTRL_PERIOD: NATURAL:=1000000); -- Timepo de actualización de la velocidad
     Port (  piDCMDClk : in STD_LOGIC;
             piDCMDRst : in STD_LOGIC;
             piDCMDEna : in STD_LOGIC;
@@ -64,7 +65,7 @@ architecture Behavioral of DecodeCmd_TB is
 begin
 
        instDecodeCmd: DecodeCmd
-       generic map(POWER_SEL_WIDTH => 7)
+       generic map(POWER_SEL_WIDTH => 7, CTRL_PERIOD => 4)
        Port map ( piDCMDClk => clk,
 				    piDCMDRst => rst,
 				    piDCMDEna => ena,
@@ -98,6 +99,9 @@ begin
        wait for 33 ns;
        rst <= '0';
        ena <= '1';
+       sensors <= "0110";
+
+       -- Set motor D manual
        wait until falling_edge(clk);
        cmdrdy <= '1';
        cmd <= "00000001";
@@ -105,6 +109,7 @@ begin
        wait until falling_edge(clk);
        cmdrdy <= '0';
        
+       -- Set motor D manual
        wait until falling_edge(clk);
        cmdrdy <= '1';
        cmd <= "00000010";
@@ -112,10 +117,68 @@ begin
        wait until falling_edge(clk);
        cmdrdy <= '0';
 
+       -- Set velocidad media auto
        wait until falling_edge(clk);
        cmdrdy <= '1';
        cmd <= "00000011";
        data <= "0000010100000101";
+       wait until falling_edge(clk);
+       cmdrdy <= '0';
+
+       -- Set stop
+       wait until falling_edge(clk);
+       cmdrdy <= '1';
+       cmd <= "00000000";
+       data <= "0000000000000000";
+       wait until falling_edge(clk);
+       cmdrdy <= '0';
+
+       -- Set auto
+       wait until falling_edge(clk);
+       cmdrdy <= '1';
+       cmd <= "00000011";
+       data <= "0000010100000101";
+       wait until falling_edge(clk);
+       cmdrdy <= '0';
+
+       -- Sensors
+       sensors <= "1100";
+       wait for 100 ns;
+       sensors <= "1000";
+       wait for 100 ns;
+
+       -- Set From PC
+       wait until falling_edge(clk);
+       cmdrdy <= '1';
+       cmd <= "00000101";
+       data <= "0000000000000000";
+       wait until falling_edge(clk);
+       cmdrdy <= '0';
+
+       -- Set sensors from PC
+       wait for 100 ns;
+       wait until falling_edge(clk);
+       cmdrdy <= '1';
+       cmd <= "00000100";
+       data <= "0000110000000000";
+       wait until falling_edge(clk);
+       cmdrdy <= '0';
+
+       -- Set sensors from PC
+       wait for 100 ns;
+       wait until falling_edge(clk);
+       cmdrdy <= '1';
+       cmd <= "00000100";
+       data <= "0000001100000000";
+       wait until falling_edge(clk);
+       cmdrdy <= '0';
+
+       -- Set sensors from PC
+       wait for 100 ns;
+       wait until falling_edge(clk);
+       cmdrdy <= '1';
+       cmd <= "00000100";
+       data <= "0000000100000000";
        wait until falling_edge(clk);
        cmdrdy <= '0';
 

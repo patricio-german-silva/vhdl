@@ -32,7 +32,8 @@ use IEEE.NUMERIC_STD.ALL;
 --use UNISIM.VComponents.all;
 
 entity DecodeCmd is
-    Generic( POWER_SEL_WIDTH: NATURAL:=7);    -- Ancho en bits del selector de PWM
+    Generic( POWER_SEL_WIDTH: NATURAL:=7;    -- Ancho en bits del selector de PWM
+             CTRL_PERIOD: NATURAL:=1000000); -- Timepo de actualización de la velocidad
     Port (  piDCMDClk : in STD_LOGIC;
             piDCMDRst : in STD_LOGIC;
             piDCMDEna : in STD_LOGIC;
@@ -61,66 +62,51 @@ architecture A_DecodeCmd of DecodeCmd is
     constant PC_CONTROL_MODE: STD_LOGIC := '0';
     constant SENSORS_CONTROL_MODE: STD_LOGIC := '1';
 
-    signal power, avg_power, fpower, lpower: UNSIGNED(7 downto 0);
+    signal power : STD_LOGIC_VECTOR(7 downto 0);
+    signal avg_power, fpower, lpower: UNSIGNED(7 downto 0);
     signal sensors: STD_LOGIC_VECTOR(3 downto 0);
     signal clk10ms: STD_LOGIC;
-    signal auto, mode: STD_LOGIC := '0';
-
+    signal mode: STD_LOGIC := '1';  -- Modo 1: control por sensores
+    signal auto, stop: STD_LOGIC := '0';
+    
 begin
 
     -- Tiempo de actualizacion de las velocidades segun los sensores
     instModuleCounter: entity work.ModuleCounter(A_ModuleCounter)
-        generic map(NBits => 20, Max => 1000000) 
-        port map( piMCClk => piDCMDClk, piMCEna => auto, piMCRst => piDCMDRst, poMCO => clk10ms);	
+        generic map(NBits => 20, Max => CTRL_PERIOD) 
+        port map( piMCClk => piDCMDClk, piMCEna => '1', piMCRst => piDCMDRst, poMCO => clk10ms);	
 
 
 
-    PROCESS_CMD: process(piDCMDClk, piDCMDCmdRdy)
+    PROCESS_CMD: process(piDCMDClk, piDCMDCmdRdy, clk10ms)
     begin
         if rising_edge(piDCMDClk) then
             poDCMDSetMD <= '0';
             poDCMDSetMI <= '0';
+            stop <= '0';
             if piDCMDCmdRdy = '1' then          -----    COMANDOS A EJECUTAR
-
-                -- Calculo potencia
-                if UNSIGNED(piDCMDData(11 downto 8)) = 0 then
-                    power <= TO_UNSIGNED(0, 8);
-                elsif (UNSIGNED(piDCMDData(11 downto 8)) = 9) and (UNSIGNED(piDCMDData(3 downto 0)) /= 0) then
-                    power <= TO_UNSIGNED(100, 8);
-                elsif UNSIGNED(piDCMDData(3 downto 0)) < 5 then
-                    power <= UNSIGNED(piDCMDData(11 downto 8)) * 10;
-                else
-                    power <= UNSIGNED(piDCMDData(11 downto 8)) * 10 + 5;
-                end if;
-
-                -- Interpreto comandos
                 if piDCMDCmd = CMD_STOP then
                     auto <= '0';
                     poDCMDSetMD <= '1';
-                    poDCMDPowerSelMD <= STD_LOGIC_VECTOR(TO_UNSIGNED(0, POWER_SEL_WIDTH));
                     poDCMDSetMI <= '1';
-                    poDCMDPowerSelMI <= STD_LOGIC_VECTOR(TO_UNSIGNED(0, POWER_SEL_WIDTH));
+                    stop <= '1';
                 elsif piDCMDCmd = CMD_VEL_MOTOR_DER then
                     auto <= '0';
                     poDCMDSetMD <= '1';
-                    poDCMDDirSelMD <= '1';
-                    poDCMDPowerSelMD <= STD_LOGIC_VECTOR(power(6 downto 0));
                 elsif piDCMDCmd = CMD_VEL_MOTOR_IZQ then
                     auto <= '0';
                     poDCMDSetMI <= '1';
-                    poDCMDDirSelMI <= '1';
-                    poDCMDPowerSelMI <= STD_LOGIC_VECTOR(power(6 downto 0));
                 elsif piDCMDCmd = CMD_VEL_MEDIA then
                     -- Activo mod Automatico, asigno potencia media y calculo velocidad baja y alta
                     auto <= '1';
-                    avg_power <= power;
-                    if power < 80 then
-                        fpower <= fpower + TO_UNSIGNED(20, 8);
+                    avg_power <= UNSIGNED(power);
+                    if UNSIGNED(power) < 80 then
+                        fpower <= UNSIGNED(power) + TO_UNSIGNED(20, 8);
                     else
                         fpower <= TO_UNSIGNED(100, 8);
                     end if;
-                    if power > 20 then 
-                        lpower <= power - TO_UNSIGNED(20, 8);
+                    if UNSIGNED(power) > 20 then 
+                        lpower <= UNSIGNED(power) - TO_UNSIGNED(20, 8);
                     else
                         lpower <= TO_UNSIGNED(0, 8);
                     end if;
@@ -136,46 +122,54 @@ begin
             end if;
         end if;
 
-        -- Control para modo auto
-        if (auto = '1') and (rising_edge(clk10ms)) then
-            if sensors = "1100" then
-                poDCMDSetMD <= '1';
-                poDCMDDirSelMD <= '1';
-                poDCMDPowerSelMD <= STD_LOGIC_VECTOR(fpower(6 downto 0));
-                poDCMDSetMI <= '1';
-                poDCMDDirSelMI <= '1';
-                poDCMDPowerSelMI <= STD_LOGIC_VECTOR(lpower(6 downto 0));
-            elsif sensors = "0011" then
-                poDCMDSetMD <= '1';
-                poDCMDDirSelMD <= '1';
-                poDCMDPowerSelMD <= STD_LOGIC_VECTOR(lpower(6 downto 0));
-                poDCMDSetMI <= '1';
-                poDCMDDirSelMI <= '1';
-                poDCMDPowerSelMI <= STD_LOGIC_VECTOR(fpower(6 downto 0));
-            elsif sensors = "1000" then
-                poDCMDSetMD <= '1';
-                poDCMDDirSelMD <= '1';
-                poDCMDPowerSelMD <= STD_LOGIC_VECTOR(TO_UNSIGNED(100, 7));
-                poDCMDSetMI <= '1';
-                poDCMDDirSelMI <= '1';
-                poDCMDPowerSelMI <= STD_LOGIC_VECTOR(TO_UNSIGNED(0, 7));
-            elsif sensors = "0001" then
-                poDCMDSetMD <= '1';
-                poDCMDDirSelMD <= '1';
-                poDCMDPowerSelMD <= STD_LOGIC_VECTOR(TO_UNSIGNED(0, 7));
-                poDCMDSetMI <= '1';
-                poDCMDDirSelMI <= '1';
-                poDCMDPowerSelMI <= STD_LOGIC_VECTOR(TO_UNSIGNED(100, 7));
-            else
-                poDCMDSetMD <= '1';
-                poDCMDDirSelMD <= '1';
-                poDCMDPowerSelMD <= STD_LOGIC_VECTOR(avg_power(6 downto 0));
-                poDCMDSetMI <= '1';
-                poDCMDDirSelMI <= '1';
-                poDCMDPowerSelMI <= STD_LOGIC_VECTOR(avg_power(6 downto 0));
+        if auto = '1' then  --- Actualización en modo automatico
+            if rising_edge(clk10ms) then
+                if sensors = "1100" then
+                    poDCMDSetMD <= '1';
+                    poDCMDSetMI <= '1';
+                    poDCMDPowerSelMD <= STD_LOGIC_VECTOR(fpower(6 downto 0));
+                    poDCMDPowerSelMI <= STD_LOGIC_VECTOR(lpower(6 downto 0));
+                elsif sensors = "0011" then
+                    poDCMDSetMD <= '1';
+                    poDCMDSetMI <= '1';
+                    poDCMDPowerSelMD <= STD_LOGIC_VECTOR(lpower(6 downto 0));
+                    poDCMDPowerSelMI <= STD_LOGIC_VECTOR(fpower(6 downto 0));
+                elsif sensors = "1000" then
+                    poDCMDSetMD <= '1';
+                    poDCMDSetMI <= '1';
+                    poDCMDPowerSelMD <= STD_LOGIC_VECTOR(TO_UNSIGNED(100, 7));
+                    poDCMDPowerSelMI <= STD_LOGIC_VECTOR(TO_UNSIGNED(0, 7));
+                elsif sensors = "0001" then
+                    poDCMDSetMD <= '1';
+                    poDCMDSetMI <= '1';
+                    poDCMDPowerSelMD <= STD_LOGIC_VECTOR(TO_UNSIGNED(0, 7));
+                    poDCMDPowerSelMI <= STD_LOGIC_VECTOR(TO_UNSIGNED(100, 7));
+                else
+                    poDCMDSetMD <= '1';
+                    poDCMDSetMI <= '1';
+                    poDCMDPowerSelMD <= STD_LOGIC_VECTOR(avg_power(6 downto 0));
+                    poDCMDPowerSelMI <= STD_LOGIC_VECTOR(avg_power(6 downto 0));
+                end if;
             end if;
+        else
+            poDCMDPowerSelMD <= STD_LOGIC_VECTOR(power(6 downto 0));
+            poDCMDPowerSelMI <= STD_LOGIC_VECTOR(power(6 downto 0));
         end if;
-    end process;
+    end process PROCESS_CMD;
+
+
+
+
+
+    power <= STD_LOGIC_VECTOR(TO_UNSIGNED(0, 8)) when stop = '1' else
+             STD_LOGIC_VECTOR(TO_UNSIGNED(0, 8)) when UNSIGNED(piDCMDData(11 downto 8)) = 0 else
+             STD_LOGIC_VECTOR(TO_UNSIGNED(100, 8)) when (UNSIGNED(piDCMDData(11 downto 8)) = 9) and (UNSIGNED(piDCMDData(3 downto 0)) /= 0) else
+             STD_LOGIC_VECTOR(UNSIGNED(piDCMDData(11 downto 8)) * 10) when UNSIGNED(piDCMDData(3 downto 0)) < 5 else
+             STD_LOGIC_VECTOR(UNSIGNED(piDCMDData(11 downto 8)) * 10 + 5);
+
+    -- Direccion siempre hacia adelante 
+    poDCMDDirSelMD <= '1';
+    poDCMDDirSelMI <= '1';
 
     poDCMDMode <= mode;
 
