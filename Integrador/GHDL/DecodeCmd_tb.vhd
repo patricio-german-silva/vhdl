@@ -105,7 +105,19 @@ begin
        wait until falling_edge(clk);
        cmdrdy <= '0';
        
+       wait until falling_edge(clk);
+       cmdrdy <= '1';
+       cmd <= "00000010";
+       data <= "0000001100000000";
+       wait until falling_edge(clk);
+       cmdrdy <= '0';
 
+       wait until falling_edge(clk);
+       cmdrdy <= '1';
+       cmd <= "00000011";
+       data <= "0000010100000101";
+       wait until falling_edge(clk);
+       cmdrdy <= '0';
 
        wait;
 
