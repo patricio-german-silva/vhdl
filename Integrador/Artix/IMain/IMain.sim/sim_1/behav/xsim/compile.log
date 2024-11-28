@@ -1,0 +1,26 @@
+INFO: [VRFC 10-163] Analyzing VHDL file "C:/Users/patri/OneDrive/Documentos/vhdl/Integrador/Artix/IMain/IMain.srcs/sources_1/new/BaudRateGen.vhd" into library xil_defaultlib
+INFO: [VRFC 10-3107] analyzing entity 'BaudRateGen'
+INFO: [VRFC 10-163] Analyzing VHDL file "C:/Users/patri/OneDrive/Documentos/vhdl/Integrador/Artix/IMain/IMain.srcs/sources_1/new/TTrigger.vhd" into library xil_defaultlib
+INFO: [VRFC 10-3107] analyzing entity 'TTrigger'
+INFO: [VRFC 10-163] Analyzing VHDL file "C:/Users/patri/OneDrive/Documentos/vhdl/Integrador/Artix/IMain/IMain.srcs/sources_1/new/CommProtRx.vhd" into library xil_defaultlib
+INFO: [VRFC 10-3107] analyzing entity 'CommProtRx'
+INFO: [VRFC 10-163] Analyzing VHDL file "C:/Users/patri/OneDrive/Documentos/vhdl/Integrador/Artix/IMain/IMain.srcs/sources_1/new/Counter.vhd" into library xil_defaultlib
+INFO: [VRFC 10-3107] analyzing entity 'Counter'
+INFO: [VRFC 10-163] Analyzing VHDL file "C:/Users/patri/OneDrive/Documentos/vhdl/Integrador/Artix/IMain/IMain.srcs/sources_1/new/ModuleCounter.vhd" into library xil_defaultlib
+INFO: [VRFC 10-3107] analyzing entity 'ModuleCounter'
+INFO: [VRFC 10-163] Analyzing VHDL file "C:/Users/patri/OneDrive/Documentos/vhdl/Integrador/Artix/IMain/IMain.srcs/sources_1/new/DecodeCmd.vhd" into library xil_defaultlib
+INFO: [VRFC 10-3107] analyzing entity 'DecodeCmd'
+INFO: [VRFC 10-163] Analyzing VHDL file "C:/Users/patri/OneDrive/Documentos/vhdl/Integrador/Artix/IMain/IMain.srcs/sources_1/new/PwmGen.vhd" into library xil_defaultlib
+INFO: [VRFC 10-3107] analyzing entity 'PwmGen'
+INFO: [VRFC 10-163] Analyzing VHDL file "C:/Users/patri/OneDrive/Documentos/vhdl/Integrador/Artix/IMain/IMain.srcs/sources_1/new/HBridgeCtrl.vhd" into library xil_defaultlib
+INFO: [VRFC 10-3107] analyzing entity 'HBridgeCtrl'
+INFO: [VRFC 10-163] Analyzing VHDL file "C:/Users/patri/OneDrive/Documentos/vhdl/Integrador/Artix/IMain/IMain.srcs/sources_1/new/HexToSevSeg.vhd" into library xil_defaultlib
+INFO: [VRFC 10-3107] analyzing entity 'HexToSevSeg'
+INFO: [VRFC 10-163] Analyzing VHDL file "C:/Users/patri/OneDrive/Documentos/vhdl/Integrador/Artix/IMain/IMain.srcs/sources_1/new/UaRx.vhd" into library xil_defaultlib
+INFO: [VRFC 10-3107] analyzing entity 'UaRx'
+INFO: [VRFC 10-163] Analyzing VHDL file "C:/Users/patri/OneDrive/Documentos/vhdl/Integrador/Artix/IMain/IMain.srcs/sources_1/new/UaTx.vhd" into library xil_defaultlib
+INFO: [VRFC 10-3107] analyzing entity 'UaTx'
+INFO: [VRFC 10-163] Analyzing VHDL file "C:/Users/patri/OneDrive/Documentos/vhdl/Integrador/Artix/IMain/IMain.srcs/sources_1/new/ToDisplay.vhd" into library xil_defaultlib
+INFO: [VRFC 10-3107] analyzing entity 'ToDisplay'
+INFO: [VRFC 10-163] Analyzing VHDL file "C:/Users/patri/OneDrive/Documentos/vhdl/Integrador/Artix/IMain/IMain.srcs/sources_1/new/IMain.vhd" into library xil_defaultlib
+INFO: [VRFC 10-3107] analyzing entity 'IMain'

@@ -26,8 +26,7 @@ create_clock -period 10.000 -name clk [get_ports piIMClk]
 
 set_property PACKAGE_PIN E3 [get_ports piIMClk]
 
-set_property PACKAGE_PIN D10 [get_ports piIMRx]
-set_property PACKAGE_PIN A9 [get_ports poIMTx]
+set_property PACKAGE_PIN A9 [get_ports piIMRx]
 set_property PACKAGE_PIN D9 [get_ports {piIMSensors[3]}]
 set_property PACKAGE_PIN C9 [get_ports {piIMSensors[2]}]
 set_property PACKAGE_PIN B9 [get_ports {piIMSensors[1]}]
@@ -48,3 +47,8 @@ set_property PACKAGE_PIN V16 [get_ports {poIMSevSeg[0]}]
 set_property PACKAGE_PIN U11 [get_ports poIMDot]
 set_property PACKAGE_PIN N17 [get_ports poIMPowerMD]
 set_property PACKAGE_PIN P18 [get_ports poIMPowerMI]
+
+set_property IOSTANDARD LVCMOS33 [get_ports poIMHB]
+set_property PACKAGE_PIN E1 [get_ports poIMHB]
+
+set_property PACKAGE_PIN D10 [get_ports poIMTx]

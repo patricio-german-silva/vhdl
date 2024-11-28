@@ -49,11 +49,11 @@ architecture Behavioral of UaRx_TB is
 
    signal clk, rst, ena, rx, rxc: STD_LOGIC;
    signal data: STD_LOGIC_VECTOR(8-1 downto 0);
-   signal test: STD_LOGIC_VECTOR(9 downto 0);
+   signal test: STD_LOGIC_VECTOR(29 downto 0);
 begin
 
        instUaRx: UaRx
-       generic map(RxDIV => 4)
+       generic map(RxDIV => 5)
        Port map ( piUaRxClk => clk,
             piUaRxRst => rst,
             piUaRxEna => ena,
@@ -64,34 +64,26 @@ begin
    pClk: process
 	begin
 		clk <= '1';
-		wait for 5 ns;
+		wait for 1 ns;
 		clk <= '0';
-		wait for 5 ns;
+		wait for 1 ns;
 	end process;	
 
 
     process
     begin
-       rst <= '1';
-       ena <= '0';
        rx <= '1';
-       wait for 33 ns;
        rst <= '0';
        ena <= '1';
+       test <= "110101010011111001101010101010";
+       wait for 13 ns;
+
        
-       test <= "0101010100";  -- bad frame, no stop bit
-       wait for 33 ns;
-       for i in 0 to 9 loop
+       for i in 0 to 29 loop
            rx <= test(i);
-           wait for 40 ns;
+           wait for 10 ns;
        end loop;
-
-       test <= "1101010100";
-       for i in 0 to 9 loop
-           rx <= test(i);
-           wait for 40 ns;
-       end loop;
-
+       wait for 100 ns;
        wait;
 
     end process;

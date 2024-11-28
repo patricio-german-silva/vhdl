@@ -1,0 +1,18 @@
+# compile vhdl design source files
+vhdl xil_defaultlib  \
+"../../../../IMain.srcs/sources_1/new/BaudRateGen.vhd" \
+"../../../../IMain.srcs/sources_1/new/TTrigger.vhd" \
+"../../../../IMain.srcs/sources_1/new/CommProtRx.vhd" \
+"../../../../IMain.srcs/sources_1/new/Counter.vhd" \
+"../../../../IMain.srcs/sources_1/new/ModuleCounter.vhd" \
+"../../../../IMain.srcs/sources_1/new/DecodeCmd.vhd" \
+"../../../../IMain.srcs/sources_1/new/PwmGen.vhd" \
+"../../../../IMain.srcs/sources_1/new/HBridgeCtrl.vhd" \
+"../../../../IMain.srcs/sources_1/new/HexToSevSeg.vhd" \
+"../../../../IMain.srcs/sources_1/new/UaRx.vhd" \
+"../../../../IMain.srcs/sources_1/new/UaTx.vhd" \
+"../../../../IMain.srcs/sources_1/new/ToDisplay.vhd" \
+"../../../../IMain.srcs/sources_1/new/IMain.vhd" \
+
+# Do not sort compile order
+nosort

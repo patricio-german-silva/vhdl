@@ -1,0 +1,17 @@
+0.7
+2020.2
+May 22 2024
+19:03:11
+C:/Users/patri/OneDrive/Documentos/vhdl/Integrador/Artix/IMain/IMain.srcs/sources_1/new/BaudRateGen.vhd,1732675106,vhdl,C:/Users/patri/OneDrive/Documentos/vhdl/Integrador/Artix/IMain/IMain.srcs/sources_1/new/UaRx.vhd;C:/Users/patri/OneDrive/Documentos/vhdl/Integrador/Artix/IMain/IMain.srcs/sources_1/new/UaTx.vhd,,,baudrategen,,,,,,,,
+C:/Users/patri/OneDrive/Documentos/vhdl/Integrador/Artix/IMain/IMain.srcs/sources_1/new/CommProtRx.vhd,1732738048,vhdl,C:/Users/patri/OneDrive/Documentos/vhdl/Integrador/Artix/IMain/IMain.srcs/sources_1/new/IMain.vhd,,,commprotrx,,,,,,,,
+C:/Users/patri/OneDrive/Documentos/vhdl/Integrador/Artix/IMain/IMain.srcs/sources_1/new/Counter.vhd,1732675106,vhdl,C:/Users/patri/OneDrive/Documentos/vhdl/Integrador/Artix/IMain/IMain.srcs/sources_1/new/ToDisplay.vhd,,,counter,,,,,,,,
+C:/Users/patri/OneDrive/Documentos/vhdl/Integrador/Artix/IMain/IMain.srcs/sources_1/new/DecodeCmd.vhd,1732731997,vhdl,C:/Users/patri/OneDrive/Documentos/vhdl/Integrador/Artix/IMain/IMain.srcs/sources_1/new/IMain.vhd,,,decodecmd,,,,,,,,
+C:/Users/patri/OneDrive/Documentos/vhdl/Integrador/Artix/IMain/IMain.srcs/sources_1/new/HBridgeCtrl.vhd,1732675106,vhdl,C:/Users/patri/OneDrive/Documentos/vhdl/Integrador/Artix/IMain/IMain.srcs/sources_1/new/IMain.vhd,,,hbridgectrl,,,,,,,,
+C:/Users/patri/OneDrive/Documentos/vhdl/Integrador/Artix/IMain/IMain.srcs/sources_1/new/HexToSevSeg.vhd,1732675106,vhdl,C:/Users/patri/OneDrive/Documentos/vhdl/Integrador/Artix/IMain/IMain.srcs/sources_1/new/IMain.vhd,,,hextosevseg,,,,,,,,
+C:/Users/patri/OneDrive/Documentos/vhdl/Integrador/Artix/IMain/IMain.srcs/sources_1/new/IMain.vhd,1732739796,vhdl,,,,imain,,,,,,,,
+C:/Users/patri/OneDrive/Documentos/vhdl/Integrador/Artix/IMain/IMain.srcs/sources_1/new/ModuleCounter.vhd,1732731997,vhdl,C:/Users/patri/OneDrive/Documentos/vhdl/Integrador/Artix/IMain/IMain.srcs/sources_1/new/DecodeCmd.vhd;C:/Users/patri/OneDrive/Documentos/vhdl/Integrador/Artix/IMain/IMain.srcs/sources_1/new/HBridgeCtrl.vhd,,,modulecounter,,,,,,,,
+C:/Users/patri/OneDrive/Documentos/vhdl/Integrador/Artix/IMain/IMain.srcs/sources_1/new/PwmGen.vhd,1732675106,vhdl,C:/Users/patri/OneDrive/Documentos/vhdl/Integrador/Artix/IMain/IMain.srcs/sources_1/new/HBridgeCtrl.vhd,,,pwmgen,,,,,,,,
+C:/Users/patri/OneDrive/Documentos/vhdl/Integrador/Artix/IMain/IMain.srcs/sources_1/new/TTrigger.vhd,1732675106,vhdl,C:/Users/patri/OneDrive/Documentos/vhdl/Integrador/Artix/IMain/IMain.srcs/sources_1/new/CommProtRx.vhd,,,ttrigger,,,,,,,,
+C:/Users/patri/OneDrive/Documentos/vhdl/Integrador/Artix/IMain/IMain.srcs/sources_1/new/ToDisplay.vhd,1732737210,vhdl,C:/Users/patri/OneDrive/Documentos/vhdl/Integrador/Artix/IMain/IMain.srcs/sources_1/new/IMain.vhd,,,todisplay,,,,,,,,
+C:/Users/patri/OneDrive/Documentos/vhdl/Integrador/Artix/IMain/IMain.srcs/sources_1/new/UaRx.vhd,1732676644,vhdl,C:/Users/patri/OneDrive/Documentos/vhdl/Integrador/Artix/IMain/IMain.srcs/sources_1/new/IMain.vhd,,,uarx,,,,,,,,
+C:/Users/patri/OneDrive/Documentos/vhdl/Integrador/Artix/IMain/IMain.srcs/sources_1/new/UaTx.vhd,1732675106,vhdl,C:/Users/patri/OneDrive/Documentos/vhdl/Integrador/Artix/IMain/IMain.srcs/sources_1/new/IMain.vhd,,,uatx,,,,,,,,

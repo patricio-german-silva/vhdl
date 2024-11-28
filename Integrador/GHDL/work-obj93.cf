@@ -1,0 +1,10 @@
+v 4
+file / "C:\Users\patri\OneDrive\Documentos\vhdl\Integrador\GHDL\BaudRateGen.vhd" "52b7faab802fb6f0f44ed6804e9e9fc286b52043" "20241127211202.034":
+  entity baudrategen at 23( 621) + 0 on 13;
+  architecture a_baudrategen of baudrategen at 39( 1078) + 0 on 14;
+file / "C:\Users\patri\OneDrive\Documentos\vhdl\Integrador\GHDL\UaRx_tb.vhd" "f77818fc88019288eb9388f0b340e2b5a3c0a541" "20241127215535.740":
+  entity uarx_tb at 22( 486) + 0 on 81;
+  architecture behavioral of uarx_tb at 38( 884) + 0 on 82;
+file / "C:\Users\patri\OneDrive\Documentos\vhdl\Integrador\GHDL\UaRx.vhd" "d43b8bb240f572b3a080f5096808f9fd0cfdeaf9" "20241127214524.768":
+  entity uarx at 23( 548) + 0 on 63;
+  architecture a_uarx of uarx at 46( 1377) + 0 on 64;

@@ -35,15 +35,16 @@ entity IMain is
     Port (  piIMClk : in STD_LOGIC;              --                                                    Port E3
             piIMRst : in STD_LOGIC;              --                                                         SW1
             piIMEna : in STD_LOGIC;              --                                                         SW0
-            piIMRx : in STD_LOGIC;               --                                                    Port D10
-            poIMTx : out STD_LOGIC;              --                                                    Port A9
+            piIMRx : in STD_LOGIC;               --                                                    Port A9
+            poIMTx : out STD_LOGIC;              --                                                    Port D10
             piIMSensors : in STD_LOGIC_VECTOR(3 downto 0);  -- Sensores fisicos                             BTN0 - BTN3
             poIMSevSeg : out STD_LOGIC_VECTOR(6 downto 0);  -- Al display de 7 segmentos                    IO32 - IO27
             poIMDot : out STD_LOGIC;                        -- Al punto del display de 7 segmentos -        IO26
             poIMPowerMD : out STD_LOGIC;                    -- Al pin Enable del L293D motor derecho -      IO41
             poIMDirMD : out STD_LOGIC_VECTOR(1 downto 0);   -- A los pin dir del L293D -                    LED4 y LED5
             poIMPowerMI : out STD_LOGIC;                    -- Al pin Enable del L293D motor izquierdo -    IO40
-            poIMDirMI : out STD_LOGIC_VECTOR(1 downto 0)   -- A los pin dir del L293D -                     LED6 y LED7
+            poIMDirMI : out STD_LOGIC_VECTOR(1 downto 0);   -- A los pin dir del L293D -                     LED6 y LED7
+            poIMHB : out STD_LOGIC                         -- 
     );
 end IMain;
 
@@ -82,12 +83,12 @@ begin
         port map( piUaRxClk => clk, piUaRxRst => rst, piUaRxEna => ena, piUaRxRx => rx, poUaRxC => rxc, poUaRxData => rxdata);	
 
     instCommProtRx: entity work.CommProtRx(A_CommProtRx)
-        generic map(HEADER_CHAR => 67, TRAILER_CHAR => 90, TIMEOUT => 1000000) 
+        generic map(HEADER_CHAR => 68, TRAILER_CHAR => 90, TIMEOUT => 1000000) 
         port map( piCPRxClk => clk, piCPRxRst => rst, piCPRxEna => ena, piCPRxRdy => rxc, piCPRxRx => rxdata, poCPRxCmd => cmd, poCPRxData => data, poCPRxC => cmdc);	
 
     instUaTx: entity work.UaTx(A_UaTx)
         generic map(TxDIV => 10417) 
-        port map(piUaTxClk => clk, piUaTxRst => rst, piUaTxEna => ena, poUaTxTx => tx, piUaTxDataRdy => cmdc, poUaTxC => txc, piUaTxData => cmd );  -- loopback de cmd
+        port map(piUaTxClk => clk, piUaTxRst => rst, piUaTxEna => ena, poUaTxTx => tx, piUaTxDataRdy => rxc, poUaTxC => txc, piUaTxData => rxdata );  -- loopback 
 
     instDecodeCmd: entity work.DecodeCmd(A_DecodeCmd)
         generic map(POWER_SEL_WIDTH => 7, CTRL_PERIOD => 1000000) 
@@ -106,7 +107,7 @@ begin
 
     instToDisplay: entity work.ToDisplay(A_ToDisplay)
         generic map( POWER_SEL_WIDTH => 7, Max => 100000000) 
-        port map( piTDClk => clk, piTDRst => rst, piTDEna => ena, piTDPowerMD => latchPoMD, piTDPowerMI => latchPoMI, piTDMode => mode, poTDData => dispData, poTDDot => poIMDot );	
+        port map( piTDClk => clk, piTDRst => rst, piTDEna => ena, piTDPowerMD => latchPoMD, piTDPowerMI => latchPoMI, piTDMode => mode, poTDData => dispData, poTDDot => poIMDot, poTDK => poIMHB );	
 
     instHexToSevSeg: entity work.HexToSevSeg(A_HexToSevSeg)
         port map( piHTSSSEna => ena, piHTSSSData => dispData, poHTSSSOutput => poIMSevSeg );	

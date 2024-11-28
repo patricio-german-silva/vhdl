@@ -33,7 +33,7 @@ use IEEE.NUMERIC_STD.ALL;
 --use UNISIM.VComponents.all;
 
 entity CommProtRx is
-    Generic(HEADER_CHAR : NATURAL := 67;                               -- D
+    Generic(HEADER_CHAR : NATURAL := 68;                               -- D
             TRAILER_CHAR : NATURAL := 90;                              -- Z
             TIMEOUT: NATURAL := 1000000);                              -- Timeout en ciclos de reloj, si no se completó un paquete se resetea la comunicación 
     Port (  piCPRxClk : in STD_LOGIC;                                  -- clock
