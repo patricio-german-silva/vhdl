@@ -4,7 +4,7 @@
 -- 
 -- Create Date: 11/08/2024 04:04:23 PM
 -- Design Name: 
--- Module Name: CmdParser_TB - Behavioral
+-- Module Name: IMain_TB - Behavioral
 -- Project Name: 
 -- Target Devices: 
 -- Tool Versions: 
@@ -31,114 +31,93 @@ use IEEE.NUMERIC_STD.ALL;
 --library UNISIM;
 --use UNISIM.VComponents.all;
 
-entity CmdParser_TB is
+entity IMain_TB is
 --  Port ( );
-end CmdParser_TB;
+end IMain_TB;
 
-architecture Behavioral of CmdParser_TB is
-   component CmdParser is
-    Generic(HEADER_CHAR : NATURAL := 67;                             -- D
-            TRAILER_CHAR : NATURAL := 90);                           -- Z
-    Port (  piCPClk : in STD_LOGIC;                                  -- "clock", caracter de entrada listo
-            piCPRst : in STD_LOGIC;                                  -- Reset
-            piCPRx : in STD_LOGIC_VECTOR(7 downto 0);                -- Byte de entrada
-            poCPCmd : out STD_LOGIC_VECTOR(7 downto 0);              -- Comnado de entrada, 1 byte
-            poCPData : out STD_LOGIC_VECTOR(15 downto 0);   -- Valor de entrada
-            poCPC : out STD_LOGIC                                    -- Nuevo paquete de comando listo
+architecture Behavioral of IMain_TB is
+   component IMain is
+    Port (  piIMClk : in STD_LOGIC;              --                                                    Port E3
+            piIMRst : in STD_LOGIC;              --                                                         SW1
+            piIMEna : in STD_LOGIC;              --                                                         SW0
+            piIMRx : in STD_LOGIC;               --                                                    Port A9
+            poIMTx : out STD_LOGIC;              --                                                    Port D10
+            piIMSensors : in STD_LOGIC_VECTOR(3 downto 0);  -- Sensores fisicos                             BTN0 - BTN3
+            poIMSevSeg : out STD_LOGIC_VECTOR(6 downto 0);  -- Al display de 7 segmentos                    IO32 - IO27
+            poIMDot : out STD_LOGIC;                        -- Al punto del display de 7 segmentos -        IO26
+            poIMPowerMD : out STD_LOGIC;                    -- Al pin Enable del L293D motor derecho -      IO41
+            poIMDirMD : out STD_LOGIC_VECTOR(1 downto 0);   -- A los pin dir del L293D -                    LED4 y LED5
+            poIMPowerMI : out STD_LOGIC;                    -- Al pin Enable del L293D motor izquierdo -    IO40
+            poIMDirMI : out STD_LOGIC_VECTOR(1 downto 0);   -- A los pin dir del L293D -                    LED6 y LED7
+            poIMStat : out STD_LOGIC                        -- Led de estado - BLink de 200ms en CMD In     LED0_R (G6)
     );
-   end component CmdParser;
+   end component IMain;
 
-   signal clk, rst, c: STD_LOGIC;
-   signal data: STD_LOGIC_VECTOR(15 downto 0);
-   signal cmd, rx: STD_LOGIC_VECTOR(7 downto 0);
+   signal clk, rst, ena, rx, tx, dot, poMD, poMI, stat: STD_LOGIC;
+   signal sensors: STD_LOGIC_VECTOR(3 downto 0);
+   signal sevseg: STD_LOGIC_VECTOR(6 downto 0);
+   signal dirMD, dirMI: STD_LOGIC_VECTOR(1 downto 0);
+
+
+   constant brt: time := 50 ns;
+   signal input, data: STD_LOGIC_VECTOR(8-1 downto 0);
+
 begin
 
-       instCmdParser: CmdParser
-       generic map(HEADER_CHAR => 67,
-                   TRAILER_CHAR => 90)
-       Port map ( piCPClk => clk,
-            piCPRst => rst,
-            piCPRx => rx,
-            poCPCmd => cmd,
-            poCPC => c,
-            poCPData => data);
+       instIMain: IMain
+       Port map ( piIMClk => clk,
+            piIMRst => rst,
+            piIMEna => ena,
+            piIMRx => rx,
+            poIMTx => tx,
+            piIMSensors=> sensors,
+            poIMSevSeg => sevseg,
+            poIMDot => dot,
+            poIMPowerMD => poMD,
+            poIMDirMD => dirMD,
+            poIMPowerMI => poMI,
+            poIMDirMI => dirMI,
+            poIMStat => stat
+        );
 
    pClk: process
 	begin
 		clk <= '1';
-		wait for 10 ns;
+		wait for 5 ns;
 		clk <= '0';
-		wait for 10 ns;
+		wait for 5 ns;
 	end process;	
 
 
     process
+   type Tcmd is array (0 to 4) of NATURAL;
+   variable cmd : Tcmd;
     begin
        rst <= '1';
+       ena <= '0';
        wait for 33 ns;
+       ena <= '1';
        rst <= '0';
        
-       wait until falling_edge(clk);
-       rx <= STD_LOGIC_VECTOR(to_unsigned(67, 8)); -- Header
-       wait until falling_edge(clk);
-       rx <= "00001110";  -- CMD
-       wait until falling_edge(clk);
-       rx <= "00110011";  -- Data
-       wait until falling_edge(clk);
-       rx <= "01010101";  -- Data
-       wait until falling_edge(clk);
-       rx <= STD_LOGIC_VECTOR(to_unsigned(90, 8)); -- Trailer
+      rx <= '1';
 
-       -- Worng header
-       wait until falling_edge(clk);
-       rx <= STD_LOGIC_VECTOR(to_unsigned(37, 8)); -- Header
-       wait until falling_edge(clk);
-       rx <= "00001101";  -- CMD
-       wait until falling_edge(clk);
-       rx <= "00110011";  -- Data
-       wait until falling_edge(clk);
-       rx <= "01010101";  -- Data
-       wait until falling_edge(clk);
-       rx <= STD_LOGIC_VECTOR(to_unsigned(90, 8)); -- Trailer
-       
-       -- OK
-       wait until falling_edge(clk);
-       rx <= STD_LOGIC_VECTOR(to_unsigned(67, 8)); -- Header
-       wait until falling_edge(clk);
-       rx <= "00001011";  -- CMD
-       wait until falling_edge(clk);
-       rx <= "00000001";  -- Data
-       wait until falling_edge(clk);
-       rx <= "11111111";  -- Data
-       wait until falling_edge(clk);
-       rx <= STD_LOGIC_VECTOR(to_unsigned(90, 8)); -- Trailer
-       
-       -- Worng trailer
-       wait until falling_edge(clk);
-       rx <= STD_LOGIC_VECTOR(to_unsigned(67, 8)); -- Header
-       wait until falling_edge(clk);
-       rx <= "00000111";  -- CMD
-       wait until falling_edge(clk);
-       rx <= "00110011";  -- Data
-       wait until falling_edge(clk);
-       rx <= "01010101";  -- Data
-       wait until falling_edge(clk);
-       rx <= STD_LOGIC_VECTOR(to_unsigned(50, 8)); -- Trailer
+      cmd(0) := 68;
+      cmd(1) := 00;
+      cmd(2) := 00;
+      cmd(3) := 00;
+      cmd(4) := 90;
 
-       -- oK
-       wait until falling_edge(clk);
-       rx <= STD_LOGIC_VECTOR(to_unsigned(67, 8)); -- Header
-       wait until falling_edge(clk);
-       rx <= "00011111";  -- CMD
-       wait until falling_edge(clk);
-       rx <= "00000011";  -- Data
-       wait until falling_edge(clk);
-       rx <= "00000000";  -- Data
-       wait until falling_edge(clk);
-       rx <= STD_LOGIC_VECTOR(to_unsigned(90, 8)); -- Trailer
-
-
-       wait for 33 ns;
+      for n in 0 to 4 loop
+          input <= STD_LOGIC_VECTOR(TO_UNSIGNED(cmd(n), 8));
+          wait for brt;
+          rx <= '0';
+          for i in 0 to 7 loop
+              wait for brt;
+              rx <= input(i);
+          end loop;
+          wait for brt;
+          rx <= '1';
+       end loop;
 
        wait;
 

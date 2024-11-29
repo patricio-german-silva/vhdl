@@ -59,7 +59,7 @@ architecture Behavioral of Uart_tb is
 
    signal clk, rst, rxena, txena, rx, rxc, tx, txc, txrdy: STD_LOGIC;
    signal input, data: STD_LOGIC_VECTOR(8-1 downto 0);
-   constant brt: time := 150 ns;
+   constant brt: time := 145 ns;
 begin
 
        instUart: Uart
