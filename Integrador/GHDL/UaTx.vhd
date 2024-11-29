@@ -49,8 +49,9 @@ architecture A_UaTx of UaTx is
 
 Type TStates is (S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10, S11);
 signal state, next_state: TStates;
-signal brgrst: STD_LOGIC;
-signal brgclk: STD_LOGIC;
+signal brgrst: STD_LOGIC;  -- reset del Baud rate generator
+signal brgclk: STD_LOGIC;  -- Clock del Baud rate Generator
+signal txrdy: STD_LOGIC := '0';  -- Solo cuando piUaTxDataRdy en 1 durante el bit stop, activa un nuevo envio inmediatamente antes de terminar
 signal latch: STD_LOGIC_VECTOR(8-1 downto 0);
 
 begin
@@ -74,32 +75,31 @@ begin
     OUTPUT_DECODE : process (state)
     begin
     brgrst <= '0';
+    poUaTxC <= '0';
     case (state) is
         when S0 =>
             brgrst <= '1';
-            poUaTxC <= '0';
-        when S1 =>
-            latch <= piUaTxData;
         when S11 =>
             poUaTxC <= '1';
         when others =>
-            poUaTxC <= '0';
     end case;
     end process OUTPUT_DECODE;
 
 
     RX_NEXT_STATE_DECODE : process (state, brgclk, piUaTxEna, piUaTxDataRdy)
     begin
+        poUaTxTx <= '1';
         case (state) is
-            when S0 =>  -- Espera piUaTxDataRdy para copiar datos al shift register y comenzar
-                poUaTxTx <= '1';
-                if (piUaTxDataRdy) = '1' and (piUaTxEna = '1') then
+            when S0 =>  -- En espera
+                if (txrdy = '1' or piUaTxDataRdy = '1') and (piUaTxEna = '1') then
                     next_state <= S1;
                 else
                     next_state <= S0;
                 end if;
             when S1 => -- envio de datos - bit start
                 poUaTxTx <= '0';
+                latch <= piUaTxData;
+                txrdy <= '0';
                 if brgclk = '1' then
                     next_state <= S2;
                 else
@@ -162,14 +162,15 @@ begin
                     next_state <= S9;
                 end if;
             when S10 => -- envio del bit de stop
-               poUaTxTx <= '1';
                if (brgclk = '1') then
-                    next_state <= S11;
+                   next_state <= S11;
+               elsif piUaTxDataRdy = '1' then
+                   txrdy <= '1';
+                   next_state <= S11;
                else
                    next_state <= S10;
                end if;
             when S11 => -- Se finalizó la transmisión, poUaTxC durante 1 clock de sistema
-               poUaTxTx <= '1';
                next_state <= S0;
             when others =>
                 next_state <= S0;
