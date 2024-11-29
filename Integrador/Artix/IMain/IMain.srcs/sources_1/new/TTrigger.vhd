@@ -36,7 +36,7 @@ end TTrigger;
 
 architecture A_TTrigger of TTrigger is
 
-signal auxCount: unsigned(NBits-1 downto 0);
+signal auxCount: unsigned(NBits-1 downto 0) := TO_UNSIGNED(0, NBits);
 signal trigger: STD_LOGIC := '0';
 
 begin
