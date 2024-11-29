@@ -37,7 +37,7 @@ end CommProtRx_TB;
 
 architecture Behavioral of CommProtRx_TB is
    component CommProtRx is
-    Generic(HEADER_CHAR : NATURAL := 67;                               -- D
+    Generic(HEADER_CHAR : NATURAL := 68;                               -- D
             TRAILER_CHAR : NATURAL := 90;                              -- Z
             TIMEOUT: NATURAL := 1000000);                              -- Timeout en ciclos de reloj, si no se completó un paquete se resetea la comunicación 
     Port (  piCPRxClk : in STD_LOGIC;                                  -- clock
@@ -57,7 +57,7 @@ architecture Behavioral of CommProtRx_TB is
 begin
 
        instCommProtRx: CommProtRx
-       generic map(HEADER_CHAR => 67,
+       generic map(HEADER_CHAR => 68,
                    TRAILER_CHAR => 90,
                    TIMEOUT => 10)
        Port map ( piCPRxClk => clk,
@@ -81,9 +81,9 @@ begin
    pRdy: process
 	begin
 		rdy <= rdyena;
-		wait for 11 ns;
+		wait for 10 ns;
 		rdy <= '0';
-		wait for 11 ns;
+		wait for 33 ns;
 	end process;	
 
 
@@ -92,12 +92,12 @@ begin
        rst <= '1';
        ena <= '0';
        rdyena <= '1';
-       wait for 33 ns;
+       wait for 63 ns;
        rst <= '0';
        ena <= '1';
        
        wait until falling_edge(rdy);
-       rx <= STD_LOGIC_VECTOR(to_unsigned(67, 8)); -- Header
+       rx <= STD_LOGIC_VECTOR(to_unsigned(68, 8)); -- Header
        wait until falling_edge(rdy);
        rx <= "00001110";  -- CMD
        wait until falling_edge(rdy);
@@ -106,6 +106,9 @@ begin
        rx <= "01010101";  -- Data
        wait until falling_edge(rdy);
        rx <= STD_LOGIC_VECTOR(to_unsigned(90, 8)); -- Trailer
+       wait until falling_edge(rdy);
+       wait;
+
 
        -- Worng header
        wait until falling_edge(rdy);
@@ -119,15 +122,28 @@ begin
        wait until falling_edge(rdy);
        rx <= STD_LOGIC_VECTOR(to_unsigned(90, 8)); -- Trailer
        
+       -- OK
+       wait until falling_edge(rdy);
+       rx <= STD_LOGIC_VECTOR(to_unsigned(68, 8)); -- Header
+       wait until falling_edge(rdy);
+       rx <= "00001111";  -- CMD
+       wait until falling_edge(rdy);
+       rx <= "00000011";  -- Data
+       wait until falling_edge(rdy);
+       rx <= "01111111";  -- Data
+       wait until falling_edge(rdy);
+       rx <= STD_LOGIC_VECTOR(to_unsigned(90, 8)); -- Trailer
+       
+       
        -- Timeout
        wait until falling_edge(rdy);
-       rx <= STD_LOGIC_VECTOR(to_unsigned(67, 8)); -- Header
+       rx <= STD_LOGIC_VECTOR(to_unsigned(68, 8)); -- Header
        wait until falling_edge(rdy);
        rx <= "00011111";  -- CMD
        wait until falling_edge(rdy);
        rx <= "00000011";  -- Data
        rdyena <= '0';
-       wait for 180 ns;
+       wait for 150 ns;
        rdyena <= '1';
        wait until falling_edge(rdy);
        rx <= "00000000";  -- Data
@@ -137,7 +153,7 @@ begin
 
        -- OK
        wait until falling_edge(rdy);
-       rx <= STD_LOGIC_VECTOR(to_unsigned(67, 8)); -- Header
+       rx <= STD_LOGIC_VECTOR(to_unsigned(68, 8)); -- Header
        wait until falling_edge(rdy);
        rx <= "00001011";  -- CMD
        wait until falling_edge(rdy);
@@ -149,7 +165,7 @@ begin
        
        -- Worng trailer
        wait until falling_edge(rdy);
-       rx <= STD_LOGIC_VECTOR(to_unsigned(67, 8)); -- Header
+       rx <= STD_LOGIC_VECTOR(to_unsigned(68, 8)); -- Header
        wait until falling_edge(rdy);
        rx <= "00000111";  -- CMD
        wait until falling_edge(rdy);

@@ -104,13 +104,13 @@ begin
 
     instHBridgeCtrlMD: entity work.HBridgeCtrl(A_HBridgeCtrl)
         --generic map(POWER_SEL_WIDTH => 7, PWM_DIV => 100, PWM_PERIOD => 10000) 
-        generic map(POWER_SEL_WIDTH => 7, PWM_DIV => 10, PWM_PERIOD => 10) 
+        generic map(POWER_SEL_WIDTH => 7, PWM_DIV => 100, PWM_PERIOD => 2) 
         port map( piHBCClk => clk, piHBCRst => rst, piHBCEna => ena, piHBCSet => setMD, piHBCDirSel => dirMD, piHBCPowerSel => powerMD,
                   poHBCDir => poIMDirMD, poHBCPower => poIMPowerMD, poHBCDirSel => latchDirMD, poHBCPowerSel => latchPoMD);
 
     instHBridgeCtrlMI: entity work.HBridgeCtrl(A_HBridgeCtrl)
         --generic map(POWER_SEL_WIDTH => 7, PWM_DIV => 100, PWM_PERIOD => 10000) 
-        generic map(POWER_SEL_WIDTH => 7, PWM_DIV => 10, PWM_PERIOD => 10) 
+        generic map(POWER_SEL_WIDTH => 7, PWM_DIV => 100, PWM_PERIOD => 2) 
         port map( piHBCClk => clk, piHBCRst => rst, piHBCEna => ena, piHBCSet => setMI, piHBCDirSel => dirMI, piHBCPowerSel => powerMI,
                   poHBCDir => poIMDirMI, poHBCPower => poIMPowerMI, poHBCDirSel => latchDirMI, poHBCPowerSel => latchPoMI);
 
