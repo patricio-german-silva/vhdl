@@ -1,7 +1,7 @@
 Vivado Simulator v2024.1
 Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
 Copyright 2022-2024 Advanced Micro Devices, Inc. All Rights Reserved.
-Running: C:/Xilinx/Vivado/2024.1/bin/unwrapped/win64.o/xelab.exe --incr --debug typical --relax --mt 2 -L xil_defaultlib -L secureip --snapshot IMain_behav xil_defaultlib.IMain -log elaborate.log 
+Running: C:/Xilinx/Vivado/2024.1/bin/unwrapped/win64.o/xelab.exe --incr --debug typical --relax --mt 2 -L xil_defaultlib -L secureip --snapshot IMain_TB_behav xil_defaultlib.IMain_TB -log elaborate.log 
 Using 2 slave threads.
 Starting static elaboration
 Completed static elaboration
@@ -12,19 +12,21 @@ Compiling package std.standard
 Compiling package std.textio
 Compiling package ieee.std_logic_1164
 Compiling package ieee.numeric_std
-Compiling architecture a_baudrategen of entity xil_defaultlib.BaudRateGen [\BaudRateGen(nbits=14,max=10417,...]
-Compiling architecture a_uarx of entity xil_defaultlib.UaRx [uarx_default]
-Compiling architecture a_ttrigger of entity xil_defaultlib.TTrigger [\TTrigger(nbits=20,max=1000000)\]
-Compiling architecture a_commprotrx of entity xil_defaultlib.CommProtRx [commprotrx_default]
-Compiling architecture a_baudrategen of entity xil_defaultlib.BaudRateGen [\BaudRateGen(nbits=14,max=10417,...]
-Compiling architecture a_uatx of entity xil_defaultlib.UaTx [uatx_default]
-Compiling architecture a_modulecounter of entity xil_defaultlib.ModuleCounter [\ModuleCounter(nbits=20,max=1000...]
-Compiling architecture a_decodecmd of entity xil_defaultlib.DecodeCmd [decodecmd_default]
-Compiling architecture a_modulecounter of entity xil_defaultlib.ModuleCounter [\ModuleCounter(nbits=20,max=1000...]
+Compiling architecture a_baudrategen of entity xil_defaultlib.BaudRateGen [\BaudRateGen(nbits=14,max=5,firs...]
+Compiling architecture a_uarx of entity xil_defaultlib.UaRx [\UaRx(rxdiv=5)\]
+Compiling architecture a_ttrigger of entity xil_defaultlib.TTrigger [\TTrigger(nbits=20,max=1000)\]
+Compiling architecture a_commprotrx of entity xil_defaultlib.CommProtRx [\CommProtRx(timeout=1000)\]
+Compiling architecture a_baudrategen of entity xil_defaultlib.BaudRateGen [\BaudRateGen(nbits=14,max=5,firs...]
+Compiling architecture a_uatx of entity xil_defaultlib.UaTx [\UaTx(txdiv=5)\]
+Compiling architecture a_modulecounter of entity xil_defaultlib.ModuleCounter [\ModuleCounter(nbits=20,max=100)...]
+Compiling architecture a_decodecmd of entity xil_defaultlib.DecodeCmd [\DecodeCmd(ctrl_period=100)\]
+Compiling architecture a_modulecounter of entity xil_defaultlib.ModuleCounter [\ModuleCounter(nbits=20,max=2)\]
 Compiling architecture a_pwmgen of entity xil_defaultlib.PwmGen [\PwmGen(pwm_width=7,arr=100)\]
-Compiling architecture a_hbridgectrl of entity xil_defaultlib.HBridgeCtrl [hbridgectrl_default]
-Compiling architecture a_counter of entity xil_defaultlib.Counter [\Counter(nbitsval=3,nval=6)\]
-Compiling architecture a_todisplay of entity xil_defaultlib.ToDisplay [todisplay_default]
+Compiling architecture a_hbridgectrl of entity xil_defaultlib.HBridgeCtrl [\HBridgeCtrl(pwm_period=2)\]
+Compiling architecture a_counter of entity xil_defaultlib.Counter [\Counter(nbitsval=3,max=100,nval...]
+Compiling architecture a_todisplay of entity xil_defaultlib.ToDisplay [\ToDisplay(max=100)\]
 Compiling architecture a_hextosevseg of entity xil_defaultlib.HexToSevSeg [hextosevseg_default]
-Compiling architecture a_imain of entity xil_defaultlib.imain
-Built simulation snapshot IMain_behav
+Compiling architecture a_ttrigger of entity xil_defaultlib.TTrigger [\TTrigger(nbits=20,max=50)\]
+Compiling architecture a_imain of entity xil_defaultlib.IMain [imain_default]
+Compiling architecture behavioral of entity xil_defaultlib.imain_tb
+Built simulation snapshot IMain_TB_behav

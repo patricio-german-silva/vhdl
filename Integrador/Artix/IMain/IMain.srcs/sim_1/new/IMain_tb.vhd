@@ -24,7 +24,7 @@ use IEEE.STD_LOGIC_1164.ALL;
 
 -- Uncomment the following library declaration if using
 -- arithmetic functions with Signed or Unsigned values
---use IEEE.NUMERIC_STD.ALL;
+use IEEE.NUMERIC_STD.ALL;
 
 -- Uncomment the following library declaration if instantiating
 -- any Xilinx leaf cells in this code.
@@ -36,64 +36,245 @@ entity IMain_TB is
 end IMain_TB;
 
 architecture Behavioral of IMain_TB is
-   component UaRx is
-    Generic ( RxDIV: NATURAL:= 10417); -- 100Mhz/DIV -> 9600 baud
-    Port (  piIMainClk : in STD_LOGIC; -- Clock de entrada
-            piIMainRst : in STD_LOGIC; -- Reset
-            piIMainEna : in STD_LOGIC; -- RX Enable
-            piIMainRx : in STD_LOGIC;    -- Puerto RX
-            poIMainC: out STD_LOGIC; -- Receive complete - Hay datos para leer en el buffer poIMainData 
-            poIMainData : out STD_LOGIC_VECTOR (8-1 downto 0)
-    );
-   end component UaRx;
+    component IMain is
+     Port (  piIMClk : in STD_LOGIC;              --                                                    Port E3
+             piIMRst : in STD_LOGIC;              --                                                         SW1
+             piIMEna : in STD_LOGIC;              --                                                         SW0
+             piIMRx : in STD_LOGIC;               --                                                    Port A9
+             poIMTx : out STD_LOGIC;              --                                                    Port D10
+             piIMSensors : in STD_LOGIC_VECTOR(3 downto 0);  -- Sensores fisicos                             BTN0 - BTN3
+             poIMSevSeg : out STD_LOGIC_VECTOR(6 downto 0);  -- Al display de 7 segmentos                    IO32 - IO27
+             poIMDot : out STD_LOGIC;                        -- Al punto del display de 7 segmentos -        IO26
+             poIMPowerMD : out STD_LOGIC;                    -- Al pin Enable del L293D motor derecho -      IO41
+             poIMDirMD : out STD_LOGIC_VECTOR(1 downto 0);   -- A los pin dir del L293D -                    LED4 y LED5
+             poIMPowerMI : out STD_LOGIC;                    -- Al pin Enable del L293D motor izquierdo -    IO40
+             poIMDirMI : out STD_LOGIC_VECTOR(1 downto 0);   -- A los pin dir del L293D -                    LED6 y LED7
+             poIMStat : out STD_LOGIC                        -- Led de estado - BLink de 200ms en CMD In     LED0_R (G6)
+     );
+    end component IMain;
 
-   signal clk, rst, ena, rx, rxc: STD_LOGIC;
-   signal data: STD_LOGIC_VECTOR(8-1 downto 0);
-   signal test: STD_LOGIC_VECTOR(9 downto 0);
+    signal clk, rst, ena, rx, tx, dot, poMD, poMI, stat: STD_LOGIC;
+    signal sensors: STD_LOGIC_VECTOR(3 downto 0);
+    signal sevseg: STD_LOGIC_VECTOR(6 downto 0);
+    signal dirMD, dirMI: STD_LOGIC_VECTOR(1 downto 0);
+
+
+    constant brt: time := 50 ns;
+    signal input: STD_LOGIC_VECTOR(8-1 downto 0);
+
 begin
 
-       instIMain: UaRx
-       generic map(RxDIV => 4)
-       Port map ( piIMainClk => clk,
-            piIMainRst => rst,
-            piIMainEna => ena,
-            piIMainRx => rx,
-            poIMainC => rxc,
-            poIMainData => data);
+        instIMain: IMain
+        Port map ( piIMClk => clk,
+             piIMRst => rst,
+             piIMEna => ena,
+             piIMRx => rx,
+             poIMTx => tx,
+             piIMSensors=> sensors,
+             poIMSevSeg => sevseg,
+             poIMDot => dot,
+             poIMPowerMD => poMD,
+             poIMDirMD => dirMD,
+             poIMPowerMI => poMI,
+             poIMDirMI => dirMI,
+             poIMStat => stat
+         );
 
-   pClk: process
-	begin
-		clk <= '1';
-		wait for 5 ns;
-		clk <= '0';
-		wait for 5 ns;
-	end process;	
+    pClk: process
+    begin
+        clk <= '1';
+        wait for 5 ns;
+        clk <= '0';
+        wait for 5 ns;
+    end process;    
 
 
     process
+       type Tcmd is array (0 to 4) of NATURAL;
+       variable cmd : Tcmd;
     begin
        rst <= '1';
        ena <= '0';
-       rx <= '1';
        wait for 33 ns;
-       rst <= '0';
        ena <= '1';
-       
-       test <= "0101010100";  -- bad frame, no stop bit
-       wait for 33 ns;
-       for i in 0 to 9 loop
-           rx <= test(i);
-           wait for 40 ns;
-       end loop;
+       rst <= '0';
+       rx <= '1';
 
-       test <= "1101010100";
-       for i in 0 to 9 loop
-           rx <= test(i);
-           wait for 40 ns;
-       end loop;
+       -- Velocidad Motor Derecho 55%
+       cmd(0) := 68;
+       cmd(1) := 01;
+       cmd(2) := 05;
+       cmd(3) := 05;
+       cmd(4) := 90;
 
-       wait;
+       for n in 0 to 4 loop
+           input <= STD_LOGIC_VECTOR(TO_UNSIGNED(cmd(n), 8));
+           wait for brt;
+           rx <= '0';
+           for i in 0 to 7 loop
+               wait for brt;
+               rx <= input(i);
+           end loop;
+           wait for brt;
+           rx <= '1';
+        end loop;
 
-    end process;
+       -- Velocidad Motor izquierdo 20%
+       cmd(0) := 68;
+       cmd(1) := 02;
+       cmd(2) := 02;
+       cmd(3) := 00;
+       cmd(4) := 90;
+
+       for n in 0 to 4 loop
+           input <= STD_LOGIC_VECTOR(TO_UNSIGNED(cmd(n), 8));
+           wait for brt;
+           rx <= '0';
+           for i in 0 to 7 loop
+               wait for brt;
+               rx <= input(i);
+           end loop;
+           wait for brt;
+           rx <= '1';
+        end loop;
+
+
+        -- Automatico, velocidad media 40%
+       wait for 10 us;
+       sensors <= "0110";
+       cmd(0) := 68;
+       cmd(1) := 03;
+       cmd(2) := 04;
+       cmd(3) := 00;
+       cmd(4) := 90;
+
+       for n in 0 to 4 loop
+           input <= STD_LOGIC_VECTOR(TO_UNSIGNED(cmd(n), 8));
+           wait for brt;
+           rx <= '0';
+           for i in 0 to 7 loop
+               wait for brt;
+               rx <= input(i);
+           end loop;
+           wait for brt;
+           rx <= '1';
+        end loop;
+
+
+       -- Cambio en estado de los sensores
+       wait for 10 us;
+       sensors <= "1100";
+
+       -- Cambio en estado de los sensores
+       wait for 10 us;
+       sensors <= "1000";
+
+       -- Control desde PC
+       cmd(0) := 68;
+       cmd(1) := 05;
+       cmd(2) := 00;
+       cmd(3) := 00;
+       cmd(4) := 90;
+
+       for n in 0 to 4 loop
+           input <= STD_LOGIC_VECTOR(TO_UNSIGNED(cmd(n), 8));
+           wait for brt;
+           rx <= '0';
+           for i in 0 to 7 loop
+               wait for brt;
+               rx <= input(i);
+           end loop;
+           wait for brt;
+           rx <= '1';
+        end loop;
+
+
+       -- Control manual de sensores a "0011"
+       cmd(0) := 68;
+       cmd(1) := 04;
+       cmd(2) := 03;
+       cmd(3) := 00;
+       cmd(4) := 90;
+
+       for n in 0 to 4 loop
+           input <= STD_LOGIC_VECTOR(TO_UNSIGNED(cmd(n), 8));
+           wait for brt;
+           rx <= '0';
+           for i in 0 to 7 loop
+               wait for brt;
+               rx <= input(i);
+           end loop;
+           wait for brt;
+           rx <= '1';
+        end loop;
+
+       wait for 10 us;
+
+       -- Control manual de sensores a "1100"
+       cmd(0) := 68;
+       cmd(1) := 04;
+       cmd(2) := 12;
+       cmd(3) := 00;
+       cmd(4) := 90;
+
+       for n in 0 to 4 loop
+           input <= STD_LOGIC_VECTOR(TO_UNSIGNED(cmd(n), 8));
+           wait for brt;
+           rx <= '0';
+           for i in 0 to 7 loop
+               wait for brt;
+               rx <= input(i);
+           end loop;
+           wait for brt;
+           rx <= '1';
+        end loop;
+
+
+        -- velocidad media 75%
+       wait for 10 us;
+       cmd(0) := 68;
+       cmd(1) := 03;
+       cmd(2) := 07;
+       cmd(3) := 05;
+       cmd(4) := 90;
+
+       for n in 0 to 4 loop
+           input <= STD_LOGIC_VECTOR(TO_UNSIGNED(cmd(n), 8));
+           wait for brt;
+           rx <= '0';
+           for i in 0 to 7 loop
+               wait for brt;
+               rx <= input(i);
+           end loop;
+           wait for brt;
+           rx <= '1';
+        end loop;
+
+       -- Control manual de sensores a "0110"
+       wait for 10 us;
+       cmd(0) := 68;
+       cmd(1) := 04;
+       cmd(2) := 06;
+       cmd(3) := 00;
+       cmd(4) := 90;
+
+       for n in 0 to 4 loop
+           input <= STD_LOGIC_VECTOR(TO_UNSIGNED(cmd(n), 8));
+           wait for brt;
+           rx <= '0';
+           for i in 0 to 7 loop
+               wait for brt;
+               rx <= input(i);
+           end loop;
+           wait for brt;
+           rx <= '1';
+        end loop;
+
+
+
+
+        wait;
+
+     end process;
 
 end Behavioral;
