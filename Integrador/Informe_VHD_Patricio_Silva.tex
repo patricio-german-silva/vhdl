@@ -1,0 +1,378 @@
+\documentclass[12pt]{article}
+\usepackage{blindtext}
+\usepackage[a4paper, total={170mm, 220mm}]{geometry}
+\usepackage[table]{xcolor}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{imakeidx}
+\usepackage{float}
+\usepackage{pdfpages}
+\usepackage[spanish]{babel}
+\usepackage[affil-it]{authblk}
+\renewcommand{\familydefault}{\sfdefault}
+
+\makeindex[columns=3, title=Alphabetical Index, intoc]
+
+%·······································································································
+
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,      
+    urlcolor=blue,
+    }
+
+\urlstyle{same}
+
+%·······································································································
+
+%·······································································································
+
+
+\makeindex[columns=3, title=Alphabetical Index, intoc]
+
+
+\graphicspath{{images/}} %configuring the graphicx package
+%Gummi|065|=)
+\usepackage{tcolorbox}
+\tcbuselibrary{listingsutf8} % o listings o minted
+
+
+\usepackage{rotating}
+
+%·······································································································
+
+
+
+\title{\textbf{INFORME DE PROYECTO} \\ \textbf{CONTROL DE VELOCIDAD DE AUTO}}
+
+
+
+\author{Alumno: Patricio Germán Silva\thanks{Correo electrónico: \texttt{silvap@fcal.uner.edu.ar}} \\ Profesor: Germán Hatchmann\thanks{Correo electrónico: \texttt{hachmanng@fcal.uner.edu.ar}}}
+\affil{\textbf{Introducción a VHDL}  \\ \textbf{Ingeniería en Mecatrónica}}
+
+\begin{document}
+\maketitle
+
+%·······································································································
+
+
+\thispagestyle{empty}
+\newpage
+\tableofcontents
+\thispagestyle{empty}
+\newpage
+\pagenumbering{arabic}
+
+
+
+%·······································································································
+
+\section{Introducción}
+
+Se realizará el diseño, descripción en VHDL y simulación de un sistema capaz de realizar el control de un auto bimotor seguidor de linea. El diseño debe contemplar:
+\begin{itemize}
+\item Control de dirección y velocidad para un driver L293D.
+\item Control de un display de siete segmentos donde se muestra información de velocidad y modo de funcionamiento.
+\item Comunicación mediante interfaz UART y protocolo rs232 (TTL) con una velocidad de 9600 baudios, 8 bits, de datos, 1 bit de stop, sin paridad, sin control de flujo. Solo se requiere recepción.
+\item Para la comunicación se agrega una capa de protocolo, de frame de ancho fijo, compuesto por un byte de header, un byte de comando, dos bytes de datos y un byte de tráiler, sin suma de comprobación.
+\end{itemize}
+
+Para el desarrollo se utiliza el software \textbf{Xilinx Vivado 2024.1}. Por ultimo, se comprobará el correcto funcionamiento del desarrollo en una placa \textbf{DIGILENT Artix-7 FPGA modelo Arty A7-100T (xc7a100tcsg324-1)}. 
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\textwidth]{digilent-arty}
+    \caption{DIGILENT  Artix-7 FPGA modelo Arty A7-100T}
+\end{figure}
+
+\newpage
+
+
+Los comandos son los siguientes:
+\\
+
+    \includegraphics[width=0.8\textwidth]{det-protocolo}
+
+
+
+\newpage
+
+%·······································································································
+\section{Diseño de la solución}
+
+El diseño se lleva a cabo en diferentes módulos específicos para cada tarea, que serán los siguientes:
+\begin{itemize}
+\item UaRx: modulo Uart RX para la recepción desde la PC
+\item UaTx: modulo Uart TX, cuya única finalidad es hacer echo de la información recibida por UaRx.
+\item CommProtRx: modulo que valida un paquete del protocolo de comunicación, e incorpora una detección de timeout.
+\item DecodeCmd: Interpreta los comandos recibidos.
+\item HBridgeCtrl: recibe una dirección y velocidad y genera una salida PWM según los parámetros establecidos.
+\item ToDisplay: Envia información a un display de 7 segmentos con punto decimal
+\item Módulos auxiliares: módulos contadores, generadores de baud rate y PWM y decodificadores de 7 segmentos.
+\end{itemize}
+
+\subsection{Puertos de I/O}
+
+{\rowcolors{2}{}{gray!20}
+\begin{tabular}{|p{2.5cm}|p{2.5cm}|p{1.3cm}|p{1.8cm}|p{7.5cm}|}
+\hline			
+\textbf{NOMBRE} & \textbf{DIRECCION} & \textbf{PIN}	& \textbf{HEADER} & \textbf{DESCRIPCION} \\
+\hline
+piIMClk &
+IN &
+E3 &
+- &
+Clock de sistema 100MHz
+\\
+
+piIMEna &
+IN &
+A8 &
+SW0 &
+Enable
+\\
+
+piIMRst &
+IN &
+C11 &
+SW1 &
+Reset
+\\
+
+piIMRx &
+IN &
+A9 &
+- &
+Salida al puerto TX del PC
+\\
+
+piIMSensors[0] &
+IN &
+B8 &
+BTN0 &
+Simula sensor externo izquierdo
+\\
+
+piIMSensors[1] &
+IN &
+B9 &
+BTN1 &
+Simula sensor interno izquierdo
+\\
+
+piIMSensors[2] &
+IN &
+C9 &
+BTN2 &
+Simula sensor interno derecho
+\\
+
+piIMSensors[3] &
+IN &
+D9 &
+BTN3 &
+Simula sensor externo derecho
+\\
+
+poIMDirMD[0] &
+OUT &
+J5 &
+LED4 &
+Dir1 – Segun L243D
+\\
+
+poIMDirMD[1] &
+OUT &
+H5 &
+LED5 &
+
+\\
+
+poIMDirMI[0] &
+OUT &
+T10 &
+LED6 &
+Dir2 – Segun L243D
+\\
+
+poIMDirMI[1] &
+OUT &
+T9 &
+LED7 &
+
+\\
+
+poIMDot &
+OUT &
+U11 &
+IO26 &
+Punto decimal del display de 7 segmentos
+\\
+
+poIMPowerMD &
+OUT &
+N17 &
+IO40 &
+Salida PWM derecho – 100Hz
+\\
+
+poIMPowerMI &
+OUT &
+P18 &
+IO41 &
+Salida PWM izquierdo – 100Hz
+\\
+
+poIMSevSeg[0] &
+OUT &
+V16 &
+IO33 &
+Display – Segmento A
+\\
+
+poIMSevSeg[1] &
+OUT &
+M13 &
+IO32 &
+Display – Segmento B
+\\
+
+poIMSevSeg[2] &
+OUT &
+R10 &
+IO31 &
+Display – Segmento C
+\\
+
+poIMSevSeg[3] &
+OUT &
+R11 &
+IO30 &
+Display – Segmento D
+\\
+
+poIMSevSeg[4] &
+OUT &
+R13 &
+IO29 &
+Display – Segmento E
+\\
+
+poIMSevSeg[5] &
+OUT &
+R15 &
+IO28 &
+Display – Segmento F
+\\
+
+poIMSevSeg[6] &
+OUT &
+P15 &
+IO27 &
+Display – Segmento G
+\\
+
+poIMStat &
+OUT &
+G6 &
+LED0\_R &
+200ms blink en cada comando valido
+\\
+
+poIMTx &
+OUT &
+D10 &
+- &
+Salida al puerto RX del PC
+\\
+
+\hline
+\end{tabular}}
+
+
+\subsection{Esquemático general}
+Todos los módulos son instanciados e interconectados dentro del bloque principal IMain, el diseño general es el siguiente:
+ 
+\includegraphics[width=0.96\textwidth]{Integrador}
+
+\section{Módulos}
+A continuación se describen los módulos desarrollados
+\subsection{UaRx}
+Formado por una maquina de estado y un generador de baudrate. El puerto RX conectado al UART recibe desde la PC paquetes de datos de 8 bits a 9600 baudios, sin control de paridad ni control de flujo, con 1 bit de stop, totalizando un PDU de 10 bytes. Cuando un nuevo dato se recibe se genera un pulso de 1 clock de duración que notifica el evento.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[angle=270, width=\textwidth]{uart-rx}
+    \caption{Esquemático del módulo UaRx}
+\end{figure}
+
+El diseño contempla un error de baudrate del 3.5\%, y la recepción de un nuevo bit de start de hasta un 45\% antes de finalizar el periodo de bit stop del PDU anterior.
+
+El generador de baudrate genera, tras un reset, un primer pulso de un periodo \textbf{T/2}
+
+\subsection{UaTx}
+Formado por una maquina de estado y un generador de baudrate. El puerto TX conectado al UART envía a la PC paquetes de datos con la misma especificación que el modulo UaRx. El envio de un nuevo paquete de datos se inicia mediante un pulso en el puerto piUaTxDataReady, cuando se finaliza el envio el modulo notifica con un pulso de un clock de duración-
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[angle=270, width=\textwidth]{uart-tx}
+    \caption{Esquemático del módulo UaTx}
+\end{figure}
+
+El diseño contempla iniciar el envío de un nuevo paquete de datos durante el envio del bit de stop del PDU anterior.
+
+\subsection{CommProtRx}
+Formado por una maquina de estado y un temporizador de tipo TTrigger, por cada PDU RX recibido analiza si conforma un paquete de protocolo válido, y genera un pulso de clock, poniendo el byte de comando los dos bytes de datos en el bus de salida.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[angle=270, width=\textwidth]{CommProtRx}
+    \caption{Esquemático del módulo CommProtRx}
+\end{figure}
+
+Si el periodo entre la recepción de los bytes desde el modulo RX en algún momento supera los 100ms, se dispara el trigger de timeout y la detección del paquete de protocolo se reinicia.
+
+\subsection{DecodeCmd}
+Cuando se recibe un comando en CommProtRx el mismo se interpreta en este modulo, si el comando corresponde a un comando válido, se interpreta los datos de entrada y se modifica el estado de los motores o sensores si corresponde.
+
+El módulo incorpora un contador de modulo que controla la velocidad de los motores cada 10ms segun el valor de los sensores, para cuando estos operan en modo automático. Este control periódico no es necesario por tratarse de un control proporcional pero si lo seria si se utilizaría si se incorpora un control PD o PID
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{decode-cmd}
+    \caption{Esquemático del módulo DecodeCmd}
+\end{figure}
+
+\subsection{HBridgeCtrl}
+AL recibir un pulso en el puerto set, el modulo modulo registra las entradas duty cicle y dirección de giro, y mediante un modulo PwmGen genera una salida Pwm  y setea las salidas de dirección. El diseño posee dos módulos HBridgeCtrl, uno para cada motor.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{hbridge-ctrl-png}
+    \caption{Esquemático del módulo HBridgeCtrl}
+\end{figure}
+
+
+\subsection{ToDisplay}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{hbridge-ctrl-png}
+    \caption{Esquemático del módulo HBridgeCtrl}
+\end{figure}
+
+\subsection{Módulos auxiliares}
+\subsubsection{ModuleCounter}
+\subsubsection{Counter}
+\subsubsection{BaudRateGen}
+\subsubsection{TTrigger}
+\subsubsection{PwmGen}
+\subsubsection{HexToSevSeg}
+
+
+\section{Conclusiones}
+
+
+\end{document}
