@@ -294,8 +294,10 @@ Salida al puerto RX del PC
 
 \subsection{Esquemático general}
 Todos los módulos son instanciados e interconectados dentro del bloque principal IMain, el diseño general es el siguiente:
- 
-\includegraphics[width=0.96\textwidth]{Integrador}
+\begin{figure}[H]
+    \centering 
+	\includegraphics{Integrador-crop}
+\end{figure}
 
 \section{Módulos}
 A continuación se describen los módulos desarrollados
@@ -304,8 +306,8 @@ Formado por una maquina de estado y un generador de baudrate. El puerto RX conec
 
 \begin{figure}[H]
     \centering
-    \includegraphics[angle=270, width=\textwidth]{uart-rx}
-    \caption{Esquemático del módulo UaRx}
+    \includegraphics[angle=270, width=\textwidth]{uart-rx-crop}
+    \caption{Esquemático del módulo \textbf{UaRx}}
 \end{figure}
 
 El diseño contempla un error de baudrate del 3.5\%, y la recepción de un nuevo bit de start de hasta un 45\% antes de finalizar el periodo de bit stop del PDU anterior.
@@ -317,8 +319,8 @@ Formado por una maquina de estado y un generador de baudrate. El puerto TX conec
 
 \begin{figure}[H]
     \centering
-    \includegraphics[angle=270, width=\textwidth]{uart-tx}
-    \caption{Esquemático del módulo UaTx}
+    \includegraphics[angle=270, width=\textwidth]{uart-tx-crop}
+    \caption{Esquemático del módulo \textbf{UaTx}}
 \end{figure}
 
 El diseño contempla iniciar el envío de un nuevo paquete de datos durante el envio del bit de stop del PDU anterior.
@@ -328,8 +330,8 @@ Formado por una maquina de estado y un temporizador de tipo TTrigger, por cada P
 
 \begin{figure}[H]
     \centering
-    \includegraphics[angle=270, width=\textwidth]{CommProtRx}
-    \caption{Esquemático del módulo CommProtRx}
+    \includegraphics[angle=270, width=0.95\textwidth]{CommProtRx-crop}
+    \caption{Esquemático del módulo \textbf{CommProtRx}}
 \end{figure}
 
 Si el periodo entre la recepción de los bytes desde el modulo RX en algún momento supera los 100ms, se dispara el trigger de timeout y la detección del paquete de protocolo se reinicia.
@@ -341,37 +343,141 @@ El módulo incorpora un contador de modulo que controla la velocidad de los moto
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=\textwidth]{decode-cmd}
-    \caption{Esquemático del módulo DecodeCmd}
+    \includegraphics[angle=270, width=\textwidth]{decode-cmd-crop}
+    \caption{Esquemático del módulo \textbf{DecodeCmd}}
 \end{figure}
 
 \subsection{HBridgeCtrl}
-AL recibir un pulso en el puerto set, el modulo modulo registra las entradas duty cicle y dirección de giro, y mediante un modulo PwmGen genera una salida Pwm  y setea las salidas de dirección. El diseño posee dos módulos HBridgeCtrl, uno para cada motor.
+AL recibir un pulso en el puerto set, el modulo modulo registra las entradas duty cycle y dirección de giro, y mediante un modulo PwmGen genera una salida Pwm  y setea las salidas de dirección. El diseño posee dos módulos HBridgeCtrl, uno para cada motor.
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.8\textwidth]{hbridge-ctrl-png}
-    \caption{Esquemático del módulo HBridgeCtrl}
+    \includegraphics[width=\textwidth]{to-display-crop}
+    \caption{Esquemático del módulo \textbf{HBridgeCtrl}}
 \end{figure}
 
+Adicionalmente, este modulo tiene como salida los valores actuales de duty cycle y direccion, para que sean tomados por el modulo ToDisplay
 
 \subsection{ToDisplay}
 
+Tiene como entradas la dirección y duty cycle de cada motor además del modo de operación actual del auto, y mediante un modulo Counter muestra de manera cíclica durante 1 segundo los valores de salida, del siguiente modo y en el siguiente orden:
+\begin{enumerate}
+\footnotesize
+\item La letra \textbf{a}
+\item La decena de la velocidad del motor Derecho, por ejemplo para un 85\% muestra el numero 8
+\item El punto decimal, para el caso donde el duty cycle es 5\% en exceso a la decena, para 85\% se muestra el punto, para 80\% no se muestra.
+\item La letra \textbf{b}
+\item El duty cilce del motor Izquierdo, del mismo modo que para el motor Derecho
+\item La letra \textbf{F}
+\item El modo de control, \textbf{0} para modo \textbf{desde PC} o 1 para modo \textbf{desde sensores}.
+\end{enumerate}
+
+La salida es un valor hexadecimal de 4 bits mas una salida para el punto.
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.8\textwidth]{hbridge-ctrl-png}
-    \caption{Esquemático del módulo HBridgeCtrl}
+    \includegraphics[width=\textwidth]{to-display-crop}
+    \caption{Esquemático del módulo \textbf{ToDisplay}}
 \end{figure}
 
 \subsection{Módulos auxiliares}
+Son módulos de índole mas genérica, muchos de ellos son variaciones de contadores de modulo ajustados al propósito que se busca.
+
+Esto es porque, a diferencia de un programa destinado a generar código ejecutable donde la modularización mediante funciones permite reducir notablemente el tamaño del programa en memoria, en hardware no se posee esta ventaja, un mismo modulo que se instancia dos veces da como resultado dos implementaciones independientes dentro del FPGA. Por esto puede resultar conveniente que cada diseño se ajuste exactamente a lo necesario.
+
+
 \subsubsection{ModuleCounter}
+Diseño básico de un contador de módulo. Se tiene como entrada una señal de clock, un contador interno mantiene un valor que se incrementa con cada clock, cuando se alcanza la cantidad configurada por diseño se genera un pulso de salida y reinicia la cuenta.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[angle=270, width=\textwidth]{ModCounter-crop}
+    \caption{Esquemático del módulo \textbf{ModuleCounter}}
+\end{figure}
+
+Este diseño lo utiliza el modulo DecodeCmd para realizar la actualización de la velocidad de los motores segun la lectura de los sensores.
+
 \subsubsection{Counter}
+Se trata de un modulo que engloba un contador mas un contador de modulo.
+La salida es un bus de N bits que se va incrementando cada vez que el contador de modulo interno alcanza su valor.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{counter-crop}
+    \caption{Esquemático del módulo \textbf{Counter}}
+\end{figure}
+
+Es utilizado por el modulo ToDisplay para rotar entre los valores a mostrar en el display de siete segmentos.
+
 \subsubsection{BaudRateGen}
+Genera los pulsos de sincronización de baudios para los módulos UaRx y UaTx, se preconfigura con los valores de \textbf{Max} y \textbf{First}, el primer pulso generado tras un reset es de \textbf{First} cantidad de clocks mientras que el resto es de \textbf{Max} cantidad de clocks.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[angle=270, width=\textwidth]{ttrigger-crop}
+    \caption{Esquemático del módulo \textbf{BaudRateGen}}
+\end{figure}
+
+EL modulo UaTx no requiere que el primer pulso sea de menor duración por lo que su configuración para ese caso es $Max = First$
 \subsubsection{TTrigger}
+Un contador de modulo, pero donde su salida no es un pulso sino que queda latcheada en alto cuando se alcanza el valor configurado. Se vuelve a low tras un reset y la cuenta se reinicia.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[angle=270, width=\textwidth]{ttrigger-crop}
+    \caption{Esquemático del módulo \textbf{TTrigger}}
+\end{figure}
+
+Es utilizado por el modulo CommProtRx para detectar timeout.
+
 \subsubsection{PwmGen}
+Genera una salida PWM de periodo y resolución variable.
+\begin{figure}[H]
+    \centering
+    \includegraphics[angle=270, width=\textwidth]{PwmGen-crop}
+    \caption{Esquemático del módulo \textbf{PwmGen}}
+\end{figure}
+
 \subsubsection{HexToSevSeg}
+Decodifica un Hexadecimal de 4 bits en su correspondiente valor de 7 bits para un display de 7 segmentos.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\textwidth]{hex-to-sev-seg-crop}
+    \caption{Esquemático del módulo \textbf{HexToSevSeg}}
+\end{figure}
 
+\section{Simulación}
 
+Cada modulo se desarrollo con su propio testbench y, adicionalmente, se desarrolló un testbench para la implementación completa, de modo de visualizar el comportamiento global.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{sim1}
+    \caption{Simulación del sistema}
+\end{figure}
+
+La simulación consiste en enviar una serie de comandos y ver la respuesta del sistema, con un tiempo de espera entre ellos, la respuesta es la esperada. Los comandos son los siguientes:
+
+\begin{enumerate}
+\footnotesize
+\item Seteo de la velocidad del Motor Derecho a \textbf{55\%} y velocidad Motor izquierdo al \textbf{20\%}.
+\item Seteo a modo automático, aplicando velocidad media \textbf{40\%} y sensores físicos con lectura \textbf{0110}
+\item Cambio en estado de los sensores a \textbf{1100}, se espera un incremento en \textbf{20\%} del PWM derecho y reducción en \textbf{10\%} del Izquierdo 
+\item Cambio en estado de los sensores \textbf{1000}, se espera un \textbf{100\%} en el PWM derecho y \textbf{0\%} en el izquierdo.
+\item Cambio a modo de control 1: \textbf{desde PC}, control simulado de sensores a \textbf{0011}.
+\item Control simulado de sensores a \textbf{1100}
+\item Velocidad media del \textbf{75\%}
+\item Control manual de sensores a \textbf{0110}
+\end{enumerate}
+
+La siguiente imagen muestra el detalle de la simulación durante la recepción del segundo comando, que hace el seteo a modo automático, aplicando velocidad media \textbf{40\%}.
+\\
+
+El modulo UaRx recibe los bytes mediante rs232, el modulo UaTx responde con cada byte recibido. Una vez que el modulo CommProtRx detecta un paquete de protocolo válido dispara el modulo TTrigger que mantiene en alto la salida poMIStat, conectada al led de la placa \textbf{LED0\_R} y se modifica el valor de salida PWM para los dos motores
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{sim-cmd}
+    \caption{Simulación del sistema - Detalle de la recepción de un comando}
+\end{figure}
 \section{Conclusiones}
 
 
