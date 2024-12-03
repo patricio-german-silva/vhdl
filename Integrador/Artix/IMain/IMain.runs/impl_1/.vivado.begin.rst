@@ -1,45 +1,10 @@
 <?xml version="1.0"?>
 <ProcessHandle Version="1" Minor="0">
-    <Process Command="vivado.bat" Owner="patri" Host="DELLINS15" Pid="976" HostCore="16" HostMemory="016483872768">
+    <Process Command="vivado.bat" Owner="patri" Host="DELLINS15" Pid="9208" HostCore="16" HostMemory="016483872768">
     </Process>
 </ProcessHandle>
 <?xml version="1.0"?>
 <ProcessHandle Version="1" Minor="0">
-    <Process Command="vivado.bat" Owner="patri" Host="DELLINS15" Pid="1668" HostCore="16" HostMemory="016483872768">
-    </Process>
-</ProcessHandle>
-<?xml version="1.0"?>
-<ProcessHandle Version="1" Minor="0">
-    <Process Command="vivado.bat" Owner="patri" Host="DELLINS15" Pid="18684" HostCore="16" HostMemory="016483872768">
-    </Process>
-</ProcessHandle>
-<?xml version="1.0"?>
-<ProcessHandle Version="1" Minor="0">
-    <Process Command="vivado.bat" Owner="patri" Host="DELLINS15" Pid="8876" HostCore="16" HostMemory="016483872768">
-    </Process>
-</ProcessHandle>
-<?xml version="1.0"?>
-<ProcessHandle Version="1" Minor="0">
-    <Process Command="vivado.bat" Owner="patri" Host="DELLINS15" Pid="19092" HostCore="16" HostMemory="016483872768">
-    </Process>
-</ProcessHandle>
-<?xml version="1.0"?>
-<ProcessHandle Version="1" Minor="0">
-    <Process Command="vivado.bat" Owner="patri" Host="DELLINS15" Pid="20164" HostCore="16" HostMemory="016483872768">
-    </Process>
-</ProcessHandle>
-<?xml version="1.0"?>
-<ProcessHandle Version="1" Minor="0">
-    <Process Command="vivado.bat" Owner="patri" Host="DELLINS15" Pid="20420" HostCore="16" HostMemory="016483872768">
-    </Process>
-</ProcessHandle>
-<?xml version="1.0"?>
-<ProcessHandle Version="1" Minor="0">
-    <Process Command="vivado.bat" Owner="patri" Host="DELLINS15" Pid="17692" HostCore="16" HostMemory="016483872768">
-    </Process>
-</ProcessHandle>
-<?xml version="1.0"?>
-<ProcessHandle Version="1" Minor="0">
-    <Process Command="vivado.bat" Owner="patri" Host="DELLINS15" Pid="11852" HostCore="16" HostMemory="016483872768">
+    <Process Command="vivado.bat" Owner="patri" Host="DELLINS15" Pid="8604" HostCore="16" HostMemory="016483872768">
     </Process>
 </ProcessHandle>

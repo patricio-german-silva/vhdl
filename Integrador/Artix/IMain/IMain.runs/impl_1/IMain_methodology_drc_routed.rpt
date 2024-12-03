@@ -1,7 +1,7 @@
 Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2024 Advanced Micro Devices, Inc. All Rights Reserved.
 -----------------------------------------------------------------------------------------------------------------------------------------------------
 | Tool Version : Vivado v.2024.1 (win64) Build 5076996 Wed May 22 18:37:14 MDT 2024
-| Date         : Mon Dec  2 17:49:58 2024
+| Date         : Tue Dec  3 17:43:51 2024
 | Host         : DELLINS15 running 64-bit major release  (build 9200)
 | Command      : report_methodology -file IMain_methodology_drc_routed.rpt -pb IMain_methodology_drc_routed.pb -rpx IMain_methodology_drc_routed.rpx
 | Design       : IMain
@@ -23,14 +23,14 @@ Table of Contents
           Floorplan: design_1
       Design limits: <entire design considered>
              Max violations: <unlimited>
-             Violations found: 142
+             Violations found: 126
 +-----------+------------------+--------------------------------+------------+
 | Rule      | Severity         | Description                    | Violations |
 +-----------+------------------+--------------------------------+------------+
 | TIMING-17 | Critical Warning | Non-clocked sequential cell    | 42         |
-| LUTAR-1   | Warning          | LUT drives async reset alert   | 14         |
+| LUTAR-1   | Warning          | LUT drives async reset alert   | 15         |
 | TIMING-18 | Warning          | Missing input or output delay  | 20         |
-| TIMING-20 | Warning          | Non-clocked latch              | 65         |
+| TIMING-20 | Warning          | Non-clocked latch              | 48         |
 | LATCH-1   | Advisory         | Existing latches in the design | 1          |
 +-----------+------------------+--------------------------------+------------+
 
@@ -248,9 +248,9 @@ Related violations: <none>
 
 LUTAR-1#1 Warning
 LUT drives async reset alert  
-LUT cell instCommProtRx/poDCMDPowerSelMD_reg[1]_LDC_i_2, with 2 or more inputs, drives asynchronous preset/clear pin(s) instDecodeCmd/poDCMDPowerSelMD_reg[1]_C/CLR,
-instDecodeCmd/poDCMDPowerSelMD_reg[1]_LDC/CLR
-instDecodeCmd/poDCMDPowerSelMI_reg[1]_C/CLR. The LUT may glitch and trigger an unexpected reset, even if it is a properly timed path.
+LUT cell instCommProtRx/poDCMDPowerSelMD_reg[0]_LDC_i_2, with 2 or more inputs, drives asynchronous preset/clear pin(s) instDecodeCmd/poDCMDPowerSelMD_reg[0]_C/CLR,
+instDecodeCmd/poDCMDPowerSelMD_reg[0]_LDC/CLR
+instDecodeCmd/poDCMDPowerSelMI_reg[0]_C/CLR. The LUT may glitch and trigger an unexpected reset, even if it is a properly timed path.
 Related violations: <none>
 
 LUTAR-1#2 Warning
@@ -261,15 +261,15 @@ Related violations: <none>
 
 LUTAR-1#3 Warning
 LUT drives async reset alert  
-LUT cell instDecodeCmd/poDCMDPowerSelMD_reg[0]_LDC_i_2, with 2 or more inputs, drives asynchronous preset/clear pin(s) instDecodeCmd/poDCMDPowerSelMD_reg[0]_C/CLR,
-instDecodeCmd/poDCMDPowerSelMD_reg[0]_LDC/CLR
-instDecodeCmd/poDCMDPowerSelMI_reg[0]_C/CLR. The LUT may glitch and trigger an unexpected reset, even if it is a properly timed path.
+LUT cell instDecodeCmd/poDCMDPowerSelMD_reg[1]_LDC_i_1, with 2 or more inputs, drives asynchronous preset/clear pin(s) instDecodeCmd/poDCMDPowerSelMD_reg[1]_P/PRE
+instDecodeCmd/poDCMDPowerSelMI_reg[1]_P/PRE. The LUT may glitch and trigger an unexpected reset, even if it is a properly timed path.
 Related violations: <none>
 
 LUTAR-1#4 Warning
 LUT drives async reset alert  
-LUT cell instDecodeCmd/poDCMDPowerSelMD_reg[1]_LDC_i_1, with 2 or more inputs, drives asynchronous preset/clear pin(s) instDecodeCmd/poDCMDPowerSelMD_reg[1]_P/PRE
-instDecodeCmd/poDCMDPowerSelMI_reg[1]_P/PRE. The LUT may glitch and trigger an unexpected reset, even if it is a properly timed path.
+LUT cell instDecodeCmd/poDCMDPowerSelMD_reg[1]_LDC_i_2, with 2 or more inputs, drives asynchronous preset/clear pin(s) instDecodeCmd/poDCMDPowerSelMD_reg[1]_C/CLR,
+instDecodeCmd/poDCMDPowerSelMD_reg[1]_LDC/CLR
+instDecodeCmd/poDCMDPowerSelMI_reg[1]_C/CLR. The LUT may glitch and trigger an unexpected reset, even if it is a properly timed path.
 Related violations: <none>
 
 LUTAR-1#5 Warning
@@ -335,6 +335,17 @@ LUT drives async reset alert
 LUT cell instDecodeCmd/poDCMDPowerSelMD_reg[6]_LDC_i_2, with 2 or more inputs, drives asynchronous preset/clear pin(s) instDecodeCmd/poDCMDPowerSelMD_reg[6]_C/CLR,
 instDecodeCmd/poDCMDPowerSelMD_reg[6]_LDC/CLR
 instDecodeCmd/poDCMDPowerSelMI_reg[6]_C/CLR. The LUT may glitch and trigger an unexpected reset, even if it is a properly timed path.
+Related violations: <none>
+
+LUTAR-1#15 Warning
+LUT drives async reset alert  
+LUT cell instUaRx/brCount[13]_i_2, with 2 or more inputs, drives asynchronous preset/clear pin(s) instUaRx/brCount_reg[0]/CLR, instUaRx/brCount_reg[10]/PRE,
+instUaRx/brCount_reg[11]/CLR, instUaRx/brCount_reg[12]/PRE,
+instUaRx/brCount_reg[13]/CLR, instUaRx/brCount_reg[1]/CLR,
+instUaRx/brCount_reg[2]/CLR, instUaRx/brCount_reg[3]/PRE,
+instUaRx/brCount_reg[4]/PRE, instUaRx/brCount_reg[5]/CLR,
+instUaRx/brCount_reg[6]/PRE, instUaRx/brCount_reg[7]/CLR,
+instUaRx/brCount_reg[8]/CLR, instUaRx/brCount_reg[9]/CLR. The LUT may glitch and trigger an unexpected reset, even if it is a properly timed path.
 Related violations: <none>
 
 TIMING-18#1 Warning
@@ -634,137 +645,52 @@ Related violations: <none>
 
 TIMING-20#40 Warning
 Non-clocked latch  
-The latch instUaRx/brgrst_reg cannot be properly analyzed as its control pin instUaRx/brgrst_reg/G is not reached by a timing clock
+The latch instUaTx/latch_reg[0] cannot be properly analyzed as its control pin instUaTx/latch_reg[0]/G is not reached by a timing clock
 Related violations: <none>
 
 TIMING-20#41 Warning
 Non-clocked latch  
-The latch instUaRx/latch_reg[0] cannot be properly analyzed as its control pin instUaRx/latch_reg[0]/G is not reached by a timing clock
+The latch instUaTx/latch_reg[1] cannot be properly analyzed as its control pin instUaTx/latch_reg[1]/G is not reached by a timing clock
 Related violations: <none>
 
 TIMING-20#42 Warning
 Non-clocked latch  
-The latch instUaRx/latch_reg[1] cannot be properly analyzed as its control pin instUaRx/latch_reg[1]/G is not reached by a timing clock
+The latch instUaTx/latch_reg[2] cannot be properly analyzed as its control pin instUaTx/latch_reg[2]/G is not reached by a timing clock
 Related violations: <none>
 
 TIMING-20#43 Warning
 Non-clocked latch  
-The latch instUaRx/latch_reg[2] cannot be properly analyzed as its control pin instUaRx/latch_reg[2]/G is not reached by a timing clock
+The latch instUaTx/latch_reg[3] cannot be properly analyzed as its control pin instUaTx/latch_reg[3]/G is not reached by a timing clock
 Related violations: <none>
 
 TIMING-20#44 Warning
 Non-clocked latch  
-The latch instUaRx/latch_reg[3] cannot be properly analyzed as its control pin instUaRx/latch_reg[3]/G is not reached by a timing clock
+The latch instUaTx/latch_reg[4] cannot be properly analyzed as its control pin instUaTx/latch_reg[4]/G is not reached by a timing clock
 Related violations: <none>
 
 TIMING-20#45 Warning
 Non-clocked latch  
-The latch instUaRx/latch_reg[4] cannot be properly analyzed as its control pin instUaRx/latch_reg[4]/G is not reached by a timing clock
+The latch instUaTx/latch_reg[5] cannot be properly analyzed as its control pin instUaTx/latch_reg[5]/G is not reached by a timing clock
 Related violations: <none>
 
 TIMING-20#46 Warning
 Non-clocked latch  
-The latch instUaRx/latch_reg[5] cannot be properly analyzed as its control pin instUaRx/latch_reg[5]/G is not reached by a timing clock
+The latch instUaTx/latch_reg[6] cannot be properly analyzed as its control pin instUaTx/latch_reg[6]/G is not reached by a timing clock
 Related violations: <none>
 
 TIMING-20#47 Warning
 Non-clocked latch  
-The latch instUaRx/latch_reg[6] cannot be properly analyzed as its control pin instUaRx/latch_reg[6]/G is not reached by a timing clock
-Related violations: <none>
-
-TIMING-20#48 Warning
-Non-clocked latch  
-The latch instUaRx/latch_reg[7] cannot be properly analyzed as its control pin instUaRx/latch_reg[7]/G is not reached by a timing clock
-Related violations: <none>
-
-TIMING-20#49 Warning
-Non-clocked latch  
-The latch instUaRx/poUaRxData_reg[0] cannot be properly analyzed as its control pin instUaRx/poUaRxData_reg[0]/G is not reached by a timing clock
-Related violations: <none>
-
-TIMING-20#50 Warning
-Non-clocked latch  
-The latch instUaRx/poUaRxData_reg[1] cannot be properly analyzed as its control pin instUaRx/poUaRxData_reg[1]/G is not reached by a timing clock
-Related violations: <none>
-
-TIMING-20#51 Warning
-Non-clocked latch  
-The latch instUaRx/poUaRxData_reg[2] cannot be properly analyzed as its control pin instUaRx/poUaRxData_reg[2]/G is not reached by a timing clock
-Related violations: <none>
-
-TIMING-20#52 Warning
-Non-clocked latch  
-The latch instUaRx/poUaRxData_reg[3] cannot be properly analyzed as its control pin instUaRx/poUaRxData_reg[3]/G is not reached by a timing clock
-Related violations: <none>
-
-TIMING-20#53 Warning
-Non-clocked latch  
-The latch instUaRx/poUaRxData_reg[4] cannot be properly analyzed as its control pin instUaRx/poUaRxData_reg[4]/G is not reached by a timing clock
-Related violations: <none>
-
-TIMING-20#54 Warning
-Non-clocked latch  
-The latch instUaRx/poUaRxData_reg[5] cannot be properly analyzed as its control pin instUaRx/poUaRxData_reg[5]/G is not reached by a timing clock
-Related violations: <none>
-
-TIMING-20#55 Warning
-Non-clocked latch  
-The latch instUaRx/poUaRxData_reg[6] cannot be properly analyzed as its control pin instUaRx/poUaRxData_reg[6]/G is not reached by a timing clock
-Related violations: <none>
-
-TIMING-20#56 Warning
-Non-clocked latch  
-The latch instUaRx/poUaRxData_reg[7] cannot be properly analyzed as its control pin instUaRx/poUaRxData_reg[7]/G is not reached by a timing clock
-Related violations: <none>
-
-TIMING-20#57 Warning
-Non-clocked latch  
-The latch instUaTx/latch_reg[0] cannot be properly analyzed as its control pin instUaTx/latch_reg[0]/G is not reached by a timing clock
-Related violations: <none>
-
-TIMING-20#58 Warning
-Non-clocked latch  
-The latch instUaTx/latch_reg[1] cannot be properly analyzed as its control pin instUaTx/latch_reg[1]/G is not reached by a timing clock
-Related violations: <none>
-
-TIMING-20#59 Warning
-Non-clocked latch  
-The latch instUaTx/latch_reg[2] cannot be properly analyzed as its control pin instUaTx/latch_reg[2]/G is not reached by a timing clock
-Related violations: <none>
-
-TIMING-20#60 Warning
-Non-clocked latch  
-The latch instUaTx/latch_reg[3] cannot be properly analyzed as its control pin instUaTx/latch_reg[3]/G is not reached by a timing clock
-Related violations: <none>
-
-TIMING-20#61 Warning
-Non-clocked latch  
-The latch instUaTx/latch_reg[4] cannot be properly analyzed as its control pin instUaTx/latch_reg[4]/G is not reached by a timing clock
-Related violations: <none>
-
-TIMING-20#62 Warning
-Non-clocked latch  
-The latch instUaTx/latch_reg[5] cannot be properly analyzed as its control pin instUaTx/latch_reg[5]/G is not reached by a timing clock
-Related violations: <none>
-
-TIMING-20#63 Warning
-Non-clocked latch  
-The latch instUaTx/latch_reg[6] cannot be properly analyzed as its control pin instUaTx/latch_reg[6]/G is not reached by a timing clock
-Related violations: <none>
-
-TIMING-20#64 Warning
-Non-clocked latch  
 The latch instUaTx/latch_reg[7] cannot be properly analyzed as its control pin instUaTx/latch_reg[7]/G is not reached by a timing clock
 Related violations: <none>
 
-TIMING-20#65 Warning
+TIMING-20#48 Warning
 Non-clocked latch  
 The latch instUaTx/txrdy_reg cannot be properly analyzed as its control pin instUaTx/txrdy_reg/G is not reached by a timing clock
 Related violations: <none>
 
 LATCH-1#1 Advisory
 Existing latches in the design  
-There are 65 latches found in the design. Inferred latches are often the result of HDL coding mistakes, such as incomplete if or case statements.
+There are 48 latches found in the design. Inferred latches are often the result of HDL coding mistakes, such as incomplete if or case statements.
 Related violations: <none>
 
 

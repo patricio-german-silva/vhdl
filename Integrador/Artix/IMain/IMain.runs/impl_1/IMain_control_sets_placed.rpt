@@ -1,7 +1,7 @@
 Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2024 Advanced Micro Devices, Inc. All Rights Reserved.
 ---------------------------------------------------------------------------------------------------------------------------------------------
 | Tool Version : Vivado v.2024.1 (win64) Build 5076996 Wed May 22 18:37:14 MDT 2024
-| Date         : Mon Dec  2 17:49:25 2024
+| Date         : Tue Dec  3 17:43:18 2024
 | Host         : DELLINS15 running 64-bit major release  (build 9200)
 | Command      : report_control_sets -verbose -file IMain_control_sets_placed.rpt
 | Design       : IMain
@@ -23,11 +23,11 @@ Table of Contents
 +----------------------------------------------------------+-------+
 |                          Status                          | Count |
 +----------------------------------------------------------+-------+
-| Total control sets                                       |    57 |
-|    Minimum number of control sets                        |    57 |
+| Total control sets                                       |    48 |
+|    Minimum number of control sets                        |    48 |
 |    Addition due to synthesis replication                 |     0 |
 |    Addition due to physical synthesis replication        |     0 |
-| Unused register locations in slices containing registers |   273 |
+| Unused register locations in slices containing registers |   214 |
 +----------------------------------------------------------+-------+
 * Control sets can be merged at opt_design using control_set_merge or merge_equivalent_drivers
 ** Run report_qor_suggestions for automated merging and remapping suggestions
@@ -39,13 +39,13 @@ Table of Contents
 +--------------------+-------+
 |       Fanout       | Count |
 +--------------------+-------+
-| Total control sets |    57 |
-| >= 0 to < 4        |    34 |
-| >= 4 to < 6        |     5 |
+| Total control sets |    48 |
+| >= 0 to < 4        |    25 |
+| >= 4 to < 6        |     4 |
 | >= 6 to < 8        |     6 |
-| >= 8 to < 10       |     5 |
-| >= 10 to < 12      |     0 |
-| >= 12 to < 14      |     0 |
+| >= 8 to < 10       |     4 |
+| >= 10 to < 12      |     1 |
+| >= 12 to < 14      |     1 |
 | >= 14 to < 16      |     2 |
 | >= 16              |     5 |
 +--------------------+-------+
@@ -58,12 +58,12 @@ Table of Contents
 +--------------+-----------------------+------------------------+-----------------+--------------+
 | Clock Enable | Synchronous Set/Reset | Asynchronous Set/Reset | Total Registers | Total Slices |
 +--------------+-----------------------+------------------------+-----------------+--------------+
-| No           | No                    | No                     |              62 |           26 |
-| No           | No                    | Yes                    |              55 |           24 |
-| No           | Yes                   | No                     |              49 |           18 |
-| Yes          | No                    | No                     |              13 |            6 |
-| Yes          | No                    | Yes                    |             136 |           38 |
-| Yes          | Yes                   | No                     |              20 |            6 |
+| No           | No                    | No                     |              53 |           17 |
+| No           | No                    | Yes                    |              69 |           29 |
+| No           | Yes                   | No                     |              32 |           15 |
+| Yes          | No                    | No                     |              13 |            3 |
+| Yes          | No                    | Yes                    |             140 |           37 |
+| Yes          | Yes                   | No                     |              31 |            9 |
 +--------------+-----------------------+------------------------+-----------------+--------------+
 
 
@@ -73,62 +73,53 @@ Table of Contents
 +----------------------------------------------------+----------------------------------------------+---------------------------------------------------+------------------+----------------+--------------+
 |                    Clock Signal                    |                 Enable Signal                |                  Set/Reset Signal                 | Slice Load Count | Bel Load Count | Bels / Slice |
 +----------------------------------------------------+----------------------------------------------+---------------------------------------------------+------------------+----------------+--------------+
-|  instDecodeCmd/poDCMDPowerSelMD_reg[1]_LDC_i_1_n_0 |                                              | instCommProtRx/auto_reg                           |                1 |              1 |         1.00 |
-|  instDecodeCmd/poDCMDPowerSelMD_reg[0]_LDC_i_1_n_0 |                                              | instDecodeCmd/poDCMDPowerSelMD_reg[0]_LDC_i_2_n_0 |                1 |              1 |         1.00 |
 |  instDecodeCmd/poDCMDPowerSelMD_reg[3]_LDC_i_1_n_0 |                                              | instDecodeCmd/poDCMDPowerSelMD_reg[3]_LDC_i_2_n_0 |                1 |              1 |         1.00 |
+|  instDecodeCmd/poDCMDPowerSelMD_reg[5]_LDC_i_1_n_0 |                                              | instDecodeCmd/poDCMDPowerSelMD_reg[5]_LDC_i_2_n_0 |                1 |              1 |         1.00 |
+|  piIMClk_IBUF_BUFG                                 |                                              | instUaRx/rxc                                      |                1 |              1 |         1.00 |
+|  piIMClk_IBUF_BUFG                                 |                                              | cmdc_BUFG                                         |                1 |              1 |         1.00 |
+|  instDecodeCmd/poDCMDPowerSelMD_reg[6]_LDC_i_1_n_0 |                                              | instDecodeCmd/poDCMDPowerSelMD_reg[6]_LDC_i_2_n_0 |                1 |              1 |         1.00 |
+|  instDecodeCmd/poDCMDPowerSelMD_reg[0]_LDC_i_1_n_0 |                                              | instCommProtRx/auto_reg                           |                1 |              1 |         1.00 |
+|  instUaTx/instUaTxBRG/txrdy__0                     |                                              |                                                   |                1 |              1 |         1.00 |
+|  instDecodeCmd/poDCMDPowerSelMD_reg[1]_LDC_i_1_n_0 |                                              | instDecodeCmd/poDCMDPowerSelMD_reg[1]_LDC_i_2_n_0 |                1 |              1 |         1.00 |
 |  instDecodeCmd/poDCMDPowerSelMD_reg[2]_LDC_i_1_n_0 |                                              | instDecodeCmd/poDCMDPowerSelMD_reg[2]_LDC_i_2_n_0 |                1 |              1 |         1.00 |
 |  instDecodeCmd/poDCMDPowerSelMD_reg[4]_LDC_i_1_n_0 |                                              | instDecodeCmd/poDCMDPowerSelMD_reg[4]_LDC_i_2_n_0 |                1 |              1 |         1.00 |
-|  instDecodeCmd/poDCMDPowerSelMD_reg[5]_LDC_i_1_n_0 |                                              | instDecodeCmd/poDCMDPowerSelMD_reg[5]_LDC_i_2_n_0 |                1 |              1 |         1.00 |
-|  instDecodeCmd/poDCMDPowerSelMD_reg[6]_LDC_i_1_n_0 |                                              | instDecodeCmd/poDCMDPowerSelMD_reg[6]_LDC_i_2_n_0 |                1 |              1 |         1.00 |
-|  instUaTx/instUaTxBRG/txrdy__0                     |                                              |                                                   |                1 |              1 |         1.00 |
-|  instUaRx/instUaRxBRG/E[4]                         |                                              |                                                   |                1 |              1 |         1.00 |
-|  instUaRx/instUaRxBRG/E[7]                         |                                              |                                                   |                1 |              1 |         1.00 |
-|  instUaRx/instUaRxBRG/E[3]                         |                                              |                                                   |                1 |              1 |         1.00 |
-|  instUaRx/instUaRxBRG/E[6]                         |                                              |                                                   |                1 |              1 |         1.00 |
-|  instUaRx/instUaRxBRG/E[5]                         |                                              |                                                   |                1 |              1 |         1.00 |
-|  instUaRx/instUaRxBRG/E[0]                         |                                              |                                                   |                1 |              1 |         1.00 |
-|  instUaRx/instUaRxBRG/E[2]                         |                                              |                                                   |                1 |              1 |         1.00 |
-|  instUaRx/instUaRxBRG/E[1]                         |                                              |                                                   |                1 |              1 |         1.00 |
-|  instUaRx/brgrst_reg_i_2_n_0                       |                                              |                                                   |                1 |              1 |         1.00 |
-|  piIMClk_IBUF_BUFG                                 |                                              | cmdc_BUFG                                         |                1 |              1 |         1.00 |
-|  piIMClk_IBUF_BUFG                                 |                                              | rxc_BUFG                                          |                1 |              1 |         1.00 |
-|  instDecodeCmd/instModuleCounter/clk10ms           |                                              | instDecodeCmd/poDCMDPowerSelMD_reg[2]_LDC_i_1_n_0 |                1 |              2 |         2.00 |
-|  instDecodeCmd/instModuleCounter/clk10ms           |                                              | instDecodeCmd/poDCMDPowerSelMD_reg[4]_LDC_i_2_n_0 |                1 |              2 |         2.00 |
-|  instDecodeCmd/instModuleCounter/clk10ms           |                                              | instDecodeCmd/poDCMDPowerSelMD_reg[0]_LDC_i_2_n_0 |                1 |              2 |         2.00 |
-|  instDecodeCmd/instModuleCounter/clk10ms           |                                              | instDecodeCmd/poDCMDPowerSelMD_reg[5]_LDC_i_1_n_0 |                1 |              2 |         2.00 |
-|  instDecodeCmd/instModuleCounter/clk10ms           |                                              | instDecodeCmd/poDCMDPowerSelMD_reg[6]_LDC_i_1_n_0 |                1 |              2 |         2.00 |
-|  instDecodeCmd/instModuleCounter/clk10ms           |                                              | instDecodeCmd/poDCMDPowerSelMD_reg[6]_LDC_i_2_n_0 |                1 |              2 |         2.00 |
-|  instDecodeCmd/instModuleCounter/clk10ms           |                                              | instDecodeCmd/poDCMDPowerSelMD_reg[2]_LDC_i_2_n_0 |                1 |              2 |         2.00 |
-|  instDecodeCmd/instModuleCounter/clk10ms           |                                              | instCommProtRx/auto_reg                           |                1 |              2 |         2.00 |
-|  instDecodeCmd/instModuleCounter/clk10ms           |                                              | instDecodeCmd/poDCMDPowerSelMD_reg[4]_LDC_i_1_n_0 |                1 |              2 |         2.00 |
-|  instDecodeCmd/instModuleCounter/clk10ms           |                                              | instDecodeCmd/poDCMDPowerSelMD_reg[1]_LDC_i_1_n_0 |                1 |              2 |         2.00 |
 |  instDecodeCmd/instModuleCounter/clk10ms           |                                              | instDecodeCmd/poDCMDPowerSelMD_reg[3]_LDC_i_2_n_0 |                1 |              2 |         2.00 |
-|  instDecodeCmd/instModuleCounter/clk10ms           |                                              | instDecodeCmd/poDCMDPowerSelMD_reg[0]_LDC_i_1_n_0 |                1 |              2 |         2.00 |
-|  piIMClk_IBUF_BUFG                                 |                                              | instDecodeCmd/auto_reg_0                          |                1 |              2 |         2.00 |
-|  instDecodeCmd/instModuleCounter/clk10ms           |                                              | instDecodeCmd/poDCMDPowerSelMD_reg[5]_LDC_i_2_n_0 |                1 |              2 |         2.00 |
+|  piIMClk_IBUF_BUFG                                 |                                              | instDecodeCmd/auto_reg_0                          |                2 |              2 |         1.00 |
+|  instDecodeCmd/instModuleCounter/clk10ms           |                                              | instCommProtRx/auto_reg                           |                1 |              2 |         2.00 |
+|  instDecodeCmd/instModuleCounter/clk10ms           |                                              | instDecodeCmd/poDCMDPowerSelMD_reg[2]_LDC_i_2_n_0 |                1 |              2 |         2.00 |
+|  instDecodeCmd/instModuleCounter/clk10ms           |                                              | instDecodeCmd/poDCMDPowerSelMD_reg[4]_LDC_i_2_n_0 |                1 |              2 |         2.00 |
+|  instDecodeCmd/instModuleCounter/clk10ms           |                                              | instDecodeCmd/poDCMDPowerSelMD_reg[4]_LDC_i_1_n_0 |                1 |              2 |         2.00 |
 |  instDecodeCmd/instModuleCounter/clk10ms           |                                              | instDecodeCmd/poDCMDPowerSelMD_reg[3]_LDC_i_1_n_0 |                1 |              2 |         2.00 |
+|  instDecodeCmd/instModuleCounter/clk10ms           |                                              | instDecodeCmd/poDCMDPowerSelMD_reg[5]_LDC_i_1_n_0 |                1 |              2 |         2.00 |
+|  instDecodeCmd/instModuleCounter/clk10ms           |                                              | instDecodeCmd/poDCMDPowerSelMD_reg[5]_LDC_i_2_n_0 |                1 |              2 |         2.00 |
+|  instDecodeCmd/instModuleCounter/clk10ms           |                                              | instDecodeCmd/poDCMDPowerSelMD_reg[6]_LDC_i_1_n_0 |                1 |              2 |         2.00 |
+|  instDecodeCmd/instModuleCounter/clk10ms           |                                              | instDecodeCmd/poDCMDPowerSelMD_reg[0]_LDC_i_1_n_0 |                1 |              2 |         2.00 |
+|  instDecodeCmd/instModuleCounter/clk10ms           |                                              | instDecodeCmd/poDCMDPowerSelMD_reg[1]_LDC_i_1_n_0 |                1 |              2 |         2.00 |
+|  instDecodeCmd/instModuleCounter/clk10ms           |                                              | instDecodeCmd/poDCMDPowerSelMD_reg[1]_LDC_i_2_n_0 |                1 |              2 |         2.00 |
+|  instDecodeCmd/instModuleCounter/clk10ms           |                                              | instDecodeCmd/poDCMDPowerSelMD_reg[2]_LDC_i_1_n_0 |                1 |              2 |         2.00 |
+|  instDecodeCmd/instModuleCounter/clk10ms           |                                              | instDecodeCmd/poDCMDPowerSelMD_reg[6]_LDC_i_2_n_0 |                1 |              2 |         2.00 |
 |  instCommProtRx/data__0[3]                         |                                              |                                                   |                1 |              4 |         4.00 |
-|  piIMClk_IBUF_BUFG                                 |                                              |                                                   |                2 |              4 |         2.00 |
 |  instCommProtRx/data__0[8]                         |                                              |                                                   |                1 |              4 |         4.00 |
 |  piIMClk_IBUF_BUFG                                 | instCommProtRx/E[0]                          |                                                   |                1 |              4 |         4.00 |
 |  piIMClk_IBUF_BUFG                                 | instCommProtRx/FSM_onehot_state_reg[5]_0[0]  | instCommProtRx/SR[0]                              |                2 |              5 |         2.50 |
 |  piIMClk_IBUF_BUFG                                 |                                              | instCommProtRx/instTTrigger/SR[0]                 |                2 |              6 |         3.00 |
-|  instHBridgeCtrlMD/instModuleCounter/CLK           | piIMEna_IBUF                                 | piIMRst_IBUF                                      |                2 |              7 |         3.50 |
 |  instHBridgeCtrlMI/instModuleCounter/CLK           | piIMEna_IBUF                                 | piIMRst_IBUF                                      |                2 |              7 |         3.50 |
+|  instHBridgeCtrlMD/instModuleCounter/CLK           | piIMEna_IBUF                                 | piIMRst_IBUF                                      |                2 |              7 |         3.50 |
+|  piIMClk_IBUF_BUFG                                 | instCommProtRx/FSM_onehot_state_reg[5]_0[0]  | instCommProtRx/stop_reg[0]                        |                3 |              7 |         2.33 |
 |  piIMClk_IBUF_BUFG                                 | instDecodeCmd/poDCMDSetMI_reg_0[0]           | piIMRst_IBUF                                      |                2 |              7 |         3.50 |
-|  piIMClk_IBUF_BUFG                                 | instDecodeCmd/E[0]                           | piIMRst_IBUF                                      |                5 |              7 |         1.40 |
-|  piIMClk_IBUF_BUFG                                 | instCommProtRx/FSM_onehot_state_reg[5]_0[0]  | instCommProtRx/stop_reg[0]                        |                2 |              7 |         3.50 |
+|  piIMClk_IBUF_BUFG                                 | instDecodeCmd/E[0]                           | piIMRst_IBUF                                      |                3 |              7 |         2.33 |
 |  instUaTx/latch                                    |                                              |                                                   |                2 |              8 |         4.00 |
 |  instCommProtRx/cmd__0                             |                                              |                                                   |                2 |              8 |         4.00 |
-|  rxc_BUFG                                          |                                              |                                                   |                3 |              8 |         2.67 |
 |  piIMClk_IBUF_BUFG                                 | instUaTx/instUaTxBRG/FSM_onehot_state_reg[0] | piIMRst_IBUF                                      |                2 |              8 |         4.00 |
-|  piIMClk_IBUF_BUFG                                 | instCommProtRx/FSM_onehot_state_reg[5]_0[0]  |                                                   |                5 |              9 |         1.80 |
-|  piIMClk_IBUF_BUFG                                 |                                              | instUaRx/brgrst                                   |                3 |             14 |         4.67 |
-|  piIMClk_IBUF_BUFG                                 |                                              | instUaTx/brgrst                                   |                3 |             14 |         4.67 |
+|  piIMClk_IBUF_BUFG                                 | instCommProtRx/FSM_onehot_state_reg[5]_0[0]  |                                                   |                2 |              9 |         4.50 |
+|  piIMClk_IBUF_BUFG                                 | instUaRx/FSM_onehot_state[10]_i_1_n_0        | piIMRst_IBUF                                      |                2 |             11 |         5.50 |
+|  piIMClk_IBUF_BUFG                                 |                                              |                                                   |                5 |             12 |         2.40 |
+|  piIMClk_IBUF_BUFG                                 |                                              | instUaTx/brgrst                                   |                4 |             14 |         3.50 |
+|  piIMClk_IBUF_BUFG                                 |                                              | instUaRx/RstBR                                    |                4 |             14 |         3.50 |
 |  cmdc_BUFG                                         |                                              |                                                   |                5 |             16 |         3.20 |
-|  piIMClk_IBUF_BUFG                                 | instComStatus/auxCount0                      | cmdc_BUFG                                         |                5 |             20 |         4.00 |
-|  piIMClk_IBUF_BUFG                                 | instCommProtRx/instTTrigger/auxCount0        | rxc_BUFG                                          |                5 |             20 |         4.00 |
-|  piIMClk_IBUF_BUFG                                 |                                              | piIMRst_IBUF                                      |               10 |             31 |         3.10 |
+|  piIMClk_IBUF_BUFG                                 | instCommProtRx/instTTrigger/auxCount0        | instUaRx/rxc                                      |                5 |             20 |         4.00 |
+|  piIMClk_IBUF_BUFG                                 | instComStatus/auxCount0                      | cmdc_BUFG                                         |                6 |             24 |         4.00 |
+|  piIMClk_IBUF_BUFG                                 |                                              | piIMRst_IBUF                                      |                9 |             28 |         3.11 |
 |  piIMClk_IBUF_BUFG                                 | piIMEna_IBUF                                 | piIMRst_IBUF                                      |               17 |             68 |         4.00 |
 +----------------------------------------------------+----------------------------------------------+---------------------------------------------------+------------------+----------------+--------------+
 
