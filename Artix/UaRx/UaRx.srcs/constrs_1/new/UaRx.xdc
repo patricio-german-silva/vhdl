@@ -29,3 +29,6 @@ create_clock -period 10.000 -name clk [get_ports piUaRxClk]
 
 set_property PACKAGE_PIN N17 [get_ports poUaRxBR]
 set_property PACKAGE_PIN P18 [get_ports poUaRxRx]
+
+set_property IOSTANDARD LVCMOS33 [get_ports poUaRxBR]
+set_property IOSTANDARD LVCMOS33 [get_ports poUaRxRx]

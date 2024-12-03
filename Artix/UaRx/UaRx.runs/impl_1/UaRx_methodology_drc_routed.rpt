@@ -1,0 +1,72 @@
+Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2024 Advanced Micro Devices, Inc. All Rights Reserved.
+--------------------------------------------------------------------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2024.1 (win64) Build 5076996 Wed May 22 18:37:14 MDT 2024
+| Date         : Tue Dec  3 17:02:45 2024
+| Host         : DELLINS15 running 64-bit major release  (build 9200)
+| Command      : report_methodology -file UaRx_methodology_drc_routed.rpt -pb UaRx_methodology_drc_routed.pb -rpx UaRx_methodology_drc_routed.rpx
+| Design       : UaRx
+| Device       : xc7a100tcsg324-1
+| Speed File   : -1
+| Design State : Fully Routed
+--------------------------------------------------------------------------------------------------------------------------------------------------
+
+Report Methodology
+
+Table of Contents
+-----------------
+1. REPORT SUMMARY
+2. REPORT DETAILS
+
+1. REPORT SUMMARY
+-----------------
+            Netlist: netlist
+          Floorplan: design_1
+      Design limits: <entire design considered>
+             Max violations: <unlimited>
+             Violations found: 7
++-----------+----------+--------------------------------+------------+
+| Rule      | Severity | Description                    | Violations |
++-----------+----------+--------------------------------+------------+
+| TIMING-18 | Warning  | Missing input or output delay  | 5          |
+| TIMING-20 | Warning  | Non-clocked latch              | 1          |
+| LATCH-1   | Advisory | Existing latches in the design | 1          |
++-----------+----------+--------------------------------+------------+
+
+2. REPORT DETAILS
+-----------------
+TIMING-18#1 Warning
+Missing input or output delay  
+An input delay is missing on piUaRxEna relative to the rising and/or falling clock edge(s) of clk.
+Related violations: <none>
+
+TIMING-18#2 Warning
+Missing input or output delay  
+An input delay is missing on piUaRxRst relative to the rising and/or falling clock edge(s) of clk.
+Related violations: <none>
+
+TIMING-18#3 Warning
+Missing input or output delay  
+An input delay is missing on piUaRxRx relative to the rising and/or falling clock edge(s) of clk.
+Related violations: <none>
+
+TIMING-18#4 Warning
+Missing input or output delay  
+An output delay is missing on poUaRxBR relative to the rising and/or falling clock edge(s) of clk.
+Related violations: <none>
+
+TIMING-18#5 Warning
+Missing input or output delay  
+An output delay is missing on poUaRxC relative to the rising and/or falling clock edge(s) of clk.
+Related violations: <none>
+
+TIMING-20#1 Warning
+Non-clocked latch  
+The latch poUaRxData_reg[7] cannot be properly analyzed as its control pin poUaRxData_reg[7]/G is not reached by a timing clock
+Related violations: <none>
+
+LATCH-1#1 Advisory
+Existing latches in the design  
+There are 1 latches found in the design. Inferred latches are often the result of HDL coding mistakes, such as incomplete if or case statements.
+Related violations: <none>
+
+

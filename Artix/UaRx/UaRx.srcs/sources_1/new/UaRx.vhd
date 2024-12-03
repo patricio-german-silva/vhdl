@@ -120,8 +120,6 @@ begin
                 if brgclk = '1' then
                     latch(5) <= piUaRxRx;
                     next_state <= S8;
-                else
-                    next_state <= S7;
                 end if;
             when S8 => -- recepcion de datos - bit 6
                 if brgclk = '1' then
