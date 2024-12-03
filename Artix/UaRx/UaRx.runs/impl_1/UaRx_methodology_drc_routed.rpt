@@ -1,7 +1,7 @@
 Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2024 Advanced Micro Devices, Inc. All Rights Reserved.
 --------------------------------------------------------------------------------------------------------------------------------------------------
 | Tool Version : Vivado v.2024.1 (win64) Build 5076996 Wed May 22 18:37:14 MDT 2024
-| Date         : Tue Dec  3 17:02:45 2024
+| Date         : Tue Dec  3 17:35:37 2024
 | Host         : DELLINS15 running 64-bit major release  (build 9200)
 | Command      : report_methodology -file UaRx_methodology_drc_routed.rpt -pb UaRx_methodology_drc_routed.pb -rpx UaRx_methodology_drc_routed.rpx
 | Design       : UaRx
@@ -23,50 +23,78 @@ Table of Contents
           Floorplan: design_1
       Design limits: <entire design considered>
              Max violations: <unlimited>
-             Violations found: 7
-+-----------+----------+--------------------------------+------------+
-| Rule      | Severity | Description                    | Violations |
-+-----------+----------+--------------------------------+------------+
-| TIMING-18 | Warning  | Missing input or output delay  | 5          |
-| TIMING-20 | Warning  | Non-clocked latch              | 1          |
-| LATCH-1   | Advisory | Existing latches in the design | 1          |
-+-----------+----------+--------------------------------+------------+
+             Violations found: 12
++-----------+----------+-------------------------------+------------+
+| Rule      | Severity | Description                   | Violations |
++-----------+----------+-------------------------------+------------+
+| LUTAR-1   | Warning  | LUT drives async reset alert  | 1          |
+| TIMING-18 | Warning  | Missing input or output delay | 11         |
++-----------+----------+-------------------------------+------------+
 
 2. REPORT DETAILS
 -----------------
-TIMING-18#1 Warning
-Missing input or output delay  
-An input delay is missing on piUaRxEna relative to the rising and/or falling clock edge(s) of clk.
+LUTAR-1#1 Warning
+LUT drives async reset alert  
+LUT cell brCount[13]_i_2, with 2 or more inputs, drives asynchronous preset/clear pin(s) brCount_reg[0]/CLR, brCount_reg[10]/PRE, brCount_reg[11]/CLR,
+brCount_reg[12]/PRE, brCount_reg[13]/CLR, brCount_reg[1]/CLR,
+brCount_reg[2]/CLR, brCount_reg[3]/PRE, brCount_reg[4]/PRE,
+brCount_reg[5]/CLR, brCount_reg[6]/PRE, brCount_reg[7]/CLR,
+brCount_reg[8]/CLR, brCount_reg[9]/CLR. The LUT may glitch and trigger an unexpected reset, even if it is a properly timed path.
 Related violations: <none>
 
-TIMING-18#2 Warning
+TIMING-18#1 Warning
 Missing input or output delay  
 An input delay is missing on piUaRxRst relative to the rising and/or falling clock edge(s) of clk.
 Related violations: <none>
 
-TIMING-18#3 Warning
+TIMING-18#2 Warning
 Missing input or output delay  
 An input delay is missing on piUaRxRx relative to the rising and/or falling clock edge(s) of clk.
 Related violations: <none>
 
-TIMING-18#4 Warning
-Missing input or output delay  
-An output delay is missing on poUaRxBR relative to the rising and/or falling clock edge(s) of clk.
-Related violations: <none>
-
-TIMING-18#5 Warning
+TIMING-18#3 Warning
 Missing input or output delay  
 An output delay is missing on poUaRxC relative to the rising and/or falling clock edge(s) of clk.
 Related violations: <none>
 
-TIMING-20#1 Warning
-Non-clocked latch  
-The latch poUaRxData_reg[7] cannot be properly analyzed as its control pin poUaRxData_reg[7]/G is not reached by a timing clock
+TIMING-18#4 Warning
+Missing input or output delay  
+An output delay is missing on poUaRxData[0] relative to the rising and/or falling clock edge(s) of clk.
 Related violations: <none>
 
-LATCH-1#1 Advisory
-Existing latches in the design  
-There are 1 latches found in the design. Inferred latches are often the result of HDL coding mistakes, such as incomplete if or case statements.
+TIMING-18#5 Warning
+Missing input or output delay  
+An output delay is missing on poUaRxData[1] relative to the rising and/or falling clock edge(s) of clk.
+Related violations: <none>
+
+TIMING-18#6 Warning
+Missing input or output delay  
+An output delay is missing on poUaRxData[2] relative to the rising and/or falling clock edge(s) of clk.
+Related violations: <none>
+
+TIMING-18#7 Warning
+Missing input or output delay  
+An output delay is missing on poUaRxData[3] relative to the rising and/or falling clock edge(s) of clk.
+Related violations: <none>
+
+TIMING-18#8 Warning
+Missing input or output delay  
+An output delay is missing on poUaRxData[4] relative to the rising and/or falling clock edge(s) of clk.
+Related violations: <none>
+
+TIMING-18#9 Warning
+Missing input or output delay  
+An output delay is missing on poUaRxData[5] relative to the rising and/or falling clock edge(s) of clk.
+Related violations: <none>
+
+TIMING-18#10 Warning
+Missing input or output delay  
+An output delay is missing on poUaRxData[6] relative to the rising and/or falling clock edge(s) of clk.
+Related violations: <none>
+
+TIMING-18#11 Warning
+Missing input or output delay  
+An output delay is missing on poUaRxData[7] relative to the rising and/or falling clock edge(s) of clk.
 Related violations: <none>
 
 
