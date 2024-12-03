@@ -39,17 +39,20 @@ entity UaRx is
             piUaRxEna : in STD_LOGIC; -- RX Enable
             piUaRxRx : in STD_LOGIC;    -- Puerto RX
             poUaRxC: out STD_LOGIC; -- Receive complete - Hay datos para leer en el buffer poUaRxData 
-            poUaRxData : out STD_LOGIC_VECTOR (8-1 downto 0)
+            poUaRxData : out STD_LOGIC_VECTOR (8-1 downto 0);
+            poUaRxBR : out STD_LOGIC;
+            poUaRxRx : out STD_LOGIC
     );
 end UaRx;
 
 architecture A_UaRx of UaRx is
 
-Type TStates is (S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10, S11);
+Type TStates is (S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10);
 signal state, next_state: TStates;
-signal brgrst: STD_LOGIC;
+signal brgrst: STD_LOGIC := '1';
 signal brgclk: STD_LOGIC;
 signal latch: STD_LOGIC_VECTOR(8-1 downto 0);
+
 
 begin
 
@@ -68,29 +71,17 @@ begin
         end if; 
     end process SYNC_PROC;
     
-    OUTPUT_DECODE : process (state)
-    begin
-    case (state) is
-        when S0 =>
-            brgrst <= '1';
-            poUaRxC <= '0';
-        when S11 =>
-            poUaRxData <= latch;
-            poUaRxC <= '1';
-        when others =>
-            brgrst <= '0';
-            poUaRxC <= '0';
-    end case;
-    end process OUTPUT_DECODE;
     
     NEXT_STATE_DECODE : process (state, brgclk, piUaRxRx, piUaRxEna)
     begin
+        next_state <= state;
+        poUaRxC <= '0';
+        brgrst <= '0';
         case (state) is
             when S0 =>  -- Espera bit start
                if (piUaRxRx = '0') and (piUaRxEna = '1') then
+                    brgrst <= '1';
                     next_state <= S1;
-                else
-                    next_state <= S0;
                 end if;
             when S1 =>  -- Chequeo que es bit start tras medio periodo
                if brgclk = '1' then
@@ -99,43 +90,31 @@ begin
                   else
                      next_state <= S0;
                   end if;
-               else
-                  next_state <= S1;
                end if;
             when S2 => -- recepcion de datos - bit 0
                 if brgclk = '1' then
                     latch(0) <= piUaRxRx;
                     next_state <= S3;
-                else
-                    next_state <= S2;
                 end if;
             when S3 => -- recepcion de datos - bit 1
                 if brgclk = '1' then
                     latch(1) <= piUaRxRx;
                     next_state <= S4;
-                else
-                    next_state <= S3;
                 end if;
             when S4 => -- recepcion de datos - bit 2
                 if brgclk = '1' then
                     latch(2) <= piUaRxRx;
                     next_state <= S5;
-                else
-                    next_state <= S4;
                 end if;
             when S5 => -- recepcion de datos - bit 3
                 if brgclk = '1' then
                     latch(3) <= piUaRxRx;
                     next_state <= S6;
-                else
-                    next_state <= S5;
                 end if;
             when S6 => -- recepcion de datos - bit 4
                 if brgclk = '1' then
                     latch(4) <= piUaRxRx;
                     next_state <= S7;
-                else
-                    next_state <= S6;
                 end if;
             when S7 => -- recepcion de datos - bit 5
                 if brgclk = '1' then
@@ -148,32 +127,26 @@ begin
                 if brgclk = '1' then
                     latch(6) <= piUaRxRx;
                     next_state <= S9;
-                else
-                    next_state <= S8;
                 end if;
             when S9 => -- recepcion de datos - bit 7
                 if brgclk = '1' then
                     latch(7) <= piUaRxRx;
                     next_state <= S10;
-                else
-                    next_state <= S9;
                 end if;
             when S10 => -- recepcion del bit de stop
                if (brgclk = '1') then
+                    next_state <= S0;
                     if (piUaRxRx = '1') then
-                       next_state <= S11;
-                    else
-                       next_state <= S0;
+                        poUaRxData <= latch;
+                        poUaRxC <= '1';
                     end if;
-               else
-                  next_state <= S10;
                end if;
-            when S11 => -- recepción exitosa, poUaRxC por 1 clock de sistema
-                next_state <= S0;
             when others =>
                 next_state <= S0;
         end case;
-    end process NEXT_STATE_DECODE; 
-
-
+    end process NEXT_STATE_DECODE;
+    
+    poUaRxBR <= brgclk;
+    poUaRxRx <= piUaRxRx;
+    
 end A_UaRx;

@@ -1,7 +1,7 @@
 Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2024 Advanced Micro Devices, Inc. All Rights Reserved.
 ---------------------------------------------------------------------------------------------------------------------------------------------
 | Tool Version : Vivado v.2024.1 (win64) Build 5076996 Wed May 22 18:37:14 MDT 2024
-| Date         : Wed Nov 27 17:38:14 2024
+| Date         : Mon Dec  2 17:48:44 2024
 | Host         : DELLINS15 running 64-bit major release  (build 9200)
 | Command      : report_utilization -file IMain_utilization_synth.rpt -pb IMain_utilization_synth.pb
 | Design       : IMain
@@ -31,11 +31,11 @@ Table of Contents
 +-------------------------+------+-------+------------+-----------+-------+
 |        Site Type        | Used | Fixed | Prohibited | Available | Util% |
 +-------------------------+------+-------+------------+-----------+-------+
-| Slice LUTs*             |  278 |     0 |          0 |     63400 |  0.44 |
-|   LUT as Logic          |  278 |     0 |          0 |     63400 |  0.44 |
+| Slice LUTs*             |  291 |     0 |          0 |     63400 |  0.46 |
+|   LUT as Logic          |  291 |     0 |          0 |     63400 |  0.46 |
 |   LUT as Memory         |    0 |     0 |          0 |     19000 |  0.00 |
-| Slice Registers         |  305 |     0 |          0 |    126800 |  0.24 |
-|   Register as Flip Flop |  240 |     0 |          0 |    126800 |  0.19 |
+| Slice Registers         |  335 |     0 |          0 |    126800 |  0.26 |
+|   Register as Flip Flop |  270 |     0 |          0 |    126800 |  0.21 |
 |   Register as Latch     |   65 |     0 |          0 |    126800 |  0.05 |
 | F7 Muxes                |    0 |     0 |          0 |     31700 |  0.00 |
 | F8 Muxes                |    0 |     0 |          0 |     15850 |  0.00 |
@@ -58,9 +58,9 @@ Warning! For any ECO changes, please run place_design if there are unplaced inst
 | 0     |            _ |       Reset |            - |
 | 0     |          Yes |           - |            - |
 | 16    |          Yes |           - |          Set |
-| 219   |          Yes |           - |        Reset |
-| 15    |          Yes |         Set |            - |
-| 55    |          Yes |       Reset |            - |
+| 240   |          Yes |           - |        Reset |
+| 16    |          Yes |         Set |            - |
+| 63    |          Yes |       Reset |            - |
 +-------+--------------+-------------+--------------+
 
 
@@ -93,7 +93,7 @@ Warning! For any ECO changes, please run place_design if there are unplaced inst
 +-----------------------------+------+-------+------------+-----------+-------+
 |          Site Type          | Used | Fixed | Prohibited | Available | Util% |
 +-----------------------------+------+-------+------------+-----------+-------+
-| Bonded IOB                  |   24 |     0 |          0 |       210 | 11.43 |
+| Bonded IOB                  |   26 |     0 |          0 |       210 | 12.38 |
 | Bonded IPADs                |    0 |     0 |          0 |         2 |  0.00 |
 | PHY_CONTROL                 |    0 |     0 |          0 |         6 |  0.00 |
 | PHASER_REF                  |    0 |     0 |          0 |         6 |  0.00 |
@@ -115,7 +115,7 @@ Warning! For any ECO changes, please run place_design if there are unplaced inst
 +------------+------+-------+------------+-----------+-------+
 |  Site Type | Used | Fixed | Prohibited | Available | Util% |
 +------------+------+-------+------------+-----------+-------+
-| BUFGCTRL   |    1 |     0 |          0 |        32 |  3.13 |
+| BUFGCTRL   |    3 |     0 |          0 |        32 |  9.38 |
 | BUFIO      |    0 |     0 |          0 |        24 |  0.00 |
 | MMCME2_ADV |    0 |     0 |          0 |         6 |  0.00 |
 | PLLE2_ADV  |    0 |     0 |          0 |         6 |  0.00 |
@@ -149,21 +149,21 @@ Warning! For any ECO changes, please run place_design if there are unplaced inst
 +----------+------+---------------------+
 | Ref Name | Used | Functional Category |
 +----------+------+---------------------+
-| FDCE     |  154 |        Flop & Latch |
-| LUT2     |  117 |                 LUT |
-| LUT4     |   90 |                 LUT |
-| LUT6     |   75 |                 LUT |
+| FDCE     |  175 |        Flop & Latch |
+| LUT2     |  134 |                 LUT |
+| LUT4     |   84 |                 LUT |
+| LUT6     |   70 |                 LUT |
 | LDCE     |   65 |        Flop & Latch |
-| FDRE     |   55 |        Flop & Latch |
-| LUT5     |   39 |                 LUT |
-| CARRY4   |   37 |          CarryLogic |
+| FDRE     |   63 |        Flop & Latch |
+| LUT5     |   48 |                 LUT |
+| CARRY4   |   42 |          CarryLogic |
+| LUT1     |   38 |                 LUT |
 | LUT3     |   35 |                 LUT |
-| LUT1     |   35 |                 LUT |
-| OBUF     |   16 |                  IO |
+| OBUF     |   18 |                  IO |
+| FDSE     |   16 |        Flop & Latch |
 | FDPE     |   16 |        Flop & Latch |
-| FDSE     |   15 |        Flop & Latch |
 | IBUF     |    8 |                  IO |
-| BUFG     |    1 |               Clock |
+| BUFG     |    3 |               Clock |
 +----------+------+---------------------+
 
 

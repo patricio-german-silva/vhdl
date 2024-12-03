@@ -50,3 +50,9 @@ set_property PACKAGE_PIN P18 [get_ports poIMPowerMI]
 set_property PACKAGE_PIN D10 [get_ports poIMTx]
 set_property PACKAGE_PIN G6 [get_ports poIMStat]
 set_property IOSTANDARD LVCMOS33 [get_ports poIMStat]
+
+set_property PACKAGE_PIN T18 [get_ports poIMRxTest]
+set_property PACKAGE_PIN U17 [get_ports poIMTxTest]
+
+set_property IOSTANDARD LVCMOS33 [get_ports poIMRxTest]
+set_property IOSTANDARD LVCMOS33 [get_ports poIMTxTest]

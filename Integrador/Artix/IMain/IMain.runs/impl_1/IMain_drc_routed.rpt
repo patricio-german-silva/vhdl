@@ -1,7 +1,7 @@
 Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2024 Advanced Micro Devices, Inc. All Rights Reserved.
 ---------------------------------------------------------------------------------------------------------------------------------------------
 | Tool Version : Vivado v.2024.1 (win64) Build 5076996 Wed May 22 18:37:14 MDT 2024
-| Date         : Wed Nov 27 17:39:35 2024
+| Date         : Mon Dec  2 17:49:57 2024
 | Host         : DELLINS15 running 64-bit major release  (build 9200)
 | Command      : report_drc -file IMain_drc_routed.rpt -pb IMain_drc_routed.pb -rpx IMain_drc_routed.rpx
 | Design       : IMain
@@ -24,13 +24,13 @@ Table of Contents
       Design limits: <entire design considered>
            Ruledeck: default
              Max violations: <unlimited>
-             Violations found: 28
+             Violations found: 27
 +-------------+----------+-------------------------------------------------------------+------------+
 | Rule        | Severity | Description                                                 | Violations |
 +-------------+----------+-------------------------------------------------------------+------------+
 | CFGBVS-1    | Warning  | Missing CFGBVS and CONFIG_VOLTAGE Design Properties         | 1          |
 | PDRC-153    | Warning  | Gated clock check                                           | 23         |
-| PLHOLDVIO-2 | Warning  | Non-Optimal connections which could lead to hold violations | 4          |
+| PLHOLDVIO-2 | Warning  | Non-Optimal connections which could lead to hold violations | 3          |
 +-------------+----------+-------------------------------------------------------------+------------+
 
 2. REPORT DETAILS
@@ -50,117 +50,117 @@ Related violations: <none>
 
 PDRC-153#1 Warning
 Gated clock check  
-Net instDecodeCmd/instModuleCounter/clk10ms is a gated clock net sourced by a combinational pin instDecodeCmd/instModuleCounter/poDCMDPowerSelMD[6]_C_i_2/O, cell instDecodeCmd/instModuleCounter/poDCMDPowerSelMD[6]_C_i_2. This is not good design practice and will likely impact performance. For SLICE registers, for example, use the CE pin to control the loading of data.
+Net instCommProtRx/cmd__0 is a gated clock net sourced by a combinational pin instCommProtRx/cmd_reg[7]_i_1/O, cell instCommProtRx/cmd_reg[7]_i_1. This is not good design practice and will likely impact performance. For SLICE registers, for example, use the CE pin to control the loading of data.
 Related violations: <none>
 
 PDRC-153#2 Warning
 Gated clock check  
-Net instDecodeCmd/poDCMDPowerSelMD_reg[0]_LDC_i_1_n_0 is a gated clock net sourced by a combinational pin instDecodeCmd/poDCMDPowerSelMD_reg[0]_LDC_i_1/O, cell instDecodeCmd/poDCMDPowerSelMD_reg[0]_LDC_i_1. This is not good design practice and will likely impact performance. For SLICE registers, for example, use the CE pin to control the loading of data.
+Net instCommProtRx/data__0[3] is a gated clock net sourced by a combinational pin instCommProtRx/data_reg[3]_i_2/O, cell instCommProtRx/data_reg[3]_i_2. This is not good design practice and will likely impact performance. For SLICE registers, for example, use the CE pin to control the loading of data.
 Related violations: <none>
 
 PDRC-153#3 Warning
 Gated clock check  
-Net instDecodeCmd/poDCMDPowerSelMD_reg[1]_LDC_i_1_n_0 is a gated clock net sourced by a combinational pin instDecodeCmd/poDCMDPowerSelMD_reg[1]_LDC_i_1/O, cell instDecodeCmd/poDCMDPowerSelMD_reg[1]_LDC_i_1. This is not good design practice and will likely impact performance. For SLICE registers, for example, use the CE pin to control the loading of data.
+Net instCommProtRx/data__0[8] is a gated clock net sourced by a combinational pin instCommProtRx/data_reg[11]_i_2/O, cell instCommProtRx/data_reg[11]_i_2. This is not good design practice and will likely impact performance. For SLICE registers, for example, use the CE pin to control the loading of data.
 Related violations: <none>
 
 PDRC-153#4 Warning
 Gated clock check  
-Net instDecodeCmd/poDCMDPowerSelMD_reg[2]_LDC_i_1_n_0 is a gated clock net sourced by a combinational pin instDecodeCmd/poDCMDPowerSelMD_reg[2]_LDC_i_1/O, cell instDecodeCmd/poDCMDPowerSelMD_reg[2]_LDC_i_1. This is not good design practice and will likely impact performance. For SLICE registers, for example, use the CE pin to control the loading of data.
+Net instDecodeCmd/instModuleCounter/clk10ms is a gated clock net sourced by a combinational pin instDecodeCmd/instModuleCounter/poDCMDPowerSelMD[6]_C_i_2/O, cell instDecodeCmd/instModuleCounter/poDCMDPowerSelMD[6]_C_i_2. This is not good design practice and will likely impact performance. For SLICE registers, for example, use the CE pin to control the loading of data.
 Related violations: <none>
 
 PDRC-153#5 Warning
 Gated clock check  
-Net instDecodeCmd/poDCMDPowerSelMD_reg[3]_LDC_i_1_n_0 is a gated clock net sourced by a combinational pin instDecodeCmd/poDCMDPowerSelMD_reg[3]_LDC_i_1/O, cell instDecodeCmd/poDCMDPowerSelMD_reg[3]_LDC_i_1. This is not good design practice and will likely impact performance. For SLICE registers, for example, use the CE pin to control the loading of data.
+Net instDecodeCmd/poDCMDPowerSelMD_reg[0]_LDC_i_1_n_0 is a gated clock net sourced by a combinational pin instDecodeCmd/poDCMDPowerSelMD_reg[0]_LDC_i_1/O, cell instDecodeCmd/poDCMDPowerSelMD_reg[0]_LDC_i_1. This is not good design practice and will likely impact performance. For SLICE registers, for example, use the CE pin to control the loading of data.
 Related violations: <none>
 
 PDRC-153#6 Warning
 Gated clock check  
-Net instDecodeCmd/poDCMDPowerSelMD_reg[4]_LDC_i_1_n_0 is a gated clock net sourced by a combinational pin instDecodeCmd/poDCMDPowerSelMD_reg[4]_LDC_i_1/O, cell instDecodeCmd/poDCMDPowerSelMD_reg[4]_LDC_i_1. This is not good design practice and will likely impact performance. For SLICE registers, for example, use the CE pin to control the loading of data.
+Net instDecodeCmd/poDCMDPowerSelMD_reg[1]_LDC_i_1_n_0 is a gated clock net sourced by a combinational pin instDecodeCmd/poDCMDPowerSelMD_reg[1]_LDC_i_1/O, cell instDecodeCmd/poDCMDPowerSelMD_reg[1]_LDC_i_1. This is not good design practice and will likely impact performance. For SLICE registers, for example, use the CE pin to control the loading of data.
 Related violations: <none>
 
 PDRC-153#7 Warning
 Gated clock check  
-Net instDecodeCmd/poDCMDPowerSelMD_reg[5]_LDC_i_1_n_0 is a gated clock net sourced by a combinational pin instDecodeCmd/poDCMDPowerSelMD_reg[5]_LDC_i_1/O, cell instDecodeCmd/poDCMDPowerSelMD_reg[5]_LDC_i_1. This is not good design practice and will likely impact performance. For SLICE registers, for example, use the CE pin to control the loading of data.
+Net instDecodeCmd/poDCMDPowerSelMD_reg[2]_LDC_i_1_n_0 is a gated clock net sourced by a combinational pin instDecodeCmd/poDCMDPowerSelMD_reg[2]_LDC_i_1/O, cell instDecodeCmd/poDCMDPowerSelMD_reg[2]_LDC_i_1. This is not good design practice and will likely impact performance. For SLICE registers, for example, use the CE pin to control the loading of data.
 Related violations: <none>
 
 PDRC-153#8 Warning
 Gated clock check  
-Net instDecodeCmd/poDCMDPowerSelMD_reg[6]_LDC_i_1_n_0 is a gated clock net sourced by a combinational pin instDecodeCmd/poDCMDPowerSelMD_reg[6]_LDC_i_1/O, cell instDecodeCmd/poDCMDPowerSelMD_reg[6]_LDC_i_1. This is not good design practice and will likely impact performance. For SLICE registers, for example, use the CE pin to control the loading of data.
+Net instDecodeCmd/poDCMDPowerSelMD_reg[3]_LDC_i_1_n_0 is a gated clock net sourced by a combinational pin instDecodeCmd/poDCMDPowerSelMD_reg[3]_LDC_i_1/O, cell instDecodeCmd/poDCMDPowerSelMD_reg[3]_LDC_i_1. This is not good design practice and will likely impact performance. For SLICE registers, for example, use the CE pin to control the loading of data.
 Related violations: <none>
 
 PDRC-153#9 Warning
 Gated clock check  
-Net instHBridgeCtrlMD/instModuleCounter/CLK is a gated clock net sourced by a combinational pin instHBridgeCtrlMD/instModuleCounter/powerCount[6]_i_2__0/O, cell instHBridgeCtrlMD/instModuleCounter/powerCount[6]_i_2__0. This is not good design practice and will likely impact performance. For SLICE registers, for example, use the CE pin to control the loading of data.
+Net instDecodeCmd/poDCMDPowerSelMD_reg[4]_LDC_i_1_n_0 is a gated clock net sourced by a combinational pin instDecodeCmd/poDCMDPowerSelMD_reg[4]_LDC_i_1/O, cell instDecodeCmd/poDCMDPowerSelMD_reg[4]_LDC_i_1. This is not good design practice and will likely impact performance. For SLICE registers, for example, use the CE pin to control the loading of data.
 Related violations: <none>
 
 PDRC-153#10 Warning
 Gated clock check  
-Net instHBridgeCtrlMI/instModuleCounter/CLK is a gated clock net sourced by a combinational pin instHBridgeCtrlMI/instModuleCounter/powerCount[6]_i_2/O, cell instHBridgeCtrlMI/instModuleCounter/powerCount[6]_i_2. This is not good design practice and will likely impact performance. For SLICE registers, for example, use the CE pin to control the loading of data.
+Net instDecodeCmd/poDCMDPowerSelMD_reg[5]_LDC_i_1_n_0 is a gated clock net sourced by a combinational pin instDecodeCmd/poDCMDPowerSelMD_reg[5]_LDC_i_1/O, cell instDecodeCmd/poDCMDPowerSelMD_reg[5]_LDC_i_1. This is not good design practice and will likely impact performance. For SLICE registers, for example, use the CE pin to control the loading of data.
 Related violations: <none>
 
 PDRC-153#11 Warning
 Gated clock check  
-Net instUaRx/E[0] is a gated clock net sourced by a combinational pin instUaRx/poUaRxData_reg[7]_i_1/O, cell instUaRx/poUaRxData_reg[7]_i_1. This is not good design practice and will likely impact performance. For SLICE registers, for example, use the CE pin to control the loading of data.
+Net instDecodeCmd/poDCMDPowerSelMD_reg[6]_LDC_i_1_n_0 is a gated clock net sourced by a combinational pin instDecodeCmd/poDCMDPowerSelMD_reg[6]_LDC_i_1/O, cell instDecodeCmd/poDCMDPowerSelMD_reg[6]_LDC_i_1. This is not good design practice and will likely impact performance. For SLICE registers, for example, use the CE pin to control the loading of data.
 Related violations: <none>
 
 PDRC-153#12 Warning
 Gated clock check  
-Net instUaRx/FSM_onehot_state_reg[4] is a gated clock net sourced by a combinational pin instUaRx/poCPRxCmd_reg[7]_i_1/O, cell instUaRx/poCPRxCmd_reg[7]_i_1. This is not good design practice and will likely impact performance. For SLICE registers, for example, use the CE pin to control the loading of data.
+Net instHBridgeCtrlMD/instModuleCounter/CLK is a gated clock net sourced by a combinational pin instHBridgeCtrlMD/instModuleCounter/powerCount[6]_i_2/O, cell instHBridgeCtrlMD/instModuleCounter/powerCount[6]_i_2. This is not good design practice and will likely impact performance. For SLICE registers, for example, use the CE pin to control the loading of data.
 Related violations: <none>
 
 PDRC-153#13 Warning
 Gated clock check  
-Net instUaRx/brgrst_reg_i_2_n_0 is a gated clock net sourced by a combinational pin instUaRx/brgrst_reg_i_2/O, cell instUaRx/brgrst_reg_i_2. This is not good design practice and will likely impact performance. For SLICE registers, for example, use the CE pin to control the loading of data.
+Net instHBridgeCtrlMI/instModuleCounter/CLK is a gated clock net sourced by a combinational pin instHBridgeCtrlMI/instModuleCounter/powerCount[6]_i_2__0/O, cell instHBridgeCtrlMI/instModuleCounter/powerCount[6]_i_2__0. This is not good design practice and will likely impact performance. For SLICE registers, for example, use the CE pin to control the loading of data.
 Related violations: <none>
 
 PDRC-153#14 Warning
 Gated clock check  
-Net instUaRx/instUaRxBRG/E[0] is a gated clock net sourced by a combinational pin instUaRx/instUaRxBRG/latch_reg[0]_i_2/O, cell instUaRx/instUaRxBRG/latch_reg[0]_i_2. This is not good design practice and will likely impact performance. For SLICE registers, for example, use the CE pin to control the loading of data.
+Net instUaRx/brgrst_reg_i_2_n_0 is a gated clock net sourced by a combinational pin instUaRx/brgrst_reg_i_2/O, cell instUaRx/brgrst_reg_i_2. This is not good design practice and will likely impact performance. For SLICE registers, for example, use the CE pin to control the loading of data.
 Related violations: <none>
 
 PDRC-153#15 Warning
 Gated clock check  
-Net instUaRx/instUaRxBRG/E[1] is a gated clock net sourced by a combinational pin instUaRx/instUaRxBRG/latch_reg[1]_i_2/O, cell instUaRx/instUaRxBRG/latch_reg[1]_i_2. This is not good design practice and will likely impact performance. For SLICE registers, for example, use the CE pin to control the loading of data.
+Net instUaRx/instUaRxBRG/E[0] is a gated clock net sourced by a combinational pin instUaRx/instUaRxBRG/latch_reg[0]_i_2/O, cell instUaRx/instUaRxBRG/latch_reg[0]_i_2. This is not good design practice and will likely impact performance. For SLICE registers, for example, use the CE pin to control the loading of data.
 Related violations: <none>
 
 PDRC-153#16 Warning
 Gated clock check  
-Net instUaRx/instUaRxBRG/E[2] is a gated clock net sourced by a combinational pin instUaRx/instUaRxBRG/latch_reg[2]_i_2/O, cell instUaRx/instUaRxBRG/latch_reg[2]_i_2. This is not good design practice and will likely impact performance. For SLICE registers, for example, use the CE pin to control the loading of data.
+Net instUaRx/instUaRxBRG/E[1] is a gated clock net sourced by a combinational pin instUaRx/instUaRxBRG/latch_reg[1]_i_2/O, cell instUaRx/instUaRxBRG/latch_reg[1]_i_2. This is not good design practice and will likely impact performance. For SLICE registers, for example, use the CE pin to control the loading of data.
 Related violations: <none>
 
 PDRC-153#17 Warning
 Gated clock check  
-Net instUaRx/instUaRxBRG/E[3] is a gated clock net sourced by a combinational pin instUaRx/instUaRxBRG/latch_reg[3]_i_2/O, cell instUaRx/instUaRxBRG/latch_reg[3]_i_2. This is not good design practice and will likely impact performance. For SLICE registers, for example, use the CE pin to control the loading of data.
+Net instUaRx/instUaRxBRG/E[2] is a gated clock net sourced by a combinational pin instUaRx/instUaRxBRG/latch_reg[2]_i_2/O, cell instUaRx/instUaRxBRG/latch_reg[2]_i_2. This is not good design practice and will likely impact performance. For SLICE registers, for example, use the CE pin to control the loading of data.
 Related violations: <none>
 
 PDRC-153#18 Warning
 Gated clock check  
-Net instUaRx/instUaRxBRG/E[4] is a gated clock net sourced by a combinational pin instUaRx/instUaRxBRG/latch_reg[4]_i_2/O, cell instUaRx/instUaRxBRG/latch_reg[4]_i_2. This is not good design practice and will likely impact performance. For SLICE registers, for example, use the CE pin to control the loading of data.
+Net instUaRx/instUaRxBRG/E[3] is a gated clock net sourced by a combinational pin instUaRx/instUaRxBRG/latch_reg[3]_i_2/O, cell instUaRx/instUaRxBRG/latch_reg[3]_i_2. This is not good design practice and will likely impact performance. For SLICE registers, for example, use the CE pin to control the loading of data.
 Related violations: <none>
 
 PDRC-153#19 Warning
 Gated clock check  
-Net instUaRx/instUaRxBRG/E[5] is a gated clock net sourced by a combinational pin instUaRx/instUaRxBRG/latch_reg[5]_i_2/O, cell instUaRx/instUaRxBRG/latch_reg[5]_i_2. This is not good design practice and will likely impact performance. For SLICE registers, for example, use the CE pin to control the loading of data.
+Net instUaRx/instUaRxBRG/E[4] is a gated clock net sourced by a combinational pin instUaRx/instUaRxBRG/latch_reg[4]_i_2/O, cell instUaRx/instUaRxBRG/latch_reg[4]_i_2. This is not good design practice and will likely impact performance. For SLICE registers, for example, use the CE pin to control the loading of data.
 Related violations: <none>
 
 PDRC-153#20 Warning
 Gated clock check  
-Net instUaRx/instUaRxBRG/E[6] is a gated clock net sourced by a combinational pin instUaRx/instUaRxBRG/latch_reg[6]_i_2/O, cell instUaRx/instUaRxBRG/latch_reg[6]_i_2. This is not good design practice and will likely impact performance. For SLICE registers, for example, use the CE pin to control the loading of data.
+Net instUaRx/instUaRxBRG/E[5] is a gated clock net sourced by a combinational pin instUaRx/instUaRxBRG/latch_reg[5]_i_2/O, cell instUaRx/instUaRxBRG/latch_reg[5]_i_2. This is not good design practice and will likely impact performance. For SLICE registers, for example, use the CE pin to control the loading of data.
 Related violations: <none>
 
 PDRC-153#21 Warning
 Gated clock check  
-Net instUaRx/instUaRxBRG/E[7] is a gated clock net sourced by a combinational pin instUaRx/instUaRxBRG/latch_reg[7]_i_2/O, cell instUaRx/instUaRxBRG/latch_reg[7]_i_2. This is not good design practice and will likely impact performance. For SLICE registers, for example, use the CE pin to control the loading of data.
+Net instUaRx/instUaRxBRG/E[6] is a gated clock net sourced by a combinational pin instUaRx/instUaRxBRG/latch_reg[6]_i_2/O, cell instUaRx/instUaRxBRG/latch_reg[6]_i_2. This is not good design practice and will likely impact performance. For SLICE registers, for example, use the CE pin to control the loading of data.
 Related violations: <none>
 
 PDRC-153#22 Warning
 Gated clock check  
-Net instUaTx/latch is a gated clock net sourced by a combinational pin instUaTx/latch_reg[7]_i_1__0/O, cell instUaTx/latch_reg[7]_i_1__0. This is not good design practice and will likely impact performance. For SLICE registers, for example, use the CE pin to control the loading of data.
+Net instUaRx/instUaRxBRG/E[7] is a gated clock net sourced by a combinational pin instUaRx/instUaRxBRG/latch_reg[7]_i_2/O, cell instUaRx/instUaRxBRG/latch_reg[7]_i_2. This is not good design practice and will likely impact performance. For SLICE registers, for example, use the CE pin to control the loading of data.
 Related violations: <none>
 
 PDRC-153#23 Warning
 Gated clock check  
-Net instUaTx/poUaTxTx_reg_i_2_n_0 is a gated clock net sourced by a combinational pin instUaTx/poUaTxTx_reg_i_2/O, cell instUaTx/poUaTxTx_reg_i_2. This is not good design practice and will likely impact performance. For SLICE registers, for example, use the CE pin to control the loading of data.
+Net instUaTx/instUaTxBRG/txrdy__0 is a gated clock net sourced by a combinational pin instUaTx/instUaTxBRG/txrdy_reg_i_2/O, cell instUaTx/instUaTxBRG/txrdy_reg_i_2. This is not good design practice and will likely impact performance. For SLICE registers, for example, use the CE pin to control the loading of data.
 Related violations: <none>
 
 PLHOLDVIO-2#1 Warning
@@ -185,7 +185,7 @@ Related violations: <none>
 
 PLHOLDVIO-2#2 Warning
 Non-Optimal connections which could lead to hold violations  
-A LUT instHBridgeCtrlMD/instModuleCounter/powerCount[6]_i_2__0 is driving clock pin of 7 cells. This could lead to large hold time violations. Involved cells are:
+A LUT instHBridgeCtrlMD/instModuleCounter/powerCount[6]_i_2 is driving clock pin of 7 cells. This could lead to large hold time violations. Involved cells are:
 instHBridgeCtrlMD/instPwmGen/powerCount_reg[0],
 instHBridgeCtrlMD/instPwmGen/powerCount_reg[1],
 instHBridgeCtrlMD/instPwmGen/powerCount_reg[2],
@@ -197,7 +197,7 @@ Related violations: <none>
 
 PLHOLDVIO-2#3 Warning
 Non-Optimal connections which could lead to hold violations  
-A LUT instHBridgeCtrlMI/instModuleCounter/powerCount[6]_i_2 is driving clock pin of 7 cells. This could lead to large hold time violations. Involved cells are:
+A LUT instHBridgeCtrlMI/instModuleCounter/powerCount[6]_i_2__0 is driving clock pin of 7 cells. This could lead to large hold time violations. Involved cells are:
 instHBridgeCtrlMI/instPwmGen/powerCount_reg[0],
 instHBridgeCtrlMI/instPwmGen/powerCount_reg[1],
 instHBridgeCtrlMI/instPwmGen/powerCount_reg[2],
@@ -205,16 +205,6 @@ instHBridgeCtrlMI/instPwmGen/powerCount_reg[3],
 instHBridgeCtrlMI/instPwmGen/powerCount_reg[4],
 instHBridgeCtrlMI/instPwmGen/powerCount_reg[5]
 instHBridgeCtrlMI/instPwmGen/powerCount_reg[6]
-Related violations: <none>
-
-PLHOLDVIO-2#4 Warning
-Non-Optimal connections which could lead to hold violations  
-A LUT instUaRx/poUaRxData_reg[7]_i_1 is driving clock pin of 5 cells. This could lead to large hold time violations. Involved cells are:
-instCommProtRx/FSM_onehot_state_reg[0],
-instCommProtRx/FSM_onehot_state_reg[1],
-instCommProtRx/FSM_onehot_state_reg[2],
-instCommProtRx/FSM_onehot_state_reg[3]
-instCommProtRx/FSM_onehot_state_reg[4]
 Related violations: <none>
 
 

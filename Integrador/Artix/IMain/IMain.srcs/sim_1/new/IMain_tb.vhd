@@ -42,6 +42,8 @@ architecture Behavioral of IMain_TB is
              piIMEna : in STD_LOGIC;              --                                                         SW0
              piIMRx : in STD_LOGIC;               --                                                    Port A9
              poIMTx : out STD_LOGIC;              --                                                    Port D10
+             poIMRxTest : out STD_LOGIC;               --                                                     IO40
+             poIMTxTest : out STD_LOGIC;              --                                                     IO41
              piIMSensors : in STD_LOGIC_VECTOR(3 downto 0);  -- Sensores fisicos                             BTN0 - BTN3
              poIMSevSeg : out STD_LOGIC_VECTOR(6 downto 0);  -- Al display de 7 segmentos                    IO32 - IO27
              poIMDot : out STD_LOGIC;                        -- Al punto del display de 7 segmentos -        IO26
@@ -53,7 +55,7 @@ architecture Behavioral of IMain_TB is
      );
     end component IMain;
 
-    signal clk, rst, ena, rx, tx, dot, poMD, poMI, stat: STD_LOGIC;
+    signal clk, rst, ena, rx, tx, rxtest, txtest, dot, poMD, poMI, stat: STD_LOGIC;
     signal sensors: STD_LOGIC_VECTOR(3 downto 0);
     signal sevseg: STD_LOGIC_VECTOR(6 downto 0);
     signal dirMD, dirMI: STD_LOGIC_VECTOR(1 downto 0);
@@ -70,6 +72,8 @@ begin
              piIMEna => ena,
              piIMRx => rx,
              poIMTx => tx,
+             poIMRxTest => rxtest,
+             poIMTxTest => txtest,
              piIMSensors=> sensors,
              poIMSevSeg => sevseg,
              poIMDot => dot,
