@@ -42,7 +42,7 @@ architecture Behavioral of IMain_TB is
              piIMEna : in STD_LOGIC;              --                                                         SW0
              piIMRx : in STD_LOGIC;               --                                                    Port A9
              poIMTx : out STD_LOGIC;              --                                                    Port D10
-             poIMRxTest : out STD_LOGIC;               --                                                     IO40
+             poIMRxTest : out STD_LOGIC;               --                                                    IO40
              poIMTxTest : out STD_LOGIC;              --                                                     IO41
              piIMSensors : in STD_LOGIC_VECTOR(3 downto 0);  -- Sensores fisicos                             BTN0 - BTN3
              poIMSevSeg : out STD_LOGIC_VECTOR(6 downto 0);  -- Al display de 7 segmentos                    IO32 - IO27
@@ -61,7 +61,8 @@ architecture Behavioral of IMain_TB is
     signal dirMD, dirMI: STD_LOGIC_VECTOR(1 downto 0);
 
 
-    constant brt: time := 50 ns;
+    constant brt: time := 104 us;
+    constant towait: time := 5 ms;
     signal input: STD_LOGIC_VECTOR(8-1 downto 0);
 
 begin
@@ -144,7 +145,7 @@ begin
 
 
         -- Automatico, velocidad media 40%
-       wait for 10 us;
+       wait for towait;
        sensors <= "0110";
        cmd(0) := 68;
        cmd(1) := 03;
@@ -166,11 +167,11 @@ begin
 
 
        -- Cambio en estado de los sensores
-       wait for 10 us;
+       wait for towait;
        sensors <= "1100";
 
        -- Cambio en estado de los sensores
-       wait for 10 us;
+       wait for towait;
        sensors <= "1000";
 
        -- Control desde PC
@@ -212,7 +213,7 @@ begin
            rx <= '1';
         end loop;
 
-       wait for 10 us;
+       wait for towait;
 
        -- Control manual de sensores a "1100"
        cmd(0) := 68;
@@ -235,7 +236,7 @@ begin
 
 
         -- velocidad media 75%
-       wait for 10 us;
+       wait for towait;
        cmd(0) := 68;
        cmd(1) := 03;
        cmd(2) := 07;
@@ -255,7 +256,7 @@ begin
         end loop;
 
        -- Control manual de sensores a "0110"
-       wait for 10 us;
+       wait for towait;
        cmd(0) := 68;
        cmd(1) := 04;
        cmd(2) := 06;
