@@ -326,7 +326,7 @@ Formado por una maquina de estado y un generador de baudrate. El puerto TX conec
 El diseño contempla iniciar el envío de un nuevo paquete de datos durante el envio del bit de stop del PDU anterior.
 
 \subsection{CommProtRx}
-Formado por una maquina de estado y un temporizador de tipo TTrigger, por cada PDU RX recibido analiza si conforma un paquete de protocolo válido, y genera un pulso de clock, poniendo el byte de comando los dos bytes de datos en el bus de salida.
+Formado por una maquina de estado y un temporizador de tipo TTrigger, por cada PDU RX recibido analiza si conforma un paquete de protocolo válido, y genera un pulso de clock, poniendo el byte de comando y los dos bytes de datos en el bus de salida.
 
 \begin{figure}[H]
     \centering
@@ -339,7 +339,7 @@ Si el periodo entre la recepción de los bytes desde el modulo RX en algún mome
 \subsection{DecodeCmd}
 Cuando se recibe un comando en CommProtRx el mismo se interpreta en este modulo, si el comando corresponde a un comando válido, se interpreta los datos de entrada y se modifica el estado de los motores o sensores si corresponde.
 
-El módulo incorpora un contador de modulo que controla la velocidad de los motores cada 10ms segun el valor de los sensores, para cuando estos operan en modo automático. Este control periódico no es necesario por tratarse de un control proporcional pero si lo seria si se utilizaría si se incorpora un control PD o PID
+El módulo incorpora un contador de modulo que controla y ajusta la velocidad de los motores cada 10ms según el valor de los sensores, para cuando estos operan en modo automático. Este control periódico no es necesario por tratarse de un control con un valor de corrección fijo, que es aún mas básico de que un control proporcional, pero si lo seria si se incorpora un control PD o PID.
 
 \begin{figure}[H]
     \centering
@@ -348,7 +348,7 @@ El módulo incorpora un contador de modulo que controla la velocidad de los moto
 \end{figure}
 
 \subsection{HBridgeCtrl}
-AL recibir un pulso en el puerto set, el modulo modulo registra las entradas duty cycle y dirección de giro, y mediante un modulo PwmGen genera una salida Pwm  y setea las salidas de dirección. El diseño posee dos módulos HBridgeCtrl, uno para cada motor.
+Al recibir un pulso en el puerto set, el módulo registra las entradas duty cycle y dirección de giro, y mediante un modulo PwmGen genera una salida Pwm  y setea las salidas de dirección. El diseño posee dos módulos HBridgeCtrl, uno para cada motor.
 
 \begin{figure}[H]
     \centering
@@ -412,7 +412,7 @@ Genera los pulsos de sincronización de baudios para los módulos UaRx y UaTx, s
 
 \begin{figure}[H]
     \centering
-    \includegraphics[angle=270, width=\textwidth]{ttrigger-crop}
+    \includegraphics[width=\textwidth]{BaudRateGen-crop}
     \caption{Esquemático del módulo \textbf{BaudRateGen}}
 \end{figure}
 
@@ -454,7 +454,7 @@ Cada modulo se desarrollo con su propio testbench y, adicionalmente, se desarrol
     \caption{Simulación del sistema}
 \end{figure}
 
-La simulación consiste en enviar una serie de comandos y ver la respuesta del sistema, con un tiempo de espera entre ellos, la respuesta es la esperada. Los comandos son los siguientes:
+La simulación consiste en enviar una serie de comandos y ver la respuesta del sistema con un tiempo de espera entre ellos, la respuesta es la esperada. Los comandos son los siguientes:
 
 \begin{enumerate}
 \footnotesize
@@ -478,7 +478,15 @@ El modulo UaRx recibe los bytes mediante rs232, el modulo UaTx responde con cada
     \includegraphics[width=\textwidth]{sim-cmd}
     \caption{Simulación del sistema - Detalle de la recepción de un comando}
 \end{figure}
-\section{Conclusiones}
 
+\newpage
+\section{Conclusiones}
+El desarrollo del auto seguidor de línea en VHDL permitió integrar y aplicar conceptos fundamentales del diseño digital, como el diseño y uso de módulos UART, PWM, maquinas de estado y contadores, que jugaron un papel clave en la generación de señales de control y temporización. Este proyecto consolidó el conocimiento técnico y ofreció una perspectiva práctica sobre cómo los sistemas digitales interactúan con el entorno físico.
+\\
+
+Uno de los principales desafíos enfrentados fue la sincronización en el módulo de recepción (RX) del UART en el lado del FPGA, donde se identificaron problemas relacionados con el manejo de señales asíncronas y la correcta alineación temporal de los datos recibidos y el desafío de realizar la depuración.
+\\
+
+En conclusión, este proyecto cumplió con los objetivos planteados, superando desafíos técnicos significativos y proporcionando posibles mejoras a futuro, como podría ser la implementación de algoritmos de control PID en lugar de solo un control de valor fijo.
 
 \end{document}
