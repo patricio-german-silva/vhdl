@@ -39,136 +39,112 @@ entity UaRx is
             piUaRxEna : in STD_LOGIC; -- RX Enable
             piUaRxRx : in STD_LOGIC;    -- Puerto RX
             poUaRxC: out STD_LOGIC; -- Receive complete - Hay datos para leer en el buffer poUaRxData 
-            poUaRxData : out STD_LOGIC_VECTOR (8-1 downto 0);
-            poUaRxBR : out STD_LOGIC;
-            poUaRxRx : out STD_LOGIC
+            poUaRxData : out STD_LOGIC_VECTOR (8-1 downto 0)
     );
 end UaRx;
 
 architecture A_UaRx of UaRx is
 
-signal RstBR, BRRdy: std_logic;
+Type TStates is (S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10);
+signal state, next_state: TStates;
+signal brgrst: STD_LOGIC := '1';
+signal brgclk: STD_LOGIC;
+signal synlatch, latch: STD_LOGIC_VECTOR(8-1 downto 0);
 
-Type state_type is (stIdle, stStr, stD0, stD1, stD2, stD3, stD4, stD5, stD6, stD7, stStp);
-
-signal state, next_state : state_type;
---Declare internal signals for all outputs of the state-machine
-signal poByteRdy_i : std_logic;  -- example output signal
-signal poByte_i, poByte_n : std_logic_vector(7 downto 0);
-
-signal brCount : unsigned(14-1 downto 0);
 
 begin
 
---instMyBaudRate: entity work.MyModuleCounter(Behavioral)
---    generic map(NBits => BRBits, Max => BR)
---    port map(piUaRxClk => piUaRxClk, piEna => '1', piUaRxRst => RstBR, poX => X, poX2 => X2);
+   instUaRxBRG: entity work.BaudRateGen(A_BaudRateGen)
+      generic map( NBits => 14, Max => RxDIV, First => RxDIV/2)
+      port map(piBRGClk => piUaRxClk, piBRGEna => '1', piBRGRst => brgrst, poBRGO => brgclk);
 
-SYNC_PROC: process (piUaRxClk)
-begin
-  if rising_edge(piUaRxClk) then
-     if (piUaRxRst = '1') then
-        state <= stIdle;
+    SYNC_PROC : process (piUaRxClk, piUaRxRst)
+    begin
+        if rising_edge(piUaRxClk) then
+            if piUaRxRst = '1' then
+                state <= S0;
+            else
+                state <= next_state;
+                synlatch <= latch;
+            end if;
+        end if; 
+    end process SYNC_PROC;
+    
+    
+    NEXT_STATE_DECODE : process (state, brgclk, piUaRxRx, piUaRxEna)
+    begin
+        next_state <= state;
         poUaRxC <= '0';
-     else
-        state <= next_state;
-        poUaRxC <= poByteRdy_i;
-        poByte_n <= poByte_i;
-     end if;
-  end if;
-end process;
-
-
-NEXT_STATE_DECODE: process (state, piUaRxRx, BRRdy)
-begin
-    RstBR <= '0';  
-    next_state <= state;  --default is to stay in current state
-    poByteRdy_i <= '0';
-    poByte_i <= poByte_n;
-       
-    case (state) is
-        when stIdle =>
-            if piUaRxRx = '0' then
-                next_state <= stStr;
-                RstBR <= '1';
-            end if;
-        when stStr =>
-            if BRRdy = '1' then
---            if X = '1' then
-                if piUaRxRx = '0' then
-                    next_state <= stD0;
+        brgrst <= '0';
+        latch <= synlatch;
+        case (state) is
+            when S0 =>  -- Espera bit start
+               if (piUaRxRx = '0') and (piUaRxEna = '1') then
+                    brgrst <= '1';
+                    next_state <= S1;
+                end if;
+            when S1 =>  -- Chequeo que es bit start tras medio periodo
+               if brgclk = '1' then
+                  if piUaRxRx = '0' then
+                     next_state <= S2;
+                  else
+                     next_state <= S0;
+                  end if;
+               end if;
+            when S2 => -- recepcion de datos - bit 0
+                if brgclk = '1' then
+                    latch(0) <= piUaRxRx;
+                    next_state <= S3;
+                end if;
+            when S3 => -- recepcion de datos - bit 1
+                if brgclk = '1' then
+                    latch(1) <= piUaRxRx;
+                    next_state <= S4;
+                end if;
+            when S4 => -- recepcion de datos - bit 2
+                if brgclk = '1' then
+                    latch(2) <= piUaRxRx;
+                    next_state <= S5;
+                end if;
+            when S5 => -- recepcion de datos - bit 3
+                if brgclk = '1' then
+                    latch(3) <= piUaRxRx;
+                    next_state <= S6;
+                end if;
+            when S6 => -- recepcion de datos - bit 4
+                if brgclk = '1' then
+                    latch(4) <= piUaRxRx;
+                    next_state <= S7;
+                end if;
+            when S7 => -- recepcion de datos - bit 5
+                if brgclk = '1' then
+                    latch(5) <= piUaRxRx;
+                    next_state <= S8;
                 else
-                    next_state <= stIdle;
-                end if;    
-            end if;
-        when stD0 =>
-            if BRRdy = '1' then
-                poByte_i(0) <= piUaRxRx;
-                next_state <= stD1;
-             end if;
-        when stD1 =>
-            if BRRdy = '1' then
-                poByte_i(1) <= piUaRxRx;
-                next_state <= stD2;
-             end if;
-        when stD2 =>
-            if BRRdy = '1' then
-                poByte_i(2) <= piUaRxRx;
-                next_state <= stD3;
-             end if;
-        when stD3 =>
-            if BRRdy = '1' then
-                poByte_i(3) <= piUaRxRx;
-                next_state <= stD4;
-             end if;
-        when stD4 =>
-            if BRRdy = '1' then
-                poByte_i(4) <= piUaRxRx;
-                next_state <= stD5;
-             end if;
-        when stD5 =>
-            if BRRdy = '1' then
-                poByte_i(5) <= piUaRxRx;
-                next_state <= stD6;
-             end if;
-        when stD6 =>
-            if BRRdy = '1' then
-                poByte_i(6) <= piUaRxRx;
-                next_state <= stD7;
-             end if;
-        when stD7 =>
-            if BRRdy = '1' then
-                poByte_i(7) <= piUaRxRx;
-                next_state <= stStp;
-             end if;
-        when stStp =>
-            if BRRdy = '1' then
-                next_state <= stIdle;
-                if piUaRxRx = '1' then
-                    poByteRdy_i <= '1';
-                end if;        
-            end if;   
-        when others =>
-            next_state <= stIdle;
-    end case;
-end process;
-
-poUaRxData <= poByte_n;
-
-
-
-BRGenerator: process(piUaRxClk, RstBR)
-begin
-    if RstBR = '1' then
-        brCount <= to_unsigned((100000000/9600)/2, 14);
-    elsif rising_edge(piUaRxClk) then
-        brCount <= brCount - to_unsigned(1, 14);
-        if brCount = to_unsigned(0, 14) then
-            brCount <= to_unsigned(100000000/9600, 14);
-        end if;
-    end if;        
-end process;
-
-BRRdy <= '1' when brCount = to_unsigned(0, 14) else '0';
-
+                    next_state <= S7;
+                end if;
+            when S8 => -- recepcion de datos - bit 6
+                if brgclk = '1' then
+                    latch(6) <= piUaRxRx;
+                    next_state <= S9;
+                end if;
+            when S9 => -- recepcion de datos - bit 7
+                if brgclk = '1' then
+                    latch(7) <= piUaRxRx;
+                    next_state <= S10;
+                end if;
+            when S10 => -- recepcion del bit de stop
+               if (brgclk = '1') then
+                    next_state <= S0;
+                    if (piUaRxRx = '1') then
+                        poUaRxC <= '1';
+                    end if;
+               end if;
+            when others =>
+                next_state <= S0;
+        end case;
+    end process NEXT_STATE_DECODE;
+    
+    poUaRxData <= synlatch;
+    
 end A_UaRx;

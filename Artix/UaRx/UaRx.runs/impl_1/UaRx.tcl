@@ -109,8 +109,7 @@ set rc [catch {
   create_msg_db write_bitstream.pb
   set_param chipscope.maxJobs 4
   set_param checkpoint.writeSynthRtdsInDcp 1
-  set_param synth.incrementalSynthesisCache C:/Users/patri/AppData/Roaming/Xilinx/Vivado/.Xil/Vivado-16784-DELLINS15/incrSyn
-  set_param xicom.use_bs_reader 1
+  set_param synth.incrementalSynthesisCache C:/Users/patri/AppData/Roaming/Xilinx/Vivado/.Xil/Vivado-16764-DELLINS15/incrSyn
   set_param runs.launchOptions { -jobs 8  }
   open_checkpoint UaRx_routed.dcp
   set_property webtalk.parent_dir C:/Users/patri/OneDrive/Documentos/vhdl/Artix/UaRx/UaRx.cache/wt [current_project]

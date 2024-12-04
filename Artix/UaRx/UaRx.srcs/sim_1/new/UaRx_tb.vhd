@@ -43,13 +43,11 @@ architecture Behavioral of UaRx_TB is
             piUaRxEna : in STD_LOGIC; -- RX Enable
             piUaRxRx : in STD_LOGIC;    -- Puerto RX
             poUaRxC: out STD_LOGIC; -- Receive complete - Hay datos para leer en el buffer poUaRxData 
-            poUaRxData : out STD_LOGIC_VECTOR (8-1 downto 0);
-            poUaRxBR : out STD_LOGIC;
-            poUaRxRx : out STD_LOGIC
-    );
+            poUaRxData : out STD_LOGIC_VECTOR (8-1 downto 0)
+            );
    end component UaRx;
 
-   signal clk, rst, ena, rx, rxc, br, rxo: STD_LOGIC;
+   signal clk, rst, ena, rx, rxc: STD_LOGIC;
    signal data: STD_LOGIC_VECTOR(8-1 downto 0);
    signal test: STD_LOGIC_VECTOR(7 downto 0);
 begin
@@ -61,9 +59,7 @@ begin
             piUaRxEna => ena,
             piUaRxRx => rx,
             poUaRxC => rxc,
-            poUaRxData => data,
-            poUaRxBR => br,
-            poUaRxRx => rxo);
+            poUaRxData => data);
 
    pClk: process
 	begin

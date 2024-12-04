@@ -56,10 +56,8 @@ if {$::dispatch::connected} {
 }
 
 OPTRACE "synth_1" START { ROLLUP_AUTO }
-set_param chipscope.maxJobs 4
 set_param checkpoint.writeSynthRtdsInDcp 1
-set_param synth.incrementalSynthesisCache C:/Users/patri/AppData/Roaming/Xilinx/Vivado/.Xil/Vivado-16784-DELLINS15/incrSyn
-set_param xicom.use_bs_reader 1
+set_param synth.incrementalSynthesisCache C:/Users/patri/AppData/Roaming/Xilinx/Vivado/.Xil/Vivado-16764-DELLINS15/incrSyn
 set_msg_config -id {Synth 8-256} -limit 10000
 set_msg_config -id {Synth 8-638} -limit 10000
 OPTRACE "Creating in-memory project" START { }
@@ -76,7 +74,10 @@ set_property ip_output_repo c:/Users/patri/OneDrive/Documentos/vhdl/Artix/UaRx/U
 set_property ip_cache_permissions {read write} [current_project]
 OPTRACE "Creating in-memory project" END { }
 OPTRACE "Adding files" START { }
-read_vhdl -library xil_defaultlib C:/Users/patri/OneDrive/Documentos/vhdl/Artix/UaRx/UaRx.srcs/sources_1/new/UaRx.vhd
+read_vhdl -library xil_defaultlib {
+  C:/Users/patri/OneDrive/Documentos/vhdl/Artix/UaRx/UaRx.srcs/sources_1/new/BaudRateGen.vhd
+  C:/Users/patri/OneDrive/Documentos/vhdl/Artix/UaRx/UaRx.srcs/sources_1/new/UaRx.vhd
+}
 OPTRACE "Adding files" END { }
 # Mark all dcp files as not used in implementation to prevent them from being
 # stitched into the results of this synthesis run. Any black boxes in the
