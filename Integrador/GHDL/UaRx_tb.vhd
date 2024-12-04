@@ -24,7 +24,7 @@ use IEEE.STD_LOGIC_1164.ALL;
 
 -- Uncomment the following library declaration if using
 -- arithmetic functions with Signed or Unsigned values
---use IEEE.NUMERIC_STD.ALL;
+use IEEE.NUMERIC_STD.ALL;
 
 -- Uncomment the following library declaration if instantiating
 -- any Xilinx leaf cells in this code.
@@ -49,11 +49,11 @@ architecture Behavioral of UaRx_TB is
 
    signal clk, rst, ena, rx, rxc: STD_LOGIC;
    signal data: STD_LOGIC_VECTOR(8-1 downto 0);
-   signal test: STD_LOGIC_VECTOR(29 downto 0);
+   signal test: STD_LOGIC_VECTOR(7 downto 0);
 begin
 
        instUaRx: UaRx
-       generic map(RxDIV => 5)
+       generic map(RxDIV => 100000000/9600)
        Port map ( piUaRxClk => clk,
             piUaRxRst => rst,
             piUaRxEna => ena,
@@ -64,28 +64,45 @@ begin
    pClk: process
 	begin
 		clk <= '1';
-		wait for 1 ns;
+		wait for 5 ns;
 		clk <= '0';
-		wait for 1 ns;
+		wait for 5 ns;
 	end process;	
 
 
     process
     begin
+       rst <= '1';
+       ena <= '0';
+       wait for 200 ns;
+       
        rx <= '1';
        rst <= '0';
        ena <= '1';
-       test <= "110101010011111001101010101010";
-       wait for 13 ns;
+       test <= std_logic_vector(TO_UNSIGNED(85, 8));
+       wait for 345 us;
 
-       
-       for i in 0 to 29 loop
+       rx <= '0';
+       wait for 104 us;
+       for i in 0 to 7 loop
            rx <= test(i);
-           wait for 10 ns;
+           wait for 104 us;
        end loop;
-       wait for 100 ns;
+       rx <= '1';
+
+       test <= std_logic_vector(TO_UNSIGNED(195, 8));
+       wait for 104 us;
+       rx <= '0';
+       wait for 104 us;
+       for i in 0 to 7 loop
+           rx <= test(i);
+           wait for 104 us;
+       end loop;
+       rx <= '1';
+       wait for 300 us;
        wait;
 
     end process;
 
 end Behavioral;
+
