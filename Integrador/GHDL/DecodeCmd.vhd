@@ -53,12 +53,13 @@ end DecodeCmd;
 
 architecture A_DecodeCmd of DecodeCmd is
 
-    constant CMD_STOP: STD_LOGIC_VECTOR(7 downto 0) := STD_LOGIC_VECTOR(TO_UNSIGNED(0, 8));
-    constant CMD_VEL_MOTOR_DER: STD_LOGIC_VECTOR(7 downto 0) := STD_LOGIC_VECTOR(TO_UNSIGNED(1, 8));
-    constant CMD_VEL_MOTOR_IZQ: STD_LOGIC_VECTOR(7 downto 0) := STD_LOGIC_VECTOR(TO_UNSIGNED(2, 8));
-    constant CMD_VEL_MEDIA: STD_LOGIC_VECTOR(7 downto 0) := STD_LOGIC_VECTOR(TO_UNSIGNED(3, 8));
-    constant CMD_SIM_SENSOR: STD_LOGIC_VECTOR(7 downto 0) := STD_LOGIC_VECTOR(TO_UNSIGNED(4, 8));
-    constant CMD_MODE: STD_LOGIC_VECTOR(7 downto 0) := STD_LOGIC_VECTOR(TO_UNSIGNED(5, 8));
+    constant CMD_STOP: STD_LOGIC_VECTOR(7 downto 0) := STD_LOGIC_VECTOR(TO_UNSIGNED(48, 8));            -- 0x30 -> '0'
+    constant CMD_VEL_MOTOR_DER: STD_LOGIC_VECTOR(7 downto 0) := STD_LOGIC_VECTOR(TO_UNSIGNED(49, 8));   -- 0x31 -> '1'
+    constant CMD_VEL_MOTOR_IZQ: STD_LOGIC_VECTOR(7 downto 0) := STD_LOGIC_VECTOR(TO_UNSIGNED(50, 8));   -- 0x32 -> '2'
+    constant CMD_VEL_MEDIA: STD_LOGIC_VECTOR(7 downto 0) := STD_LOGIC_VECTOR(TO_UNSIGNED(51, 8));       -- 0x33 -> '3'
+    constant CMD_SIM_SENSOR: STD_LOGIC_VECTOR(7 downto 0) := STD_LOGIC_VECTOR(TO_UNSIGNED(52, 8));      -- 0x34 -> '4'
+    constant CMD_MODE: STD_LOGIC_VECTOR(7 downto 0) := STD_LOGIC_VECTOR(TO_UNSIGNED(53, 8));            -- 0x35 -> '5'
+    constant CMD_DIR: STD_LOGIC_VECTOR(7 downto 0) := STD_LOGIC_VECTOR(TO_UNSIGNED(54, 8));             -- 0x36 -> '6', el seteo de la direccion no se aplica en modo manual, para que se aplique hay que setear velocidad nuevamente 
     constant PC_CONTROL_MODE: STD_LOGIC := '0';
     constant SENSORS_CONTROL_MODE: STD_LOGIC := '1';
 
@@ -67,8 +68,13 @@ architecture A_DecodeCmd of DecodeCmd is
     signal sensors: STD_LOGIC_VECTOR(3 downto 0);
     signal clk10ms: STD_LOGIC;
     signal mode: STD_LOGIC := '1';  -- Modo 1: control por sensores
-    signal auto, stop: STD_LOGIC := '0';
+    signal auto, stop, dirMD, dirMI: STD_LOGIC := '0';
     
+    -- LATCH
+    signal r_CmdRdy : STD_LOGIC; -- Recibido nuevo comando
+    signal r_Cmd : STD_LOGIC_VECTOR(7 downto 0);
+    signal r_Data :  STD_LOGIC_VECTOR (15 downto 0);
+
 begin
 
     -- Tiempo de actualizacion de las velocidades segun los sensores
@@ -80,23 +86,26 @@ begin
 
     PROCESS_CMD: process(piDCMDClk, piDCMDCmdRdy, clk10ms)
     begin
+        r_CmdRdy <= piDCMDCmdRdy;
+        r_Cmd <= piDCMDCmd;
+        r_Data <= piDCMDData;
         if rising_edge(piDCMDClk) then
             poDCMDSetMD <= '0';
             poDCMDSetMI <= '0';
             stop <= '0';
-            if piDCMDCmdRdy = '1' then          -----    COMANDOS A EJECUTAR
-                if piDCMDCmd = CMD_STOP then
+            if r_CmdRdy = '1' then          -----    COMANDOS A EJECUTAR
+                if r_Cmd = CMD_STOP then
                     auto <= '0';
                     poDCMDSetMD <= '1';
                     poDCMDSetMI <= '1';
                     stop <= '1';
-                elsif piDCMDCmd = CMD_VEL_MOTOR_DER then
+                elsif r_Cmd = CMD_VEL_MOTOR_DER then
                     auto <= '0';
                     poDCMDSetMD <= '1';
-                elsif piDCMDCmd = CMD_VEL_MOTOR_IZQ then
+                elsif r_Cmd = CMD_VEL_MOTOR_IZQ then
                     auto <= '0';
                     poDCMDSetMI <= '1';
-                elsif piDCMDCmd = CMD_VEL_MEDIA then
+                elsif r_Cmd = CMD_VEL_MEDIA then
                     -- Activo mod Automatico, asigno potencia media y calculo velocidad baja y alta
                     auto <= '1';
                     avg_power <= UNSIGNED(power);
@@ -110,10 +119,13 @@ begin
                     else
                         lpower <= TO_UNSIGNED(0, 8);
                     end if;
-                elsif (piDCMDCmd = CMD_SIM_SENSOR) and (mode = PC_CONTROL_MODE) then
-                    sensors <= piDCMDData(11 downto 8);
-                elsif piDCMDCmd = CMD_MODE then
-                    mode <= piDCMDData(8);
+                elsif (r_Cmd = CMD_SIM_SENSOR) and (mode = PC_CONTROL_MODE) then
+                    sensors <= r_Data(11 downto 8);
+                elsif r_Cmd = CMD_MODE then
+                    mode <= r_Data(8);
+                elsif r_Cmd = CMD_DIR then
+                    dirMD <= r_Data(9);
+                    dirMI <= r_Data(8);
                 end if;
             else
                 if mode = SENSORS_CONTROL_MODE then
@@ -160,16 +172,16 @@ begin
 
 
 
-
+    -- Calculo potencia, sea que los datos sean de potencia o no. Despues se ve si se los usa
     power <= STD_LOGIC_VECTOR(TO_UNSIGNED(0, 8)) when stop = '1' else
              STD_LOGIC_VECTOR(TO_UNSIGNED(0, 8)) when UNSIGNED(piDCMDData(11 downto 8)) = 0 else
              STD_LOGIC_VECTOR(TO_UNSIGNED(100, 8)) when (UNSIGNED(piDCMDData(11 downto 8)) = 9) and (UNSIGNED(piDCMDData(3 downto 0)) /= 0) else
              STD_LOGIC_VECTOR(UNSIGNED(piDCMDData(11 downto 8)) * 10) when UNSIGNED(piDCMDData(3 downto 0)) < 5 else
              STD_LOGIC_VECTOR(UNSIGNED(piDCMDData(11 downto 8)) * 10 + 5);
 
-    -- Direccion siempre hacia adelante 
-    poDCMDDirSelMD <= '1';
-    poDCMDDirSelMI <= '1';
+    -- Direccion, seleccionable con comando CMD_DIR, bits de datos 8 y 8
+    poDCMDDirSelMD <= '1' when dirMD = '1' else '0';
+    poDCMDDirSelMI <= '1' when dirMI = '1' else '0';
 
     poDCMDMode <= mode;
 

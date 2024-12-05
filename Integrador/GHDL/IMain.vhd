@@ -37,6 +37,8 @@ entity IMain is
             piIMEna : in STD_LOGIC;              --                                                         SW0
             piIMRx : in STD_LOGIC;               --                                                    Port A9
             poIMTx : out STD_LOGIC;              --                                                    Port D10
+            poIMRxTest : out STD_LOGIC;               --                                                    IO38 - T18
+            poIMTxTest : out STD_LOGIC;              --                                                     IO37 - U17
             piIMSensors : in STD_LOGIC_VECTOR(3 downto 0);  -- Sensores fisicos                             BTN0 - BTN3
             poIMSevSeg : out STD_LOGIC_VECTOR(6 downto 0);  -- Al display de 7 segmentos                    IO32 - IO27
             poIMDot : out STD_LOGIC;                        -- Al punto del display de 7 segmentos -        IO26
@@ -82,49 +84,41 @@ signal ledstat : STD_LOGIC;
 begin
 
     instUaRx: entity work.UaRx(A_UaRx)
-        --generic map(RxDIV => 10417) 
-        generic map(RxDIV => 5) 
+        generic map(RxDIV => 10416) 
         port map( piUaRxClk => clk, piUaRxRst => rst, piUaRxEna => ena, piUaRxRx => rx, poUaRxC => rxc, poUaRxData => rxdata);	
 
     instCommProtRx: entity work.CommProtRx(A_CommProtRx)
-        --generic map(HEADER_CHAR => 68, TRAILER_CHAR => 90, TIMEOUT => 10000000) 
-        generic map(HEADER_CHAR => 68, TRAILER_CHAR => 90, TIMEOUT => 1000) 
+        generic map(HEADER_CHAR => 68, TRAILER_CHAR => 90, TIMEOUT => 10000000) 
         port map( piCPRxClk => clk, piCPRxRst => rst, piCPRxEna => ena, piCPRxRdy => rxc, piCPRxRx => rxdata, poCPRxCmd => cmd, poCPRxData => data, poCPRxC => cmdc);	
 
     instUaTx: entity work.UaTx(A_UaTx)
-        --generic map(TxDIV => 10417) 
-        generic map(TxDIV => 5) 
+        generic map(TxDIV => 10416) 
         port map(piUaTxClk => clk, piUaTxRst => rst, piUaTxEna => ena, poUaTxTx => tx, piUaTxDataRdy => rxc, poUaTxC => txc, piUaTxData => rxdata );  -- loopback 
 
     instDecodeCmd: entity work.DecodeCmd(A_DecodeCmd)
-        -- generic map(POWER_SEL_WIDTH => 7, CTRL_PERIOD => 1000000) 
-        generic map(POWER_SEL_WIDTH => 7, CTRL_PERIOD => 100) 
+        generic map(POWER_SEL_WIDTH => 7, CTRL_PERIOD => 1000000) 
         port map(piDCMDClk => clk, piDCMDRst => rst, piDCMDEna => ena, piDCMDCmdRdy => cmdc, piDCMDCmd => cmd, piDCMDData => data, piDCMDSensors => piIMSensors,
                  poDCMDSetMD => setMD, poDCMDDirSelMD => dirMD, poDCMDPowerSelMD => powerMD, poDCMDSetMI => setMI, poDCMDDirSelMI => dirMI, poDCMDPowerSelMI => powerMI, poDCMDMode => mode );	
 
     instHBridgeCtrlMD: entity work.HBridgeCtrl(A_HBridgeCtrl)
-        --generic map(POWER_SEL_WIDTH => 7, PWM_DIV => 100, PWM_PERIOD => 10000) 
-        generic map(POWER_SEL_WIDTH => 7, PWM_DIV => 100, PWM_PERIOD => 2) 
+        generic map(POWER_SEL_WIDTH => 7, PWM_DIV => 100, PWM_PERIOD => 10000) 
         port map( piHBCClk => clk, piHBCRst => rst, piHBCEna => ena, piHBCSet => setMD, piHBCDirSel => dirMD, piHBCPowerSel => powerMD,
                   poHBCDir => poIMDirMD, poHBCPower => poIMPowerMD, poHBCDirSel => latchDirMD, poHBCPowerSel => latchPoMD);
 
     instHBridgeCtrlMI: entity work.HBridgeCtrl(A_HBridgeCtrl)
-        --generic map(POWER_SEL_WIDTH => 7, PWM_DIV => 100, PWM_PERIOD => 10000) 
-        generic map(POWER_SEL_WIDTH => 7, PWM_DIV => 100, PWM_PERIOD => 2) 
+        generic map(POWER_SEL_WIDTH => 7, PWM_DIV => 100, PWM_PERIOD => 10000) 
         port map( piHBCClk => clk, piHBCRst => rst, piHBCEna => ena, piHBCSet => setMI, piHBCDirSel => dirMI, piHBCPowerSel => powerMI,
                   poHBCDir => poIMDirMI, poHBCPower => poIMPowerMI, poHBCDirSel => latchDirMI, poHBCPowerSel => latchPoMI);
 
     instToDisplay: entity work.ToDisplay(A_ToDisplay)
-        --generic map( POWER_SEL_WIDTH => 7, Max => 100000000) 
-        generic map( POWER_SEL_WIDTH => 7, Max => 100) 
+        generic map( POWER_SEL_WIDTH => 7, Max => 50000000) 
         port map( piTDClk => clk, piTDRst => rst, piTDEna => ena, piTDPowerMD => latchPoMD, piTDPowerMI => latchPoMI, piTDMode => mode, poTDData => dispData, poTDDot => poIMDot);	
-
+ 
     instHexToSevSeg: entity work.HexToSevSeg(A_HexToSevSeg)
         port map( piHTSSSEna => ena, piHTSSSData => dispData, poHTSSSOutput => poIMSevSeg );	
 
     instComStatus: entity work.TTrigger(A_TTrigger)
-        --generic map( NBits => 20, Max => 500000) 
-        generic map( NBits => 20, Max => 50) 
+        generic map( NBits => 24, Max => 10000000) 
         port map( piTTClk => clk, piTTEna => ena, piTTRst => cmdc, poTTO => ledstat);	
 
 
@@ -134,6 +128,10 @@ begin
     rx <= piIMRx;
     poIMTx <= tx;
     poIMStat <= not ledstat;
+    
+    -- Test de UART
+    poIMRxTest <= piIMRx;
+    poIMTxTest <= tx;
     
 end A_IMain;
 

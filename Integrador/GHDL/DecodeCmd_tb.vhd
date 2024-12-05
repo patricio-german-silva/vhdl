@@ -104,7 +104,7 @@ begin
        -- Set motor D manual
        wait until falling_edge(clk);
        cmdrdy <= '1';
-       cmd <= "00000001";
+       cmd <= "00110001";
        data <= "0000010100000101";
        wait until falling_edge(clk);
        cmdrdy <= '0';
@@ -112,7 +112,7 @@ begin
        -- Set motor D manual
        wait until falling_edge(clk);
        cmdrdy <= '1';
-       cmd <= "00000010";
+       cmd <= "00110010";
        data <= "0000001100000000";
        wait until falling_edge(clk);
        cmdrdy <= '0';
@@ -120,7 +120,7 @@ begin
        -- Set velocidad media auto
        wait until falling_edge(clk);
        cmdrdy <= '1';
-       cmd <= "00000011";
+       cmd <= "00110011";
        data <= "0000010100000101";
        wait until falling_edge(clk);
        cmdrdy <= '0';
@@ -128,7 +128,7 @@ begin
        -- Set stop
        wait until falling_edge(clk);
        cmdrdy <= '1';
-       cmd <= "00000000";
+       cmd <= "00110000";
        data <= "0000000000000000";
        wait until falling_edge(clk);
        cmdrdy <= '0';
@@ -136,7 +136,7 @@ begin
        -- Set auto
        wait until falling_edge(clk);
        cmdrdy <= '1';
-       cmd <= "00000011";
+       cmd <= "00110011";
        data <= "0000010100000101";
        wait until falling_edge(clk);
        cmdrdy <= '0';
@@ -150,7 +150,7 @@ begin
        -- Set From PC
        wait until falling_edge(clk);
        cmdrdy <= '1';
-       cmd <= "00000101";
+       cmd <= "00110101";
        data <= "0000000000000000";
        wait until falling_edge(clk);
        cmdrdy <= '0';
@@ -159,7 +159,7 @@ begin
        wait for 100 ns;
        wait until falling_edge(clk);
        cmdrdy <= '1';
-       cmd <= "00000100";
+       cmd <= "00110100";
        data <= "0000110000000000";
        wait until falling_edge(clk);
        cmdrdy <= '0';
@@ -168,7 +168,7 @@ begin
        wait for 100 ns;
        wait until falling_edge(clk);
        cmdrdy <= '1';
-       cmd <= "00000100";
+       cmd <= "00110100";
        data <= "0000001100000000";
        wait until falling_edge(clk);
        cmdrdy <= '0';
@@ -177,8 +177,24 @@ begin
        wait for 100 ns;
        wait until falling_edge(clk);
        cmdrdy <= '1';
-       cmd <= "00000100";
+       cmd <= "00110100";
        data <= "0000000100000000";
+       wait until falling_edge(clk);
+       cmdrdy <= '0';
+
+       -- Set From Sensors
+       wait until falling_edge(clk);
+       cmdrdy <= '1';
+       cmd <= "00110101";
+       data <= "0000000100000000";
+       wait until falling_edge(clk);
+       cmdrdy <= '0';
+
+       -- Set  Direccion
+       wait until falling_edge(clk);
+       cmdrdy <= '1';
+       cmd <= "00110110";
+       data <= "0000001100000000";
        wait until falling_edge(clk);
        cmdrdy <= '0';
 

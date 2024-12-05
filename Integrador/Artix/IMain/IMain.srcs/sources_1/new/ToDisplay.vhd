@@ -41,8 +41,7 @@ entity ToDisplay is
          piTDPowerMI: in STD_LOGIC_VECTOR (POWER_SEL_WIDTH-1 downto 0);
          piTDMode: in STD_LOGIC;
          poTDData: out STD_LOGIC_VECTOR (3 downto 0);
-         poTDDot: out STD_LOGIC;
-         poTDK: out STD_LOGIC
+         poTDDot: out STD_LOGIC
          );
 end ToDisplay;
 
@@ -88,7 +87,6 @@ instCounter: entity work.Counter(A_Counter)
 
     poTDData <= STD_LOGIC_VECTOR(data(3 downto 0));
     poTDdot <= '0' when dot = TO_UNSIGNED(0, POWER_SEL_WIDTH) else '1';
-    poTDK <= co;
     
 end A_ToDisplay;
 
