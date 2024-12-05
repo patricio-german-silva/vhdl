@@ -2,6 +2,7 @@
 \usepackage{blindtext}
 \usepackage[a4paper, total={170mm, 220mm}]{geometry}
 \usepackage[table]{xcolor}
+\definecolor{bgcodecolor}{rgb}{0.90, 0.90, 0.90} 
 \usepackage{graphicx}
 \usepackage{amsmath}
 \usepackage{imakeidx}
@@ -10,6 +11,8 @@
 \usepackage[spanish]{babel}
 \usepackage[affil-it]{authblk}
 \renewcommand{\familydefault}{\sfdefault}
+\usepackage{minted}
+
 
 \makeindex[columns=3, title=Alphabetical Index, intoc]
 
@@ -45,7 +48,7 @@
 
 
 
-\title{\textbf{INFORME DE PROYECTO} \\ \textbf{CONTROL DE VELOCIDAD DE AUTO}}
+\title{\textbf{INFORME DE PROYECTO} \\ \textbf{CONTROL DE VELOCIDAD DE AUTO EN VHDL}}
 
 
 
@@ -79,6 +82,7 @@ Se realizará el diseño, descripción en VHDL y simulación de un sistema capaz
 \item Para la comunicación se agrega una capa de protocolo, de frame de ancho fijo, compuesto por un byte de header, un byte de comando, dos bytes de datos y un byte de tráiler, sin suma de comprobación.
 \end{itemize}
 
+\subsection{Herramientas}
 Para el desarrollo se utiliza el software \textbf{Xilinx Vivado 2024.1}. Por ultimo, se comprobará el correcto funcionamiento del desarrollo en una placa \textbf{DIGILENT Artix-7 FPGA modelo Arty A7-100T (xc7a100tcsg324-1)}. 
 
 \begin{figure}[H]
@@ -102,16 +106,42 @@ Los comandos son los siguientes:
 %·······································································································
 \section{Diseño de la solución}
 
-El diseño se lleva a cabo en diferentes módulos específicos para cada tarea, que serán los siguientes:
+El diseño se lleva a cabo de forma modular, cada módulo (entity) tiene un fin específico para cada tarea:
 \begin{itemize}
 \item UaRx: modulo Uart RX para la recepción desde la PC
-\item UaTx: modulo Uart TX, cuya única finalidad es hacer echo de la información recibida por UaRx.
+\item UaTx: modulo Uart TX, cuya finalidad es hacer echo de la información recibida por UaRx.
 \item CommProtRx: modulo que valida un paquete del protocolo de comunicación, e incorpora una detección de timeout.
 \item DecodeCmd: Interpreta los comandos recibidos.
 \item HBridgeCtrl: recibe una dirección y velocidad y genera una salida PWM según los parámetros establecidos.
 \item ToDisplay: Envia información a un display de 7 segmentos con punto decimal
 \item Módulos auxiliares: módulos contadores, generadores de baud rate y PWM y decodificadores de 7 segmentos.
+\item EL modulo principal IMain que instancia los módulos y los interconecta.
 \end{itemize}
+
+\subsection{EL puente H \textbf{L293D}}
+EL integrado \textbf{L293D} es un doble puente H para el control de pequeños motores (estrictamente es un cuádruple medio puente H).
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{L293D}
+    \caption{Pinout del integrado \textbf{L293D}}
+\end{figure}
+
+Por cada puente H posee dos entradas de dirección y una entrada Enable, se lo puede controlar mediante PWM para variar la potencia de los motores, típicamente las entradas de dirección 1A y 2A para el motor 1 (pines 2 y 7) y 3A y 4A (pines 10 y 15) se alimentan con tensión constante y la señal PWM se envía a la entrada Enable de cada puente H, 1,2EN para el motor 1 (pin 1) y 3,4EN para el motor 2 (pin 9)
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{L293D-pin}
+    \caption{Función de los pines del integrado \textbf{L293D}}
+\end{figure}
+
+La conexión del integrado a los motores puede hacerse del siguiente modo
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{L293D-func-block}
+    \caption{Ejemplo de conexión para el integrado \textbf{L293D}}
+\end{figure}
 
 \subsection{Puertos de I/O}
 
@@ -300,9 +330,9 @@ Todos los módulos son instanciados e interconectados dentro del bloque principa
 \end{figure}
 
 \section{Módulos}
-A continuación se describen los módulos desarrollados
+Cada modulo es desarrollado y testeado de forma independiente, a continuación se describen los módulos desarrollados:
 \subsection{UaRx}
-Formado por una maquina de estado y un generador de baudrate. El puerto RX conectado al UART recibe desde la PC paquetes de datos de 8 bits a 9600 baudios, sin control de paridad ni control de flujo, con 1 bit de stop, totalizando un PDU de 10 bytes. Cuando un nuevo dato se recibe se genera un pulso de 1 clock de duración que notifica el evento.
+Formado por una maquina de estado y un generador de baudrate. El puerto RX conectado a un conversor UART recibe desde la PC paquetes de datos de 8 bits a 9600 baudios, sin control de paridad ni control de flujo, con 1 bit de stop, totalizando un PDU de 10 bytes. Cuando un nuevo dato se recibe se genera un pulso de 1 clock de duración que notifica el evento.
 
 \begin{figure}[H]
     \centering
@@ -315,7 +345,7 @@ El diseño contempla un error de baudrate del 3.5\%, y la recepción de un nuevo
 El generador de baudrate genera, tras un reset, un primer pulso de un periodo \textbf{T/2}
 
 \subsection{UaTx}
-Formado por una maquina de estado y un generador de baudrate. El puerto TX conectado al UART envía a la PC paquetes de datos con la misma especificación que el modulo UaRx. El envio de un nuevo paquete de datos se inicia mediante un pulso en el puerto piUaTxDataReady, cuando se finaliza el envio el modulo notifica con un pulso de un clock de duración-
+Formado por una maquina de estado y un generador de baudrate. El puerto TX conectado  a un conversor UART envía a la PC paquetes de datos con la misma especificación que el modulo UaRx. El envío de un nuevo paquete de datos se inicia mediante un pulso en el puerto piUaTxDataReady, cuando se finaliza el envío el modulo notifica con un pulso de un clock de duración-
 
 \begin{figure}[H]
     \centering
@@ -323,7 +353,7 @@ Formado por una maquina de estado y un generador de baudrate. El puerto TX conec
     \caption{Esquemático del módulo \textbf{UaTx}}
 \end{figure}
 
-El diseño contempla iniciar el envío de un nuevo paquete de datos durante el envio del bit de stop del PDU anterior.
+El diseño contempla iniciar el envío de un nuevo paquete de datos durante el envío del bit de stop del PDU anterior.
 
 \subsection{CommProtRx}
 Formado por una maquina de estado y un temporizador de tipo TTrigger, por cada PDU RX recibido analiza si conforma un paquete de protocolo válido, y genera un pulso de clock, poniendo el byte de comando y los dos bytes de datos en el bus de salida.
@@ -347,6 +377,8 @@ El módulo incorpora un contador de modulo que controla y ajusta la velocidad de
     \caption{Esquemático del módulo \textbf{DecodeCmd}}
 \end{figure}
 
+A la lista de comandos se agrega el comando $D6nsZ$ que indica la direccion de giro de cada motor, que se indican el los 2 ultimos bits menos significativos del primer byte de datos.
+
 \subsection{HBridgeCtrl}
 Al recibir un pulso en el puerto set, el módulo registra las entradas duty cycle y dirección de giro, y mediante un modulo PwmGen genera una salida Pwm  y setea las salidas de dirección. El diseño posee dos módulos HBridgeCtrl, uno para cada motor.
 
@@ -356,14 +388,15 @@ Al recibir un pulso en el puerto set, el módulo registra las entradas duty cycl
     \caption{Esquemático del módulo \textbf{HBridgeCtrl}}
 \end{figure}
 
-Adicionalmente, este modulo tiene como salida los valores actuales de duty cycle y direccion, para que sean tomados por el modulo ToDisplay
+El módulo almacena internamente el Duty Cylcle y direccion, por lo que no es necesario mantener los valores en el puerto de entrada.
+Adicionalmente, este modulo tiene como salida los valores actuales de duty cycle y direccion almacenados, para que sean tomados por el modulo ToDisplay.
 
 \subsection{ToDisplay}
 
-Tiene como entradas la dirección y duty cycle de cada motor además del modo de operación actual del auto, y mediante un modulo Counter muestra de manera cíclica durante 1 segundo los valores de salida, del siguiente modo y en el siguiente orden:
+Tiene como entradas la dirección y duty cycle de cada motor además del modo de operación actual del auto, y mediante un modulo Counter muestra de manera cíclica durante 0.5 segundos los valores de salida, del siguiente modo y en el siguiente orden:
 \begin{enumerate}
 \footnotesize
-\item La letra \textbf{a}
+\item La letra \textbf{A}
 \item La decena de la velocidad del motor Derecho, por ejemplo para un 85\% muestra el numero 8
 \item El punto decimal, para el caso donde el duty cycle es 5\% en exceso a la decena, para 85\% se muestra el punto, para 80\% no se muestra.
 \item La letra \textbf{b}
@@ -372,7 +405,7 @@ Tiene como entradas la dirección y duty cycle de cada motor además del modo de
 \item El modo de control, \textbf{0} para modo \textbf{desde PC} o 1 para modo \textbf{desde sensores}.
 \end{enumerate}
 
-La salida es un valor hexadecimal de 4 bits mas una salida para el punto.
+La salida de este módulo es un valor hexadecimal de 4 bits mas una salida para el punto, la salida debe decodificarse para poder ser mostrada.
 \begin{figure}[H]
     \centering
     \includegraphics[width=\textwidth]{to-display-crop}
@@ -479,14 +512,153 @@ El modulo UaRx recibe los bytes mediante rs232, el modulo UaTx responde con cada
     \caption{Simulación del sistema - Detalle de la recepción de un comando}
 \end{figure}
 
+\subsection{Prueba en la placa de desarrollo \textbf{Arty A7-100T}}
+
+A continuación se muestra el funcionamiento sobre la placa \textbf{Arty A7-100T}, el displey muestra la velocidad del motor Derecho, que se encuentra al \textbf{10\%}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.4\textwidth]{display-motor-derecho-1}
+    \includegraphics[width=0.41\textwidth]{display-motor-derecho-2}
+    \caption{Velocidad del motor Derecho}
+\end{figure}
+
+En la siguiente imagen se muestra en un osciloscopio la salida PWM para el motor Derecho, con un Duty Cycle de \textbf{10\%} y una frecuencia de \textbf{100Hz}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{pwm-motor-derecho-1}
+    \caption{PWM del motor Derecho}
+\end{figure}
+
+EL código de los diferentes módulos se anexa aparte
+
 \newpage
 \section{Conclusiones}
-El desarrollo del auto seguidor de línea en VHDL permitió integrar y aplicar conceptos fundamentales del diseño digital, como el diseño y uso de módulos UART, PWM, maquinas de estado y contadores, que jugaron un papel clave en la generación de señales de control y temporización. Este proyecto consolidó el conocimiento técnico y ofreció una perspectiva práctica sobre cómo los sistemas digitales interactúan con el entorno físico.
+El desarrollo del control para el auto seguidor de línea en VHDL permitió integrar y aplicar conceptos fundamentales del diseño digital combinacional y secuencial, como el diseño y uso de módulos UART, PWM, maquinas de estado y contadores, que jugaron un papel clave en la generación de señales de control y temporización. Este proyecto consolidó el conocimiento técnico y ofreció una perspectiva práctica sobre cómo los sistemas digitales interactúan con el entorno físico.
 \\
 
-Uno de los principales desafíos enfrentados fue la sincronización en el módulo de recepción (RX) del UART en el lado del FPGA, donde se identificaron problemas relacionados con el manejo de señales asíncronas y la correcta alineación temporal de los datos recibidos y el desafío de realizar la depuración.
+Uno de los principales desafíos enfrentados fue la sincronización, particularmente en el módulo de recepción (RX) del UART en el lado del FPGA, donde se identificaron problemas relacionados con el manejo de señales asíncronas y la aplicación de diferentes técnicas de programación para solucionar problemas de metaestabilidad, superar los desafíos que implican la depuración en un entrono de desarrollo de este tipo y lograr asi la correcta alineación temporal de los datos recibidos
 \\
 
-En conclusión, este proyecto cumplió con los objetivos planteados, superando desafíos técnicos significativos y proporcionando posibles mejoras a futuro, como podría ser la implementación de algoritmos de control PID en lugar de solo un control de valor fijo.
+En conclusión, este proyecto cumplió con los objetivos planteados, superando desafíos técnicos significativos y proporcionando posibles mejoras a futuro, como podría ser la implementación de algoritmos de control PID en lugar de un control de valor fijo.
+
+\newpage
+\newgeometry{width=19cm, height=27cm, bottom=1.5cm, left=1cm}
+
+\section{Anexos: Archivos VHDL}
+
+\subsection{Archivo \textbf{BaudRateGen.vhd}}
+\inputminted[bgcolor=bgcodecolor,xleftmargin=20pt,breaklines,linenos,fontsize=\scriptsize]{vhdl}{../GHDL/BaudRateGen.vhd}
+\newpage
+
+\subsection{Archivo \textbf{CommProtRx.vhd}}
+\inputminted[bgcolor=bgcodecolor,xleftmargin=20pt,breaklines,linenos,fontsize=\scriptsize]{vhdl}{../GHDL/CommProtRx.vhd}
+\newpage
+
+\subsection{Archivo \textbf{Counter.vhd}}
+\inputminted[bgcolor=bgcodecolor,xleftmargin=20pt,breaklines,linenos,fontsize=\scriptsize]{vhdl}{../GHDL/Counter.vhd}
+\newpage
+
+\subsection{Archivo \textbf{DecodeCmd.vhd}}
+\inputminted[bgcolor=bgcodecolor,xleftmargin=20pt,breaklines,linenos,fontsize=\scriptsize]{vhdl}{../GHDL/DecodeCmd.vhd}
+\newpage
+
+\subsection{Archivo \textbf{HBridgeCtrl.vhd}}
+\inputminted[bgcolor=bgcodecolor,xleftmargin=20pt,breaklines,linenos,fontsize=\scriptsize]{vhdl}{../GHDL/HBridgeCtrl.vhd}
+\newpage
+
+\subsection{Archivo \textbf{HexToSevSeg.vhd}}
+\inputminted[bgcolor=bgcodecolor,xleftmargin=20pt,breaklines,linenos,fontsize=\scriptsize]{vhdl}{../GHDL/HexToSevSeg.vhd}
+\newpage
+
+\subsection{Archivo \textbf{IMain.vhd}}
+\inputminted[bgcolor=bgcodecolor,xleftmargin=20pt,breaklines,linenos,fontsize=\scriptsize]{vhdl}{../GHDL/IMain.vhd}
+\newpage
+
+\subsection{Archivo \textbf{ModuleCounter.vhd}}
+\inputminted[bgcolor=bgcodecolor,xleftmargin=20pt,breaklines,linenos,fontsize=\scriptsize]{vhdl}{../GHDL/ModuleCounter.vhd}
+\newpage
+
+\subsection{Archivo \textbf{PwmGen.vhd}}
+\inputminted[bgcolor=bgcodecolor,xleftmargin=20pt,breaklines,linenos,fontsize=\scriptsize]{vhdl}{../GHDL/PwmGen.vhd}
+\newpage
+
+\subsection{Archivo \textbf{ToDisplay.vhd}}
+\inputminted[bgcolor=bgcodecolor,xleftmargin=20pt,breaklines,linenos,fontsize=\scriptsize]{vhdl}{../GHDL/ToDisplay.vhd}
+\newpage
+
+\subsection{Archivo \textbf{TTrigger.vhd}}
+\inputminted[bgcolor=bgcodecolor,xleftmargin=20pt,breaklines,linenos,fontsize=\scriptsize]{vhdl}{../GHDL/TTrigger.vhd}
+\newpage
+
+\subsection{Archivo \textbf{Uart.vhd}}
+\inputminted[bgcolor=bgcodecolor,xleftmargin=20pt,breaklines,linenos,fontsize=\scriptsize]{vhdl}{../GHDL/Uart.vhd}
+\newpage
+
+\subsection{Archivo \textbf{UaRx.vhd}}
+\inputminted[bgcolor=bgcodecolor,xleftmargin=20pt,breaklines,linenos,fontsize=\scriptsize]{vhdl}{../GHDL/UaRx.vhd}
+\newpage
+
+\subsection{Archivo \textbf{UaTx.vhd}}
+\inputminted[bgcolor=bgcodecolor,xleftmargin=20pt,breaklines,linenos,fontsize=\scriptsize]{vhdl}{../GHDL/UaTx.vhd}
+
+\section{Anexos: Archivos de TESTBENCH}
+
+\subsection{Archivo \textbf{BaudRateGen\_tb.vhd }}
+\inputminted[bgcolor=bgcodecolor,xleftmargin=20pt,breaklines,linenos,fontsize=\scriptsize]{vhdl}{../GHDL/BaudRateGen_tb.vhd}
+\newpage
+
+\subsection{Archivo \textbf{CommProtRx\_tb.vhd }}
+\inputminted[bgcolor=bgcodecolor,xleftmargin=20pt,breaklines,linenos,fontsize=\scriptsize]{vhdl}{../GHDL/CommProtRx_tb.vhd}
+\newpage
+
+\subsection{Archivo \textbf{Counter\_tb.vhd }}
+\inputminted[bgcolor=bgcodecolor,xleftmargin=20pt,breaklines,linenos,fontsize=\scriptsize]{vhdl}{../GHDL/Counter_tb.vhd}
+\newpage
+
+\subsection{Archivo \textbf{DecodeCmd\_tb.vhd }}
+\inputminted[bgcolor=bgcodecolor,xleftmargin=20pt,breaklines,linenos,fontsize=\scriptsize]{vhdl}{../GHDL/DecodeCmd_tb.vhd}
+\newpage
+
+\subsection{Archivo \textbf{HBridgeCtrl\_tb.vhd }}
+\inputminted[bgcolor=bgcodecolor,xleftmargin=20pt,breaklines,linenos,fontsize=\scriptsize]{vhdl}{../GHDL/HBridgeCtrl_tb.vhd}
+\newpage
+
+\subsection{Archivo \textbf{HexToSevSeg\_tb.vhd }}
+\inputminted[bgcolor=bgcodecolor,xleftmargin=20pt,breaklines,linenos,fontsize=\scriptsize]{vhdl}{../GHDL/HexToSevSeg_tb.vhd}
+\newpage
+
+\subsection{Archivo \textbf{IMain\_tb.vhd }}
+\inputminted[bgcolor=bgcodecolor,xleftmargin=20pt,breaklines,linenos,fontsize=\scriptsize]{vhdl}{../GHDL/IMain_tb.vhd}
+\newpage
+
+\subsection{Archivo \textbf{ModuleCounter\_tb.vhd }}
+\inputminted[bgcolor=bgcodecolor,xleftmargin=20pt,breaklines,linenos,fontsize=\scriptsize]{vhdl}{../GHDL/ModuleCounter_tb.vhd}
+\newpage
+
+\subsection{Archivo \textbf{PwmGen\_tb.vhd }}
+\inputminted[bgcolor=bgcodecolor,xleftmargin=20pt,breaklines,linenos,fontsize=\scriptsize]{vhdl}{../GHDL/PwmGen_tb.vhd}
+\newpage
+
+\subsection{Archivo \textbf{ToDisplay\_tb.vhd }}
+\inputminted[bgcolor=bgcodecolor,xleftmargin=20pt,breaklines,linenos,fontsize=\scriptsize]{vhdl}{../GHDL/ToDisplay_tb.vhd}
+\newpage
+
+\subsection{Archivo \textbf{TTrigger\_tb.vhd }}
+\inputminted[bgcolor=bgcodecolor,xleftmargin=20pt,breaklines,linenos,fontsize=\scriptsize]{vhdl}{../GHDL/TTrigger_tb.vhd}
+\newpage
+
+\subsection{Archivo \textbf{Uart\_tb.vhd }}
+\inputminted[bgcolor=bgcodecolor,xleftmargin=20pt,breaklines,linenos,fontsize=\scriptsize]{vhdl}{../GHDL/Uart_tb.vhd}
+\newpage
+
+\subsection{Archivo \textbf{UaRx\_tb.vhd }}
+\inputminted[bgcolor=bgcodecolor,xleftmargin=20pt,breaklines,linenos,fontsize=\scriptsize]{vhdl}{../GHDL/UaRx_tb.vhd}
+\newpage
+
+\subsection{Archivo \textbf{UaTx\_tb.vhd }}
+\inputminted[bgcolor=bgcodecolor,xleftmargin=20pt,breaklines,linenos,fontsize=\scriptsize]{vhdl}{../GHDL/UaTx_tb.vhd}
+\newpage
 
 \end{document}
