@@ -1,7 +1,7 @@
 Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2024 Advanced Micro Devices, Inc. All Rights Reserved.
 -------------------------------------------------------------------------------------------------------------------------------------------------
 | Tool Version     : Vivado v.2024.1 (win64) Build 5076996 Wed May 22 18:37:14 MDT 2024
-| Date             : Wed Dec  4 19:03:02 2024
+| Date             : Thu Dec  5 19:07:29 2024
 | Host             : DELLINS15 running 64-bit major release  (build 9200)
 | Command          : report_power -file IMain_power_routed.rpt -pb IMain_power_summary_routed.pb -rpx IMain_power_routed.rpx
 | Design           : IMain
@@ -30,10 +30,10 @@ Table of Contents
 ----------
 
 +--------------------------+--------------+
-| Total On-Chip Power (W)  | 0.104        |
+| Total On-Chip Power (W)  | 0.106        |
 | Design Power Budget (W)  | Unspecified* |
 | Power Budget Margin (W)  | NA           |
-| Dynamic (W)              | 0.007        |
+| Dynamic (W)              | 0.009        |
 | Device Static (W)        | 0.097        |
 | Effective TJA (C/W)      | 4.6          |
 | Max Ambient (C)          | 84.5         |
@@ -53,15 +53,16 @@ Table of Contents
 | On-Chip        | Power (W) | Used     | Available | Utilization (%) |
 +----------------+-----------+----------+-----------+-----------------+
 | Clocks         |     0.002 |        3 |       --- |             --- |
-| Slice Logic    |     0.001 |      776 |       --- |             --- |
-|   LUT as Logic |    <0.001 |      278 |     63400 |            0.44 |
+| Slice Logic    |     0.001 |      847 |       --- |             --- |
+|   LUT as Logic |     0.001 |      338 |     63400 |            0.53 |
 |   CARRY4       |    <0.001 |       43 |     15850 |            0.27 |
-|   Register     |    <0.001 |      319 |    126800 |            0.25 |
-|   Others       |     0.000 |       25 |       --- |             --- |
-| Signals        |     0.001 |      649 |       --- |             --- |
-| I/O            |     0.003 |       26 |       210 |           12.38 |
+|   Register     |    <0.001 |      329 |    126800 |            0.26 |
+|   BUFG         |    <0.001 |        1 |        32 |            3.13 |
+|   Others       |     0.000 |       30 |       --- |             --- |
+| Signals        |     0.001 |      701 |       --- |             --- |
+| I/O            |     0.004 |       24 |       210 |           11.43 |
 | Static Power   |     0.097 |          |           |                 |
-| Total          |     0.104 |          |           |                 |
+| Total          |     0.106 |          |           |                 |
 +----------------+-----------+----------+-----------+-----------------+
 
 
@@ -71,7 +72,7 @@ Table of Contents
 +-----------+-------------+-----------+-------------+------------+-------------+-------------+------------+
 | Source    | Voltage (V) | Total (A) | Dynamic (A) | Static (A) | Powerup (A) | Budget (A)  | Margin (A) |
 +-----------+-------------+-----------+-------------+------------+-------------+-------------+------------+
-| Vccint    |       1.000 |     0.019 |       0.004 |      0.015 |       NA    | Unspecified | NA         |
+| Vccint    |       1.000 |     0.020 |       0.005 |      0.015 |       NA    | Unspecified | NA         |
 | Vccaux    |       1.800 |     0.018 |       0.000 |      0.018 |       NA    | Unspecified | NA         |
 | Vcco33    |       3.300 |     0.005 |       0.001 |      0.004 |       NA    | Unspecified | NA         |
 | Vcco25    |       2.500 |     0.000 |       0.000 |      0.000 |       NA    | Unspecified | NA         |
@@ -140,7 +141,7 @@ Table of Contents
 +-------+-----------+
 | Name  | Power (W) |
 +-------+-----------+
-| IMain |     0.007 |
+| IMain |     0.009 |
 +-------+-----------+
 
 

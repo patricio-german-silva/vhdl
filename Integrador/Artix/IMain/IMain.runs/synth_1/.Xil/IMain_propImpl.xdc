@@ -47,7 +47,3 @@ set_property src_info {type:XDC file:1 line:50 export:INPUT save:INPUT read:READ
 set_property PACKAGE_PIN D10 [get_ports poIMTx]
 set_property src_info {type:XDC file:1 line:51 export:INPUT save:INPUT read:READ} [current_design]
 set_property PACKAGE_PIN G6 [get_ports poIMStat]
-set_property src_info {type:XDC file:1 line:54 export:INPUT save:INPUT read:READ} [current_design]
-set_property PACKAGE_PIN T18 [get_ports poIMRxTest]
-set_property src_info {type:XDC file:1 line:55 export:INPUT save:INPUT read:READ} [current_design]
-set_property PACKAGE_PIN U17 [get_ports poIMTxTest]

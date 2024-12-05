@@ -1,6 +1,6 @@
 -------------------------------------
 | Tool Version : Vivado v.2024.1
-| Date         : Wed Dec  4 19:02:25 2024
+| Date         : Thu Dec  5 19:06:53 2024
 | Host         : DELLINS15
 | Design       : design_1
 | Device       : xc7a100t-csg324-1--

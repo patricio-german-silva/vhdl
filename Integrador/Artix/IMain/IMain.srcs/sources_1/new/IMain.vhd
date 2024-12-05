@@ -37,8 +37,6 @@ entity IMain is
             piIMEna : in STD_LOGIC;              --                                                         SW0
             piIMRx : in STD_LOGIC;               --                                                    Port A9
             poIMTx : out STD_LOGIC;              --                                                    Port D10
-            poIMRxTest : out STD_LOGIC;               --                                                    IO38 - T18
-            poIMTxTest : out STD_LOGIC;              --                                                     IO37 - U17
             piIMSensors : in STD_LOGIC_VECTOR(3 downto 0);  -- Sensores fisicos                             BTN0 - BTN3
             poIMSevSeg : out STD_LOGIC_VECTOR(6 downto 0);  -- Al display de 7 segmentos                    IO32 - IO27
             poIMDot : out STD_LOGIC;                        -- Al punto del display de 7 segmentos -        IO26
@@ -128,10 +126,6 @@ begin
     rx <= piIMRx;
     poIMTx <= tx;
     poIMStat <= not ledstat;
-    
-    -- Test de UART
-    poIMRxTest <= piIMRx;
-    poIMTxTest <= tx;
     
 end A_IMain;
 

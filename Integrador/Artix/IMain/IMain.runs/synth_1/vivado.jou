@@ -3,8 +3,8 @@
 # SW Build 5076996 on Wed May 22 18:37:14 MDT 2024
 # IP Build 5075265 on Wed May 22 21:45:21 MDT 2024
 # SharedData Build 5076995 on Wed May 22 18:29:18 MDT 2024
-# Start of session at: Wed Dec  4 19:00:44 2024
-# Process ID: 15808
+# Start of session at: Thu Dec  5 19:05:03 2024
+# Process ID: 8928
 # Current directory: C:/Users/patri/OneDrive/Documentos/vhdl/Integrador/Artix/IMain/IMain.runs/synth_1
 # Command line: vivado.exe -log IMain.vds -product Vivado -mode batch -messageDb vivado.pb -notrace -source IMain.tcl
 # Log file: C:/Users/patri/OneDrive/Documentos/vhdl/Integrador/Artix/IMain/IMain.runs/synth_1/IMain.vds
@@ -19,6 +19,6 @@
 # Host memory       :16483 MB
 # Swap memory       :1073 MB
 # Total Virtual     :17557 MB
-# Available Virtual :5418 MB
+# Available Virtual :7850 MB
 #-----------------------------------------------------------
 source IMain.tcl -notrace
