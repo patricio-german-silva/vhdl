@@ -160,11 +160,11 @@ poUaRxData <= poByte_n;
 BRGenerator: process(piUaRxClk, RstBR)
 begin
     if RstBR = '1' then
-        brCount <= to_unsigned((100000000/9600)/2, 14);
+        brCount <= to_unsigned(RxDIV/2, 14);
     elsif rising_edge(piUaRxClk) then
         brCount <= brCount - to_unsigned(1, 14);
         if brCount = to_unsigned(0, 14) then
-            brCount <= to_unsigned(100000000/9600, 14);
+            brCount <= to_unsigned(RxDIV, 14);
         end if;
     end if;        
 end process;

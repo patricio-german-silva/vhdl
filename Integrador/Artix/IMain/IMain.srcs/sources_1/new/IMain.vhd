@@ -111,9 +111,9 @@ begin
                   poHBCDir => poIMDirMI, poHBCPower => poIMPowerMI, poHBCDirSel => latchDirMI, poHBCPowerSel => latchPoMI);
 
     instToDisplay: entity work.ToDisplay(A_ToDisplay)
-        generic map( POWER_SEL_WIDTH => 7, Max => 100000000) 
+        generic map( POWER_SEL_WIDTH => 7, Max => 50000000) 
         port map( piTDClk => clk, piTDRst => rst, piTDEna => ena, piTDPowerMD => latchPoMD, piTDPowerMI => latchPoMI, piTDMode => mode, poTDData => dispData, poTDDot => poIMDot);	
-
+ 
     instHexToSevSeg: entity work.HexToSevSeg(A_HexToSevSeg)
         port map( piHTSSSEna => ena, piHTSSSData => dispData, poHTSSSOutput => poIMSevSeg );	
 

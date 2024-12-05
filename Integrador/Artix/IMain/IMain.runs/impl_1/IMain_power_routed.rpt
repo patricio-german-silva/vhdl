@@ -1,7 +1,7 @@
 Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2024 Advanced Micro Devices, Inc. All Rights Reserved.
 -------------------------------------------------------------------------------------------------------------------------------------------------
 | Tool Version     : Vivado v.2024.1 (win64) Build 5076996 Wed May 22 18:37:14 MDT 2024
-| Date             : Tue Dec  3 17:43:52 2024
+| Date             : Wed Dec  4 19:03:02 2024
 | Host             : DELLINS15 running 64-bit major release  (build 9200)
 | Command          : report_power -file IMain_power_routed.rpt -pb IMain_power_summary_routed.pb -rpx IMain_power_routed.rpx
 | Design           : IMain
@@ -53,14 +53,13 @@ Table of Contents
 | On-Chip        | Power (W) | Used     | Available | Utilization (%) |
 +----------------+-----------+----------+-----------+-----------------+
 | Clocks         |     0.002 |        3 |       --- |             --- |
-| Slice Logic    |     0.001 |      803 |       --- |             --- |
-|   LUT as Logic |     0.001 |      276 |     63400 |            0.44 |
+| Slice Logic    |     0.001 |      776 |       --- |             --- |
+|   LUT as Logic |    <0.001 |      278 |     63400 |            0.44 |
 |   CARRY4       |    <0.001 |       43 |     15850 |            0.27 |
-|   Register     |    <0.001 |      338 |    126800 |            0.27 |
-|   BUFG         |    <0.001 |        1 |        32 |            3.13 |
-|   Others       |     0.000 |       27 |       --- |             --- |
-| Signals        |     0.001 |      668 |       --- |             --- |
-| I/O            |     0.002 |       26 |       210 |           12.38 |
+|   Register     |    <0.001 |      319 |    126800 |            0.25 |
+|   Others       |     0.000 |       25 |       --- |             --- |
+| Signals        |     0.001 |      649 |       --- |             --- |
+| I/O            |     0.003 |       26 |       210 |           12.38 |
 | Static Power   |     0.097 |          |           |                 |
 | Total          |     0.104 |          |           |                 |
 +----------------+-----------+----------+-----------+-----------------+
@@ -72,7 +71,7 @@ Table of Contents
 +-----------+-------------+-----------+-------------+------------+-------------+-------------+------------+
 | Source    | Voltage (V) | Total (A) | Dynamic (A) | Static (A) | Powerup (A) | Budget (A)  | Margin (A) |
 +-----------+-------------+-----------+-------------+------------+-------------+-------------+------------+
-| Vccint    |       1.000 |     0.020 |       0.005 |      0.015 |       NA    | Unspecified | NA         |
+| Vccint    |       1.000 |     0.019 |       0.004 |      0.015 |       NA    | Unspecified | NA         |
 | Vccaux    |       1.800 |     0.018 |       0.000 |      0.018 |       NA    | Unspecified | NA         |
 | Vcco33    |       3.300 |     0.005 |       0.001 |      0.004 |       NA    | Unspecified | NA         |
 | Vcco25    |       2.500 |     0.000 |       0.000 |      0.000 |       NA    | Unspecified | NA         |
@@ -95,7 +94,7 @@ Table of Contents
 | User Input Data             | Confidence | Details                                                | Action                                                                                                             |
 +-----------------------------+------------+--------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------+
 | Design implementation state | High       | Design is routed                                       |                                                                                                                    |
-| Clock nodes activity        | Low        | User specified less than 75% of clocks                 | Provide missing clock activity with a constraint file, simulation results or by editing the "By Clock Domain" view |
+| Clock nodes activity        | Medium     | More than 5% of clocks are missing user specification  | Provide missing clock activity with a constraint file, simulation results or by editing the "By Clock Domain" view |
 | I/O nodes activity          | Low        | More than 75% of inputs are missing user specification | Provide missing input activity with simulation results or by editing the "By Resource Type -> I/Os" view           |
 | Internal nodes activity     | Medium     | User specified less than 25% of internal nodes         | Provide missing internal nodes activity with simulation results or by editing the "By Resource Type" views         |
 | Device models               | High       | Device models are Production                           |                                                                                                                    |

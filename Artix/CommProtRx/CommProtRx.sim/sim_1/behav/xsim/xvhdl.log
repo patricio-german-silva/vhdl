@@ -1,0 +1,6 @@
+INFO: [VRFC 10-163] Analyzing VHDL file "C:/Users/patri/OneDrive/Documentos/vhdl/Artix/CommProtRx/CommProtRx.srcs/sources_1/new/TTrigger.vhd" into library xil_defaultlib
+INFO: [VRFC 10-3107] analyzing entity 'TTrigger'
+INFO: [VRFC 10-163] Analyzing VHDL file "C:/Users/patri/OneDrive/Documentos/vhdl/Artix/CommProtRx/CommProtRx.srcs/sources_1/new/CommProtRx.vhd" into library xil_defaultlib
+INFO: [VRFC 10-3107] analyzing entity 'CommProtRx'
+INFO: [VRFC 10-163] Analyzing VHDL file "C:/Users/patri/OneDrive/Documentos/vhdl/Artix/CommProtRx/CommProtRx.srcs/sim_1/new/CommProtRx_tb.vhd" into library xil_defaultlib
+INFO: [VRFC 10-3107] analyzing entity 'CommProtRx_TB'

@@ -1,7 +1,7 @@
 Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2024 Advanced Micro Devices, Inc. All Rights Reserved.
 ---------------------------------------------------------------------------------------------------------------------------------------------
 | Tool Version : Vivado v.2024.1 (win64) Build 5076996 Wed May 22 18:37:14 MDT 2024
-| Date         : Tue Dec  3 17:43:13 2024
+| Date         : Wed Dec  4 19:02:22 2024
 | Host         : DELLINS15 running 64-bit major release  (build 9200)
 | Command      : report_drc -file IMain_drc_opted.rpt -pb IMain_drc_opted.pb -rpx IMain_drc_opted.rpx
 | Design       : IMain
@@ -69,7 +69,7 @@ Related violations: <none>
 
 PLHOLDVIO-2#2 Warning
 Non-Optimal connections which could lead to hold violations  
-A LUT instHBridgeCtrlMD/instModuleCounter/powerCount[6]_i_2 is driving clock pin of 7 cells. This could lead to large hold time violations. Involved cells are:
+A LUT instHBridgeCtrlMD/instModuleCounter/powerCount[6]_i_2__0 is driving clock pin of 7 cells. This could lead to large hold time violations. Involved cells are:
 instHBridgeCtrlMD/instPwmGen/powerCount_reg[0],
 instHBridgeCtrlMD/instPwmGen/powerCount_reg[1],
 instHBridgeCtrlMD/instPwmGen/powerCount_reg[2],
@@ -81,7 +81,7 @@ Related violations: <none>
 
 PLHOLDVIO-2#3 Warning
 Non-Optimal connections which could lead to hold violations  
-A LUT instHBridgeCtrlMI/instModuleCounter/powerCount[6]_i_2__0 is driving clock pin of 7 cells. This could lead to large hold time violations. Involved cells are:
+A LUT instHBridgeCtrlMI/instModuleCounter/powerCount[6]_i_2 is driving clock pin of 7 cells. This could lead to large hold time violations. Involved cells are:
 instHBridgeCtrlMI/instPwmGen/powerCount_reg[0],
 instHBridgeCtrlMI/instPwmGen/powerCount_reg[1],
 instHBridgeCtrlMI/instPwmGen/powerCount_reg[2],
