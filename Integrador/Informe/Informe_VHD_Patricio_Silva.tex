@@ -131,7 +131,7 @@ Por cada puente H posee dos entradas de dirección y una entrada Enable, se lo p
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=\textwidth]{L293D-pin}
+    \includegraphics[width=0.9\textwidth]{L293D-pin}
     \caption{Función de los pines del integrado \textbf{L293D}}
 \end{figure}
 
@@ -139,8 +139,16 @@ La conexión del integrado a los motores puede hacerse del siguiente modo
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.8\textwidth]{L293D-func-block}
+    \includegraphics[width=0.7\textwidth]{L293D-func-block}
     \caption{Ejemplo de conexión para el integrado \textbf{L293D}}
+\end{figure}
+
+El comportamiento segun el nivel de tension en cada pin de entrada es el siguiente
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{pin-response}
+    \caption{Comportamiento integrado \textbf{L293D}}
 \end{figure}
 
 \subsection{Puertos de I/O}
@@ -210,28 +218,28 @@ poIMDirMD[0] &
 OUT &
 J5 &
 LED4 &
-Dir1 – Segun L243D
+Dir 1A
 \\
 
 poIMDirMD[1] &
 OUT &
 H5 &
 LED5 &
-
+Dir 2A
 \\
 
 poIMDirMI[0] &
 OUT &
 T10 &
 LED6 &
-Dir2 – Segun L243D
+Dir 3A
 \\
 
 poIMDirMI[1] &
 OUT &
 T9 &
 LED7 &
-
+Dir 4A
 \\
 
 poIMDot &
@@ -512,7 +520,7 @@ El modulo UaRx recibe los bytes mediante rs232, el modulo UaTx responde con cada
     \caption{Simulación del sistema - Detalle de la recepción de un comando}
 \end{figure}
 
-\subsection{Prueba en la placa de desarrollo \textbf{Arty A7-100T}}
+\section{Prueba en la placa de desarrollo \textbf{Arty A7-100T}}
 
 A continuación se muestra el funcionamiento sobre la placa \textbf{Arty A7-100T}, el displey muestra la velocidad del motor Derecho, que se encuentra al \textbf{10\%}
 
@@ -530,8 +538,6 @@ En la siguiente imagen se muestra en un osciloscopio la salida PWM para el motor
     \includegraphics[width=0.8\textwidth]{pwm-motor-derecho-1}
     \caption{PWM del motor Derecho}
 \end{figure}
-
-EL código de los diferentes módulos se anexa aparte
 
 \newpage
 \section{Conclusiones}
