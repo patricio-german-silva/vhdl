@@ -68,7 +68,7 @@ architecture A_DecodeCmd of DecodeCmd is
     signal sensors: STD_LOGIC_VECTOR(3 downto 0);
     signal clk10ms: STD_LOGIC;
     signal mode: STD_LOGIC := '1';  -- Modo 1: control por sensores
-    signal auto, stop, dirMD, dirMI: STD_LOGIC := '0';
+    signal flop, auto, stop, dirMD, dirMI: STD_LOGIC := '0';
     
     -- LATCH
     signal r_CmdRdy : STD_LOGIC; -- Recibido nuevo comando
@@ -136,29 +136,30 @@ begin
 
         if auto = '1' then  --- Actualización en modo automatico
             if rising_edge(clk10ms) then
+                flop <= not flop;
                 if sensors = "1100" then
-                    poDCMDSetMD <= '1';
-                    poDCMDSetMI <= '1';
+                    poDCMDSetMD <= flop;
+                    poDCMDSetMI <= not flop;
                     poDCMDPowerSelMD <= STD_LOGIC_VECTOR(fpower(6 downto 0));
                     poDCMDPowerSelMI <= STD_LOGIC_VECTOR(lpower(6 downto 0));
                 elsif sensors = "0011" then
-                    poDCMDSetMD <= '1';
-                    poDCMDSetMI <= '1';
+                    poDCMDSetMD <= flop;
+                    poDCMDSetMI <= not flop;
                     poDCMDPowerSelMD <= STD_LOGIC_VECTOR(lpower(6 downto 0));
                     poDCMDPowerSelMI <= STD_LOGIC_VECTOR(fpower(6 downto 0));
                 elsif sensors = "1000" then
-                    poDCMDSetMD <= '1';
-                    poDCMDSetMI <= '1';
+                    poDCMDSetMD <= flop;
+                    poDCMDSetMI <= not flop;
                     poDCMDPowerSelMD <= STD_LOGIC_VECTOR(TO_UNSIGNED(100, 7));
                     poDCMDPowerSelMI <= STD_LOGIC_VECTOR(TO_UNSIGNED(0, 7));
                 elsif sensors = "0001" then
-                    poDCMDSetMD <= '1';
-                    poDCMDSetMI <= '1';
+                    poDCMDSetMD <= flop;
+                    poDCMDSetMI <= not flop;
                     poDCMDPowerSelMD <= STD_LOGIC_VECTOR(TO_UNSIGNED(0, 7));
                     poDCMDPowerSelMI <= STD_LOGIC_VECTOR(TO_UNSIGNED(100, 7));
                 else
-                    poDCMDSetMD <= '1';
-                    poDCMDSetMI <= '1';
+                    poDCMDSetMD <= flop;
+                    poDCMDSetMI <= not flop;
                     poDCMDPowerSelMD <= STD_LOGIC_VECTOR(avg_power(6 downto 0));
                     poDCMDPowerSelMI <= STD_LOGIC_VECTOR(avg_power(6 downto 0));
                 end if;
